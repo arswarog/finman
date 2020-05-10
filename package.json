@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@21kb/react-online-status-hook": "^1.3.1",
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
@@ -15,11 +16,22 @@
     "react-scripts": "3.4.1",
     "typescript": "^3.7.5"
   },
+  "devDependencies": {
+    "serve": "^11.3.0",
+    "ts-loader": "^7.0.3",
+    "webpack-cli": "^3.3.11"
+  },
   "scripts": {
     "start": "react-scripts start",
+    "prebuild": "npm run sw:clear",
     "build": "react-scripts build",
+    "postbuild": "npm run sw:build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "serve": "serve -s build",
+    "sw:clear": "rm -f publish/service-worker.js",
+    "sw:serve": "webpack --config ./webpack.sw.dev.config.js --progress --colors",
+    "sw:build": "webpack --config ./webpack.sw.prod.config.js --progress --colors"
   },
   "eslintConfig": {
     "extends": "react-app"
