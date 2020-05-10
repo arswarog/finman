@@ -26,11 +26,11 @@ self.addEventListener('install', (event) => {
                 })
                 .filter(path => !!path);
             files.unshift(
-                '/',
-                '/manifest.json',
-                '/favicon.ico',
-                '/logo192.png',
-                '/logo512.png',
+                '/finman/',
+                '/finman/manifest.json',
+                '/finman/favicon.ico',
+                '/finman/logo192.png',
+                '/finman/logo512.png',
             );
             console.log(files);
             const caching = await caches.open(CACHE_NAME)
