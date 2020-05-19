@@ -103,4 +103,18 @@ export class Money {
             return false;
         return this.subunits === money.subunits;
     }
+
+    public getEntire(): string {
+        return Math.floor(this.subunits / 10 ** this.currency.precision).toString();
+    }
+
+    public getFractional(): string {
+        return (this.subunits / 10 ** this.currency.precision)
+            .toFixed(this.currency.precision)
+            .substr(-this.currency.precision);
+    }
+
+    public getSymbol(): string {
+        return this.currency.symbol;
+    }
 }

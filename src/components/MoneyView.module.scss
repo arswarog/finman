@@ -1,0 +1,23 @@
+.moneyView {
+  display: inline-block;
+
+  .entire {
+  }
+
+  .fractional {
+    font-size: 0.7em;
+    color: #808080;
+
+    &:before {
+      content: '.';
+    }
+
+    &:after {
+      content: ' ';
+    }
+  }
+
+  .currency {
+
+  }
+}

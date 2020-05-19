@@ -1,7 +1,10 @@
 import React, { useEffect, useState, Suspense } from 'react';
-import logo from './logo.svg';
-import './App.css';
+import styles from './App.module.scss';
 import { useOnlineStatus } from '@21kb/react-online-status-hook/lib';
+import { Redirect, Route, Switch } from 'react-router';
+import { BrowserRouter } from 'react-router-dom';
+import { NavBar } from './components/NavBar';
+import { TransactionsPage } from './pages/TransactionsPage';
 
 const Hello = React.lazy(() => import('./Hello'));
 
@@ -10,50 +13,23 @@ function App() {
     const [hello, setHello] = useState();
     const online = useOnlineStatus();
 
-    useEffect(() => {
-        function getIP() {
-            // console.log('get ip');
-            // fetch('/manifest.json')
-            // fetch('https://api.ipify.org?format=json')
-            //     .then(
-            //         response => response.json(),
-            //     )
-            //     .then(
-            //         result => setIp(result.ip),
-            //     );
-            // fetch('/manifest.json')
-            //     // fetch('https://api.ipify.org?format=json')
-            //     .then(
-            //         response => response.json(),
-            //     )
-            //     .then(
-            //         result => {},//console.log(result),
-            //     );
-        }
-
-        const timer = setInterval(() => getIP(), 1000);
-        getIP();
-        return () => clearInterval(timer);
-    }, []);
-
     return (
-        <div className="App">
-            <header className="App-header">
-                <img src={logo} className="App-logo" alt="logo"/>
-                <p>
-                    IP: {ip}
-                </p>
-                <div>You are currently {online ? 'online' : 'offline'}.</div>
-                <button className="App-link"
-                        onClick={() => setHello(!hello)}
-                >
-                    Learn React
-                </button>
-                {hello &&
-                <Suspense fallback={<div>Loading...</div>}>
-                    <Hello/>
-                </Suspense>}
-            </header>
+        <div className={styles.App}>
+            <BrowserRouter>
+                <Switch>
+                    <Route path="/transactions">
+                        <TransactionsPage/>
+                    </Route>
+                    <Redirect to="/transactions"/>
+                </Switch>
+                <main>
+                    {hello &&
+                    <Suspense fallback={<div>Loading...</div>}>
+                        <Hello/>
+                    </Suspense>}
+                </main>
+                <NavBar/>
+            </BrowserRouter>
         </div>
     );
 }

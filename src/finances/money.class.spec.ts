@@ -177,4 +177,19 @@ describe('Money class', () => {
             });
         });
     });
+
+    describe('parts', () => {
+        it('0 RUB', () => {
+            const money = new Money('0 RUB');
+            expect('' + money).toBe('0 ₽');
+            expect(money.getEntire()).toEqual('0');
+            expect(money.getFractional()).toEqual('00');
+        });
+        it('123.12 RUB', () => {
+            const money = new Money('123.45 RUB');
+            expect('' + money).toBe('123.45 ₽');
+            expect(money.getEntire()).toEqual('123');
+            expect(money.getFractional()).toEqual('45');
+        });
+    });
 });
