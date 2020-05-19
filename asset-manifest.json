@@ -1,25 +1,24 @@
 {
   "files": {
-    "main.css": "/finman/static/css/main.d1b05096.chunk.css",
-    "main.js": "/finman/static/js/main.64f232cb.chunk.js",
-    "main.js.map": "/finman/static/js/main.64f232cb.chunk.js.map",
-    "runtime-main.js": "/finman/static/js/runtime-main.8d0aae21.js",
-    "runtime-main.js.map": "/finman/static/js/runtime-main.8d0aae21.js.map",
-    "static/js/2.6f75f8fe.chunk.js": "/finman/static/js/2.6f75f8fe.chunk.js",
-    "static/js/2.6f75f8fe.chunk.js.map": "/finman/static/js/2.6f75f8fe.chunk.js.map",
-    "static/js/3.9438d155.chunk.js": "/finman/static/js/3.9438d155.chunk.js",
-    "static/js/3.9438d155.chunk.js.map": "/finman/static/js/3.9438d155.chunk.js.map",
+    "main.css": "/finman/static/css/main.8d1f00cc.chunk.css",
+    "main.js": "/finman/static/js/main.c720c848.chunk.js",
+    "main.js.map": "/finman/static/js/main.c720c848.chunk.js.map",
+    "runtime-main.js": "/finman/static/js/runtime-main.2a931aaa.js",
+    "runtime-main.js.map": "/finman/static/js/runtime-main.2a931aaa.js.map",
+    "static/js/2.8d9bb1ce.chunk.js": "/finman/static/js/2.8d9bb1ce.chunk.js",
+    "static/js/2.8d9bb1ce.chunk.js.map": "/finman/static/js/2.8d9bb1ce.chunk.js.map",
+    "static/js/3.d81b76ba.chunk.js": "/finman/static/js/3.d81b76ba.chunk.js",
+    "static/js/3.d81b76ba.chunk.js.map": "/finman/static/js/3.d81b76ba.chunk.js.map",
     "index.html": "/finman/index.html",
-    "precache-manifest.c4465396810117038d68e280b8be2cba.js": "/finman/precache-manifest.c4465396810117038d68e280b8be2cba.js",
+    "precache-manifest.eed0bb055f2c9cbe9db60f4de0a48430.js": "/finman/precache-manifest.eed0bb055f2c9cbe9db60f4de0a48430.js",
     "service-worker.js": "/finman/service-worker.js",
-    "static/css/main.d1b05096.chunk.css.map": "/finman/static/css/main.d1b05096.chunk.css.map",
-    "static/js/2.6f75f8fe.chunk.js.LICENSE.txt": "/finman/static/js/2.6f75f8fe.chunk.js.LICENSE.txt",
-    "static/media/logo.svg": "/finman/static/media/logo.5d5d9eef.svg"
+    "static/css/main.8d1f00cc.chunk.css.map": "/finman/static/css/main.8d1f00cc.chunk.css.map",
+    "static/js/2.8d9bb1ce.chunk.js.LICENSE.txt": "/finman/static/js/2.8d9bb1ce.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
-    "static/js/runtime-main.8d0aae21.js",
-    "static/js/2.6f75f8fe.chunk.js",
-    "static/css/main.d1b05096.chunk.css",
-    "static/js/main.64f232cb.chunk.js"
+    "static/js/runtime-main.2a931aaa.js",
+    "static/js/2.8d9bb1ce.chunk.js",
+    "static/css/main.8d1f00cc.chunk.css",
+    "static/js/main.c720c848.chunk.js"
   ]
 }

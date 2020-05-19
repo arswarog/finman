@@ -1,0 +1,1 @@
+{"version":3,"sources":["Hello.tsx"],"names":["Hello"],"mappings":"iGAAA,2BAOeA,UALD,WACV,OACI","file":"static/js/3.d81b76ba.chunk.js","sourcesContent":["import React from 'react';\n\nconst Hello = () => {\n    return (\n        <h1>Hello</h1>\n    );\n};\nexport default Hello;\n"],"sourceRoot":""}
