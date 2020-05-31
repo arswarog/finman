@@ -8,7 +8,7 @@ import { SyncStatus } from './month.types';
 
 describe('Month class', () => {
     const wallet = '0-1-0-0';
-    describe('getID', () => {
+    describe('generateID', () => {
         const wallet = '0-1-0-0';
         it('May, 2020', () => {
             const month = Month.createFirstBlock(wallet, '2020-05', 1590327753509);
@@ -35,6 +35,14 @@ describe('Month class', () => {
 
             expect(month3.id).toBe('1e14b669-81c2-0866-260f-15923d707111');
             expect(month3.month).toBe('2010-02');
+        });
+        it('invalid version', () => {
+            const month = Month.createFirstBlock(wallet, '2020-05', 1590327753509);
+            Object.assign(month, {version: 2});
+
+            expect(month.version).toBe(2);
+            expect(() => Month.generateID(month))
+                .toThrowError('Version 2 not supported')
         });
     });
     describe('getDataHash', () => {
@@ -192,10 +200,42 @@ describe('Month class', () => {
             });
             expect(month.days).toEqual([day]);
         });
+        it('add day from another month', () => {
+            const tx: ITransaction = {
+                id: '0-0-0-0',
+                category: '',
+                title: '',
+                type: TransactionType.Income,
+                amount: Money.fromJSON('1 RUB'),
+            };
+
+            const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+
+            const day = Day.create('2010-01-01')
+                           .addTransaction(tx);
+
+            expect(() => month1.updateDay(day))
+                .toThrowError(`Day "2010-01-01" not of month "2020-05"`)
+        });
+        it('invalid day', () => {
+            const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+
+            expect(() => month1.updateDay({} as any))
+                .toThrowError(`Cannot update month, newDay must be instance of Day`)
+        });
     });
     describe('syncStatus', () => {
         describe('change', () => {
             function checkForFailingToChangeStatus(month: Month, baseStatus: SyncStatus, statuses: SyncStatus[]) {
+                it(`to ${SyncStatus[baseStatus]} (not changed)`, () => {
+                    expect(month.syncStatus).toEqual(baseStatus);
+
+                    const newMonth = month.changeSyncStatus(baseStatus);
+
+                    expect(newMonth.syncStatus).toEqual(baseStatus);
+                    expect(newMonth === month).toBeTruthy();
+                });
+
                 statuses.forEach(status =>
                     it(`to ${SyncStatus[status]} (not accepted)`, () => {
                         expect(month.syncStatus).toEqual(baseStatus);

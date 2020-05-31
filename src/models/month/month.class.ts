@@ -42,7 +42,7 @@ export class Month implements IMonth {
 
     public static generateID(month: Month, dataHash?: string): string {
         if (month.version !== 1)
-            throw new Error(`Version not supported`);
+            throw new Error(`Version ${month.version} not supported`);
 
         const data = {
             version: month.version,
@@ -168,8 +168,8 @@ export class Month implements IMonth {
     }
 
     public updateDay(newDay: Day): Month {
-        if (!newDay)
-            throw new Error(`Cannot update month. Day is null`);
+        if (!(newDay instanceof Day))
+            throw new Error(`Cannot update month, newDay must be instance of Day`);
 
         if (!this.isDateOfMonth(newDay.date))
             throw new Error(`Day "${newDay.date}" not of month "${this.month}"`);
