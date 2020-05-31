@@ -9,9 +9,21 @@
   button {
     padding: 3px 10px;
     margin: 8px;
+
     font-size: 11px;
-    border: none;
+
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
     border-radius: 10px;
+
+    &.active {
+      border-color: #2dacf9;
+      background-color: #2dacf9;
+    }
+
+    &:focus {
+      outline: none;
+    }
   }
 }
 

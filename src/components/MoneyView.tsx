@@ -1,5 +1,5 @@
 import React from 'react';
-import { Money } from '../finances/money.class';
+import { Money } from '../models/money/money.class';
 
 import styles from './MoneyView.module.scss';
 

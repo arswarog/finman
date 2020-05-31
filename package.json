@@ -10,6 +10,7 @@
     "@testing-library/jest-dom": "^4.2.4",
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
+    "@types/crypto-js": "^3.1.47",
     "@types/date-fns": "^2.6.0",
     "@types/jest": "^24.9.1",
     "@types/node": "^12.12.37",
@@ -17,8 +18,9 @@
     "@types/react-dom": "^16.9.7",
     "@types/react-router": "^5.1.7",
     "@types/react-router-dom": "^5.1.5",
-    "@types/uuid": "^7.0.3",
+    "@types/uuid": "^8.0.0",
     "classnames": "^2.2.6",
+    "crypto-js": "^4.0.0",
     "date-fns": "^2.14.0",
     "immutable": "^4.0.0-rc.12",
     "node-sass": "^4.14.1",
@@ -27,8 +29,9 @@
     "react-router": "^5.2.0",
     "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
+    "redux-saga": "^1.1.3",
     "typescript": "^3.7.5",
-    "uuid": "^8.0.0"
+    "uuid": "^8.1.0"
   },
   "devDependencies": {
     "gh-pages": "^2.2.0",
@@ -41,7 +44,7 @@
     "prebuild": "npm run sw:clear",
     "build": "react-scripts build",
     "postbuild": "npm run sw:build",
-    "test": "react-scripts test",
+    "test": "react-scripts test --coverage",
     "eject": "react-scripts eject",
     "serve": "serve -s build",
     "sw:clear": "rm -f publish/service-worker.js",
