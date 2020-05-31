@@ -88,7 +88,7 @@ export class Month implements IMonth {
         throw new Error();
     }
 
-    protected constructor(value: Partial<Month>) {
+    protected constructor(value: Partial<Month>) { // FIXME use all fields of Month
         Object.assign(this, value);
         this.dataHash = this.getDataHash();
         this.id = Month.generateID(this, this.dataHash);
@@ -187,8 +187,14 @@ export class Month implements IMonth {
 
         return new Month({
             ...this,
+            syncStatus: SyncStatus.NoSynced,
             days,
             summary,
+            prevVersions: this.syncStatus
+                ? this.id
+                    ? [this.id]
+                    : []
+                : this.prevVersions || [],
         });
     }
 }

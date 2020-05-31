@@ -7,7 +7,7 @@ import { Transaction } from '../transaction/transaction.class';
 import { SyncStatus } from './month.types';
 
 describe('Month class', () => {
-    const wallet = '0-1-0-0';
+    const accountID = '0-1-0-0';
     describe('generateID', () => {
         const wallet = '0-1-0-0';
         it('May, 2020', () => {
@@ -42,7 +42,7 @@ describe('Month class', () => {
 
             expect(month.version).toBe(2);
             expect(() => Month.generateID(month))
-                .toThrowError('Version 2 not supported')
+                .toThrowError('Version 2 not supported');
         });
     });
     describe('getDataHash', () => {
@@ -140,31 +140,31 @@ describe('Month class', () => {
     });
     describe('static createFirstBlock', () => {
         it('May, 2020', () => {
-            const month = Month.createFirstBlock(wallet, '2020-05', 1590327754509);
+            const month = Month.createFirstBlock(accountID, '2020-05', 1590327754509);
 
             expect(month.id).toBe('25c5eca7-9ca8-2c49-aed3-88ceb7caecd5');
             expect(month.month).toBe('2020-05');
-            expect(month.account).toBe(wallet);
+            expect(month.account).toBe(accountID);
             expect(month.summary).toEqual(EmptyExtendSummary);
             expect(month.daysInMonth).toBe(31);
         });
         it('February, 2020', () => {
-            const month = Month.createFirstBlock(wallet, '2020-02', 123151213235);
+            const month = Month.createFirstBlock(accountID, '2020-02', 123151213235);
             expect(month.month).toBe('2020-02');
-            expect(month.account).toBe(wallet);
+            expect(month.account).toBe(accountID);
             expect(month.summary).toEqual(EmptyExtendSummary);
             expect(month.daysInMonth).toBe(29);
         });
         it('February, 2022', () => {
-            const month = Month.createFirstBlock(wallet, '2022-02', 123151213235);
+            const month = Month.createFirstBlock(accountID, '2022-02', 123151213235);
             expect(month.month).toBe('2022-02');
-            expect(month.account).toBe(wallet);
+            expect(month.account).toBe(accountID);
             expect(month.summary).toEqual(EmptyExtendSummary);
             expect(month.daysInMonth).toBe(28);
         });
     });
     describe('createDay', () => {
-        const month = Month.createFirstBlock(wallet, '2022-02', 123151213235);
+        const month = Month.createFirstBlock(accountID, '2022-02', 123151213235);
         it('1 (valid)', () => {
             const day = month.createDay(1);
             expect(day).toEqual(Day.create('2022-02-01'));
@@ -184,7 +184,7 @@ describe('Month class', () => {
                 amount: Money.fromJSON('1 RUB'),
             };
 
-            const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+            const month1 = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
             const day = month1.createDay(5)
                               .addTransaction(tx);
@@ -209,19 +209,19 @@ describe('Month class', () => {
                 amount: Money.fromJSON('1 RUB'),
             };
 
-            const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+            const month1 = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
             const day = Day.create('2010-01-01')
                            .addTransaction(tx);
 
             expect(() => month1.updateDay(day))
-                .toThrowError(`Day "2010-01-01" not of month "2020-05"`)
+                .toThrowError(`Day "2010-01-01" not of month "2020-05"`);
         });
         it('invalid day', () => {
-            const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+            const month1 = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
             expect(() => month1.updateDay({} as any))
-                .toThrowError(`Cannot update month, newDay must be instance of Day`)
+                .toThrowError(`Cannot update month, newDay must be instance of Day`);
         });
     });
     describe('syncStatus', () => {
@@ -247,7 +247,7 @@ describe('Month class', () => {
             }
 
             describe('from NotSynced', () => {
-                const base = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+                const base = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
                 checkForFailingToChangeStatus(
                     base,
@@ -268,7 +268,7 @@ describe('Month class', () => {
                 });
             });
             describe('from Prepared', () => {
-                const base = Month.createFirstBlock(wallet, '2020-05', 123151213235)
+                const base = Month.createFirstBlock(accountID, '2020-05', 123151213235)
                                   .changeSyncStatus(SyncStatus.Prepared);
 
                 checkForFailingToChangeStatus(
@@ -290,7 +290,7 @@ describe('Month class', () => {
                 });
             });
             describe('from Syncing', () => {
-                const base = Month.createFirstBlock(wallet, '2020-05', 123151213235)
+                const base = Month.createFirstBlock(accountID, '2020-05', 123151213235)
                                   .changeSyncStatus(SyncStatus.Prepared)
                                   .changeSyncStatus(SyncStatus.Syncing);
 
@@ -313,7 +313,7 @@ describe('Month class', () => {
                 });
             });
             describe('from FullySynced', () => {
-                const base = Month.createFirstBlock(wallet, '2020-05', 123151213235)
+                const base = Month.createFirstBlock(accountID, '2020-05', 123151213235)
                                   .changeSyncStatus(SyncStatus.Prepared)
                                   .changeSyncStatus(SyncStatus.Syncing)
                                   .changeSyncStatus(SyncStatus.FullySynced);
@@ -340,7 +340,7 @@ describe('Month class', () => {
                     amount: Money.fromJSON('1 RUB'),
                 };
 
-                const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+                const month1 = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
                 const day = month1.createDay(5)
                                   .addTransaction(tx);
@@ -361,7 +361,7 @@ describe('Month class', () => {
                     amount: Money.fromJSON('1 RUB'),
                 };
 
-                const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+                const month1 = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
                 const day = month1.createDay(5)
                                   .addTransaction(tx);
@@ -424,7 +424,7 @@ describe('Month class', () => {
                 type: TransactionType.Income,
                 amount: Money.fromJSON('1 RUB'),
             };
-            const month1 = Month.createFirstBlock(wallet, '2020-05', 123151213235);
+            const month1 = Month.createFirstBlock(accountID, '2020-05', 123151213235);
 
             const day = month1.createDay(5)
                               .addTransaction(tx);
@@ -449,6 +449,73 @@ describe('Month class', () => {
                 balanceOnStart: Money.fromJSON('5 RUB'),
                 balanceOnEnd: Money.fromJSON('6 RUB'),
             });
+        });
+    });
+    describe('chaining (user stories)', () => {
+        it('update second month', () => {
+            // arrange
+            const firstMonth = Month.createFirstBlock(accountID, '2020-01', 1590905914218)
+                                    .changeSyncStatus(SyncStatus.Prepared);
+
+            const secondMonth = firstMonth.createNextBlock('2020-03', 1590906019120)
+                                          .changeSyncStatus(SyncStatus.Prepared);
+
+            // arrange 1
+            const tx = Transaction.createWithID(
+                '0-0-1-0',
+                TransactionType.Income,
+                1, 'RUB',
+            );
+            const day = secondMonth.createDay(5)
+                                   .addTransaction(tx);
+
+            // act 1
+            const month = secondMonth.updateDay(day);
+
+            // assert 1
+            expect(month.syncStatus).toBe(SyncStatus.NoSynced);
+            expect(month.id).not.toEqual(secondMonth.id);
+            expect(month.prevMonths).toEqual([firstMonth.id]);
+            expect(month.prevVersions).toEqual([secondMonth.id]);
+
+            // arrange 2
+            const tx2 = Transaction.createWithID(
+                '0-0-2-0',
+                TransactionType.Income,
+                2, 'RUB',
+            );
+            const day2 = secondMonth.createDay(5)
+                                    .addTransaction(tx2);
+
+            // act 2
+            const month2 = month.updateDay(day2);
+
+            // assert 2
+            expect(month2.syncStatus).toBe(SyncStatus.NoSynced);
+            expect(month2.id).not.toEqual(secondMonth.id);
+            expect(month2.id).not.toEqual(month.id);
+            expect(month2.prevMonths).toEqual([firstMonth.id]);
+            expect(month2.prevVersions).toEqual([secondMonth.id]);
+
+            // arrange 3
+
+            const tx3 = Transaction.createWithID(
+                '0-0-3-0',
+                TransactionType.Income,
+                3, 'RUB',
+            );
+            const day3 = secondMonth.createDay(5)
+                                    .addTransaction(tx3);
+
+            // act 3
+            const month3 = month2.changeSyncStatus(SyncStatus.Prepared)
+                                 .updateDay(day3);
+
+            // assert 3
+            expect(month3.id).not.toEqual(secondMonth.id);
+            expect(month3.id).not.toEqual(month.id);
+            expect(month3.prevMonths).toEqual([firstMonth.id]);
+            expect(month3.prevVersions).toEqual([month2.id]);
         });
     });
 });
