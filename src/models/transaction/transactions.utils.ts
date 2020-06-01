@@ -2,6 +2,12 @@ import { ITransaction, TransactionType } from './transaction.types';
 import { IExtendSummary, ISummary } from '../common/common.types';
 import { Money } from '../money/money.class';
 
+export const EMPTY_SUMMARY: ISummary = {
+    income: Money.empty,
+    expense: Money.empty,
+    balance: Money.empty,
+};
+
 export function calculateSummary(transactions: ITransaction[]): ISummary {
     let [expense, income] = transactions.reduce(
         ([expense, income], tx) => {

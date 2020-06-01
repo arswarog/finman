@@ -1,4 +1,4 @@
-export function eventLogger<T extends any>(emitter: T, emitterName: string, eventName: string | string[]) {
+export function eventLogger<T extends { addEventListener: Function }>(emitter: T, emitterName: string, eventName: string | string[]) {
     if (Array.isArray(eventName))
         eventName.forEach(name => eventLogger(emitter, emitterName, name));
     else

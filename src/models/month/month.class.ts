@@ -1,6 +1,6 @@
 import sha1 from 'crypto-js/sha1';
-import { EmptyExtendSummary, EmptySummary, IExtendSummary, UUID } from '../common/common.types';
-import { IMonth, SyncStatus } from './month.types';
+import { EmptyExtendSummary, EmptySummary, IExtendSummary, ISummary, UUID } from '../common/common.types';
+import { IMonth, IMonthBrief, SyncStatus } from './month.types';
 import { Day, IDay } from '../day/day.class';
 import { getDaysInMonth } from 'date-fns';
 import { parseMonthDate } from '../common/date.utils';
@@ -8,6 +8,10 @@ import { DayDate, MonthDate } from '../common/date.types';
 import { addSummary } from '../transaction/transactions.utils';
 import { Money } from '../money/money.class';
 
+/**
+ * ID является хешем от данных, при любом изменении создается новый экземпляр с новым ID
+ * Класс гарантирует совпадение данных при совпадении ID
+ */
 export class Month implements IMonth {
     public readonly id: UUID = '';
     public readonly version: number = 1;
@@ -92,6 +96,21 @@ export class Month implements IMonth {
         Object.assign(this, value);
         this.dataHash = this.getDataHash();
         this.id = Month.generateID(this, this.dataHash);
+    }
+
+    public static getBrief(month: IMonthBrief): IMonthBrief {
+        return {
+            id: month.id,
+            month: month.month,
+            summary: month.summary,
+            prevMonths: month.prevMonths,
+            prevVersions: month.prevVersions,
+            dataHash: month.dataHash,
+        };
+    }
+
+    public getBrief(): IMonthBrief {
+        return Month.getBrief(this);
     }
 
     public getDataHash(): string {

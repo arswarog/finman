@@ -518,13 +518,26 @@ describe('Month class', () => {
             expect(month3.prevVersions).toEqual([month2.id]);
         });
     });
+    describe('getBrief', () => {
+        it('default', () => {
+            const month = Month.createFirstBlock(accountID, '2020-05', 1590327754509);
+
+            const brief = month.getBrief();
+
+            expect(brief.id).toBe('25c5eca7-9ca8-2c49-aed3-88ceb7caecd5');
+            expect(brief.month).toBe('2020-05');
+            expect(brief.summary).toEqual(EmptyExtendSummary);
+            expect(brief.prevMonths).toEqual([]);
+            expect(brief.prevVersions).toEqual([]);
+        });
+    });
 });
 
 export function emptyMonth1(accountId: UUID): Month {
     return Month.createFirstBlock(accountId, '2020-01', 123151213235);
 }
 
-export function month1(accountId: UUID): Month {
+export function makeTestMonth1(accountId: UUID): Month {
     const day1 = Day.create('2020-01-01')
                     .addTransaction({
                         id: '23ef9df2-e73e-4b85-8657-8635d9b8815f',
@@ -551,7 +564,7 @@ export function emptyMonth2(accountId: UUID): Month {
     return Month.createFirstBlock(accountId, '2020-02', 123151213235);
 }
 
-export function month2(accountId: UUID): Month {
+export function makeTestMonth2(accountId: UUID): Month {
     const day1 = Day.create('2020-02-01')
                     .addTransaction({
                         id: 'f38e02d8-86f1-407b-8462-a3bfb93dccd3',

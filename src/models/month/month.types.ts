@@ -12,7 +12,6 @@ export enum SyncStatus {
 export interface IMonthBrief {
     id: UUID;
     month: MonthDate;
-    syncStatus: SyncStatus;
     summary: ISummary;
     prevMonths: UUID[];
     prevVersions: UUID[];
@@ -20,6 +19,7 @@ export interface IMonthBrief {
 }
 
 export interface IMonth extends IMonthBrief {
+    syncStatus: SyncStatus;
     timestamp: number;
     account: UUID;
     days: IDay[];

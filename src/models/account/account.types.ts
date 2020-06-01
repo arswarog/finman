@@ -6,5 +6,5 @@ export interface IAccount {
     id: UUID;
     name: string;
     balance: Money;
-    months: IMonthBrief[];
+    months: ReadonlyArray<Readonly<IMonthBrief>>;
 }
