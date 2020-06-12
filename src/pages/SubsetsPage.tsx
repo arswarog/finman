@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { upgrade } from '../indexed-db';
 import { Subsets } from '../models/subsets/subsets.atom';
 import { useAction, useAtom } from '@reatom/react';
@@ -19,6 +19,7 @@ export const SubsetsPage = () => {
             {
                 subsets.all.map(item => (
                     <div className={item === subsets.current ? styles.currentSubset : ''}
+                         key={item.id}
                          onClick={() => chooseSubsetHandler(item.id)}>
                         <h3>{item.name}</h3>
                         {/*<h4>{item.balance}</h4>*/}

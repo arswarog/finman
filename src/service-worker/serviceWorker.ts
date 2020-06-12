@@ -55,6 +55,16 @@ self.addEventListener('activate', (event) => {
         .then(req => req.json())
         .then(console.log);
 });
+self.addEventListener('activate', (event) => {
+    event.waitUntil(
+        // Получение всех ключей из кэша.
+        caches.keys().then((cacheNames) => Promise.all(
+            // Прохождение по всем кэшированным файлам.
+            cacheNames.map(cacheName => caches.delete(cacheName)),
+            ),
+        ),
+    );
+});
 self.addEventListener('message', (event) => {
     console.log('message', event);
 });

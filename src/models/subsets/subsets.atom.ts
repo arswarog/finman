@@ -3,7 +3,7 @@ import { ISubsetsState } from './subsets.types';
 import { Subset } from '../subset/subset.class';
 import { Money } from '../money/money.class';
 import { refreshAllSuccess } from './subsets.service';
-import { chooseSubset, chooseSubsetX } from './subsets.actions';
+import { chooseSubset } from './subsets.actions';
 
 export const Subsets = declareAtom<ISubsetsState>(
     ['subsets'],
@@ -29,16 +29,6 @@ export const Subsets = declareAtom<ISubsetsState>(
                 };
             }),
             on(chooseSubset, (state, id) => {
-                const current = state.all.find(item => item.id === id);
-                if (current)
-                    return {
-                        ...state,
-                        current,
-                    };
-                else
-                    return state;
-            }),
-            on(chooseSubsetX, (state, {id}) => {
                 const current = Object.assign(state.current, {loaded: true});
 
                 if (current)

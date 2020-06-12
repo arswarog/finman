@@ -9,13 +9,14 @@ import { Client } from './models/client/client.atom';
 import { startListenOnlineStatus } from './models/client/client.service';
 import { SubsetsPage } from './pages/SubsetsPage';
 import { refreshAll } from './models/subsets/subsets.service';
-import { useDBReady, store } from './store';
-import { Account, RequiredMonthsError } from './models/account/account.class';
-
-const Hello = React.lazy(() => import('./Hello'));
+import { AccountsPage } from './pages/AccountsPage';
+import { TransactionAddPage } from './pages/TransactionAddPage';
+import { loadAccounts } from './models/accounts/accounts.actions';
+import { store } from './store/store';
+import { useDBReady } from './store/db';
+import './models/transaction/add.saga';
 
 export const App = () => {
-    const [hello, setHello] = useState();
     const client = useAtom(Client);
     const refreshAllHandler = useAction(refreshAll);
     useDBReady(refreshAllHandler);
@@ -24,19 +25,21 @@ export const App = () => {
         <div className={styles.App}>
             <BrowserRouter>
                 <Switch>
-                    <Route path="/finman/" exact={true}>
-                        <SubsetsPage/>
+                    <Route path="/finman/transaction/add">
+                        <TransactionAddPage/>
                     </Route>
+                    <Route path="/finman/accounts">
+                        <AccountsPage/>
+                    </Route>
+                    {/*<Route path="/finman/" exact={true}>*/}
+                    {/*    <SubsetsPage/>*/}
+                    {/*</Route>*/}
                     <Route path="/finman/transactions">
                         <TransactionsPage/>
                     </Route>
-                    <Redirect to="/finman/"/>
+                    <Redirect to="/finman/accounts"/>
                 </Switch>
                 <main>
-                    {hello &&
-                    <Suspense fallback={<div>Loading...</div>}>
-                        <Hello/>
-                    </Suspense>}
                 </main>
                 <NavBar/>
             </BrowserRouter>
@@ -45,3 +48,4 @@ export const App = () => {
 };
 
 startListenOnlineStatus(store);
+store.dispatch(loadAccounts() as any);

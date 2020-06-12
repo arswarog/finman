@@ -4,8 +4,8 @@ import { context } from '@reatom/react';
 import './index.scss';
 import { App } from './App';
 import * as serviceWorker from './serviceWorker';
-import { store } from './store';
 import { initDB } from './indexed-db';
+import { store } from './store/store';
 
 ReactDOM.render(
     <React.StrictMode>
