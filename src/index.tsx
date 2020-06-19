@@ -22,5 +22,3 @@ ReactDOM.render(
 serviceWorker.unregister();
 
 initDB();
-
-

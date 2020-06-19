@@ -36,3 +36,7 @@ export function parseDayDate(value: DayDate): Date {
 
     return date;
 }
+
+export function dayDateToMonth(day: DayDate): MonthDate {
+    return day.split('-', 2).join('-');
+}

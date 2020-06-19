@@ -31,7 +31,7 @@ export const Accounts = declareAtom<IAccountsState>(
             return {
                 current: accounts[0] || null,
                 accounts: Map(map),
-            } as any;
+            };
         }),
     ],
 );
