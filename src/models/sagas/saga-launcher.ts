@@ -1,11 +1,18 @@
 import { runSaga, stdChannel, Saga } from 'redux-saga';
-import { Store } from '@reatom/core';
+import { PayloadActionCreator, Store } from '@reatom/core';
+import { takeEvery } from 'redux-saga/effects';
 
 class SagaLauncher {
     private sagas: Saga[] = [];
 
-    register(saga: Saga) {
+    register(saga: Saga): void {
         this.sagas.push(saga);
+    }
+
+    onAction(actionCreator: PayloadActionCreator<any>, saga: Saga): void {
+        this.register(function* () {
+            yield takeEvery(actionCreator.getType(), saga);
+        });
     }
 
     start(store: Store) {
