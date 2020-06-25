@@ -1,6 +1,6 @@
 import { runSaga, stdChannel, Saga } from 'redux-saga';
 import { PayloadActionCreator, Store } from '@reatom/core';
-import { takeEvery } from 'redux-saga/effects';
+import { takeEvery, call } from 'redux-saga/effects';
 
 class SagaLauncher {
     private sagas: Saga[] = [];
@@ -9,9 +9,21 @@ class SagaLauncher {
         this.sagas.push(saga);
     }
 
-    onAction(actionCreator: PayloadActionCreator<any>, saga: Saga): void {
+    onAction(actionCreator: PayloadActionCreator<any>,
+             saga: Saga,
+             sagaName = 'Some saga'): void {
         this.register(function* () {
             yield takeEvery(actionCreator.getType(), saga);
+            // yield takeEvery(actionCreator.getType(), function* (...params) {
+            //     try {
+            //         console.log(`[Saga logger] Saga "${sagaName}" started`);
+            //         yield* saga(...params);
+            //         console.log(`[Saga logger] Saga "${sagaName}" completed`);
+            //     } catch (e) {
+            //         console.log(`[Saga logger] Saga "${sagaName}" failed`);
+            //         console.error(e);
+            //     }
+            // });
         });
     }
 
@@ -31,3 +43,23 @@ class SagaLauncher {
 }
 
 export const sagaLauncher = new SagaLauncher();
+
+type ExtractInner<T> = T extends Generator<any, infer R, any> ? R : never;
+
+export interface PackedSaga<Fn extends (...args: any[]) => any> {
+    (...args: Parameters<Fn>): Generator<any, ExtractInner<ReturnType<Fn>>, any>;
+
+    originalSaga: (...args: Parameters<Fn>) => Generator<any, ExtractInner<ReturnType<Fn>>, any>;
+}
+
+function sagaCallPacker<Fn extends (...args: any[]) => any = any>(saga: Fn): PackedSaga<Fn> {
+    const fn = function* PackedSaga<Fn extends (...args: any[]) => any = any>(...params: Parameters<Fn>): Generator<any, ExtractInner<Fn>, any> {
+        return yield call(saga as any, ...params);
+    };
+    fn.originalSaga = saga;
+    return fn;
+}
+
+export const SagaPacker = {
+    call: sagaCallPacker,
+};

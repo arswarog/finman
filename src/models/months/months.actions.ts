@@ -8,6 +8,6 @@ export const loadMonths = declareAction<UUID[]>(NS + ':loadMonths');
 export const loadMonthsSuccess = declareAction<Month[]>(NS + ':loadMonths success');
 export const loadMonthsFailed = declareAction<{ ids: UUID[], error: any }>(NS + ':loadMonths failed');
 
-export const saveMonths = declareAction<UUID[]>(NS + ':saveMonths');
+export const saveMonths = declareAction<Month[]>(NS + ':saveMonths');
 export const saveMonthsSuccess = declareAction<UUID[]>(NS + ':saveMonths success');
-export const saveMonthsFailed = declareAction<any>(NS + ':saveMonths failed');
+export const saveMonthsFailed = declareAction<{ ids: UUID[], error: any }>(NS + ':saveMonths failed');

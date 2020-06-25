@@ -3,6 +3,7 @@ import { isVersionOfMonth, updateMonthChain } from './chain.utils';
 import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';
 import { SyncStatus } from '../month/month.types';
+import { Day } from '../day/day.class';
 
 describe('chain utils', () => {
     const account = '0-0-0-1';
@@ -50,12 +51,9 @@ describe('chain utils', () => {
             });
         });
         describe('update', () => {
-            const oldFirst = Month.createFirstBlock(account, '2020-01', 1590915748404)
-                                  .changeSyncStatus(SyncStatus.Prepared);
-            const oldSecond = oldFirst.createNextBlock('2020-02', 1590916683981)
-                                      .changeSyncStatus(SyncStatus.Prepared);
-            const oldThird = oldSecond.createNextBlock('2020-03', 1590916753742)
-                                      .changeSyncStatus(SyncStatus.Prepared);
+            const oldFirst = Month.createFirstBlock(account, '2020-01', 1590915748404);
+            const oldSecond = oldFirst.createNextBlock('2020-02', 1590916683981);
+            const oldThird = oldSecond.createNextBlock('2020-03', 1590916753742);
 
             const oldChain = [
                 oldThird.getBrief(),
@@ -197,25 +195,24 @@ describe('chain utils', () => {
         });
     });
     describe('isVersionOfMonth', () => {
-        const v1 = Month.createFirstBlock(account, '2020-01', 1590993021517).changeSyncStatus(SyncStatus.Prepared);
-        const v2day = v1.createDay(5)
-                        .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
-        const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
-        console.log(v2);
-        const v3day = v1.createDay(4)
-                        .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
-        const v3 = v2.updateDay(v3day).changeSyncStatus(SyncStatus.Prepared);
+        describe('positive (synced blocks)', () => {
+            const v1 = Month.createFirstBlock(account, '2020-01', 1590993021517);
+            const v2day = v1.createDay(5)
+                            .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+            const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
+            console.log(v2);
+            const v3day = v1.createDay(4)
+                            .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
+            const v3 = v2.updateDay(v3day).changeSyncStatus(SyncStatus.Prepared);
 
-        const another = Month.createFirstBlock(account, '2020-02', 1590993200351);
+            const another = Month.createFirstBlock(account, '2020-02', 1590993200351);
 
-        it('prepare check', () => {
-            expect(v1.prevVersions).toEqual([]);
-            expect(v2.prevVersions).toEqual([v1.id]);
-            expect(v3.prevVersions).toEqual([v2.id]);
-            expect(another.prevVersions).toEqual([]);
-        });
-
-        describe('positive', () => {
+            it('prepare check', () => {
+                expect(v1.prevVersions).toEqual([]);
+                expect(v2.prevVersions).toEqual([v1.id]);
+                expect(v3.prevVersions).toEqual([v2.id]);
+                expect(another.prevVersions).toEqual([]);
+            });
             it('same version', () => {
                 expect(
                     isVersionOfMonth(v1, v1, [v1, v2, another]),
@@ -232,12 +229,47 @@ describe('chain utils', () => {
                     isVersionOfMonth(v3, v1, [v1, v2, v3, another]),
                 ).toBe(true);
             });
+            describe('require month', () => {
+                it('2 diffs', () => {
+                    expect(
+                        () => isVersionOfMonth(v3, v1, [another]),
+                    ).toThrow(`Required months: ${v2.id}`);
+                });
+            });
         });
-        describe('require month', () => {
+        describe('update not synced block', () => {
+            const v1 = Month.createFirstBlock(account, '2020-01', 1590993021517);
+            const v2day = v1.createDay(5)
+                            .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+            const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
+            console.log(v2);
+            const v3day = v1.createDay(4)
+                            .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
+            const v3 = v2.updateDay(v3day);
+
+            const another = Month.createFirstBlock(account, '2020-02', 1590993200351);
+
+            it('prepare check', () => {
+                expect(v1.prevVersions).toEqual([]);
+                expect(v2.prevVersions).toEqual([v1.id]);
+                expect(v3.prevVersions).toEqual([v2.id]);
+                expect(another.prevVersions).toEqual([]);
+            });
+            it('same version', () => {
+                expect(
+                    isVersionOfMonth(v1, v1, [v1, v2, another]),
+                ).toBe(true);
+            });
+            it('1 diff', () => {
+                console.log(v1.id);
+                expect(
+                    isVersionOfMonth(v2, v1, []),
+                ).toBe(true);
+            });
             it('2 diffs', () => {
                 expect(
-                    () => isVersionOfMonth(v3, v1, [another]),
-                ).toThrow(`Required months: ${v2.id}`);
+                    isVersionOfMonth(v3, v2, [v1, v2, v3, another]),
+                ).toBe(true);
             });
         });
     });

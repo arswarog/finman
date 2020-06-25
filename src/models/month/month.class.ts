@@ -1,5 +1,5 @@
 import sha1 from 'crypto-js/sha1';
-import { EmptyExtendSummary, EmptySummary, IExtendSummary, ISummary, UUID } from '../common/common.types';
+import { EmptyExtendSummary, EmptySummary, IExtendSummary, UUID } from '../common/common.types';
 import { IMonth, IMonthBrief, SyncStatus } from './month.types';
 import { Day, IDay } from '../day/day.class';
 import { getDaysInMonth } from 'date-fns';
@@ -41,6 +41,7 @@ export class Month implements IMonth {
             month,
             daysInMonth,
             days: [],
+            syncStatus: SyncStatus.Fixed,
         });
     }
 
@@ -114,6 +115,9 @@ export class Month implements IMonth {
     }
 
     public getDataHash(): string {
+        if (!this.days.length)
+            return '0000000000000000000000000000000000000000';
+
         const data = {
             days: this.days!.map(day => day.toJSON()),
         };
@@ -143,8 +147,13 @@ export class Month implements IMonth {
         throw new Error(`Can not change sync status from "${SyncStatus[this.syncStatus]}" to "${SyncStatus[syncStatus]}"`);
     }
 
-    public createDay(day: number): Day {
-        return Day.create(this.createDayDate(day));
+    public createDay(date: number | DayDate): Day {
+        if (typeof date === 'number')
+            return Day.create(this.createDayDate(date));
+        else if (date.substr(0, 7) === this.month)
+            return Day.create(date);
+        else
+            throw new Error(`Date "${date}" not of month "${this.month}"`);
     }
 
     public createDayDate(day: number): string {
@@ -172,6 +181,7 @@ export class Month implements IMonth {
             summary,
             days: [],
             daysInMonth,
+            syncStatus: SyncStatus.Fixed,
         });
     }
 
@@ -184,6 +194,11 @@ export class Month implements IMonth {
             ...this,
             summary: calculateSummaryFromStartBalance(startBalance, this.days),
         });
+    }
+
+    public getDay(dayDate: DayDate): Day {
+        const day = this.days.find(item => item.date === dayDate);
+        return day || this.createDay(dayDate);
     }
 
     public updateDay(newDay: Day): Month {

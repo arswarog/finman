@@ -7,6 +7,7 @@ export enum SyncStatus {
     Prepared,
     Syncing,
     FullySynced,
+    Fixed,
 }
 
 export interface IMonthBrief {

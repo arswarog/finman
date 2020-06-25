@@ -28,7 +28,7 @@ export function updateMonthChain(head: IMonthBrief | Month,
             throw new RequiredMonthsError(...chain.pop()!.prevMonths);
 
     if (completed) {
-        if (!isVersionOfMonth(chain[chain.length - 1], old[old.length - 1]))
+        if (!isVersionOfMonth(chain[chain.length - 1], old[old.length - 1], additions))
             throw new CanNotFastForwardMonthError(old, chain);
     } else {
         const first = chain[chain.length - 1];
@@ -94,6 +94,13 @@ export function updateMonthChain(head: IMonthBrief | Month,
     return newChain;
 }
 
+/**
+ * Проверяет является ли element версией oldEl
+ * Так же вернет true если element измененная версия oldEl
+ * @param element Проверяемый элемент
+ * @param oldEl Предполагаемые предок
+ * @param additions Дополнительные блоки
+ */
 export function isVersionOfMonth(element: IMonthBrief, oldEl: IMonthBrief | undefined, additions: ReadonlyArray<IMonthBrief> = []): boolean {
     if (!oldEl)
         return true;
@@ -102,6 +109,9 @@ export function isVersionOfMonth(element: IMonthBrief, oldEl: IMonthBrief | unde
         return false;
 
     const items = [oldEl, ...additions];
+
+    if (element.prevVersions.every((id, index) => oldEl.prevVersions[index] === id))
+        return true;
 
     for (; element.id !== oldEl.id;) {
         if (element.prevVersions.length === 0)

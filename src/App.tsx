@@ -14,7 +14,8 @@ import { TransactionAddPage } from './pages/TransactionAddPage';
 import { loadAccounts } from './models/accounts/accounts.actions';
 import { store } from './store/store';
 import { useDBReady } from './store/db';
-import './models/transaction/add.saga';
+import './models/sagas';
+import { sagaLauncher } from './models/sagas';
 
 export const App = () => {
     const client = useAtom(Client);
@@ -48,4 +49,5 @@ export const App = () => {
 };
 
 startListenOnlineStatus(store);
-store.dispatch(loadAccounts() as any);
+store.dispatch(loadAccounts());
+sagaLauncher.start(store);

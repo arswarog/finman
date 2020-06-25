@@ -23,7 +23,7 @@ export const TransactionAddPage = () => {
             type,
         };
         console.log(formData);
-        store.dispatch(addTransaction(formData) as any);
+        store.dispatch(addTransaction(formData));
     };
 
     const amountChangeHandler = (event) => {

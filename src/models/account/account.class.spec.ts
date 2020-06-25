@@ -75,7 +75,83 @@ describe('Account class', () => {
             expect(account2).toHaveProperty('income', Money.from(month2.summary.income));
             expect(account2).toHaveProperty('expense', Money.from(month2.summary.expense));
         });
-        it('update chain', () => {
+        it('update first month (month is prepared)', () => {
+            // arrange: create first chain
+            const prepareAccount = Account.create('test');
+            const baseMonth = makeTestMonth1(prepareAccount.id).changeSyncStatus(SyncStatus.Prepared);
+            const baseAccount = prepareAccount.updateHead(baseMonth, []);
+            expect(baseAccount.months).toEqual([
+                baseMonth.getBrief(),
+            ]);
+            expect(baseAccount).toHaveProperty('balance', baseMonth.summary.balance);
+            expect(baseAccount).toHaveProperty('income', baseMonth.summary.income);
+            expect(baseAccount).toHaveProperty('expense', baseMonth.summary.expense);
+
+            // arrange: update chain
+            const day1 = Day.create('2020-01-01')
+                            .addTransaction({
+                                id: '23ef9df2-e73e-4b85-8657-8635d9b8815f',
+                                amount: Money.create(12, 'RUB'),
+                                type: TransactionType.Income,
+                                title: 'Some income',
+                                category: '',
+                            });
+            const month = baseMonth.updateDay(day1);
+            expect(month.id).not.toEqual(baseMonth.id);
+
+            // act: update account
+            const account = baseAccount.updateHead(month, [month]);
+
+            // assets
+            expect(JSON.stringify(account.months, null, 2)).toEqual(JSON.stringify([
+                month.getBrief(),
+            ], null, 2));
+            expect(account.months).toEqual([
+                month.getBrief(),
+            ]);
+            expect(account).toHaveProperty('balance', month.summary.balance);
+            expect(account).toHaveProperty('income', month.summary.income);
+            expect(account).toHaveProperty('expense', month.summary.expense);
+        });
+        it('update first month (month is not synced)', () => {
+            // arrange: create first chain
+            const prepareAccount = Account.create('test');
+            const baseMonth = makeTestMonth1(prepareAccount.id);
+            const baseAccount = prepareAccount.updateHead(baseMonth, []);
+            expect(baseAccount.months).toEqual([
+                baseMonth.getBrief(),
+            ]);
+            expect(baseAccount).toHaveProperty('balance', baseMonth.summary.balance);
+            expect(baseAccount).toHaveProperty('income', baseMonth.summary.income);
+            expect(baseAccount).toHaveProperty('expense', baseMonth.summary.expense);
+
+            // arrange: update chain
+            const day1 = Day.create('2020-01-01')
+                            .addTransaction({
+                                id: '23ef9df2-e73e-4b85-8657-8635d9b8815f',
+                                amount: Money.create(12, 'RUB'),
+                                type: TransactionType.Income,
+                                title: 'Some income',
+                                category: '',
+                            });
+            const month = baseMonth.updateDay(day1);
+            expect(month.id).not.toEqual(baseMonth.id);
+
+            // act: update account
+            const account = baseAccount.updateHead(month, [month]);
+
+            // assets
+            expect(JSON.stringify(account.months, null, 2)).toEqual(JSON.stringify([
+                month.getBrief(),
+            ], null, 2));
+            expect(account.months).toEqual([
+                month.getBrief(),
+            ]);
+            expect(account).toHaveProperty('balance', month.summary.balance);
+            expect(account).toHaveProperty('income', month.summary.income);
+            expect(account).toHaveProperty('expense', month.summary.expense);
+        });
+        it('update chain in the middle', () => {
             // arrange: create first chain
             const prepareAccount = Account.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id).changeSyncStatus(SyncStatus.Prepared);
