@@ -47,6 +47,40 @@ To learn React, check out the [React documentation](https://reactjs.org/).
 
 * For smart calculating https://eddmann.com/posts/implementing-the-shunting-yard-algorithm-in-javascript/
 
+## File structure
+
+### Data layer
+* Models
+    * Directory: **/src/models**
+    * Using PascalCase
+* Atoms
+    * Directory: **/src/atoms**
+    * Using camelCase with postfix **Atom**
+* Sagas
+    * Helpers
+        * Directory: **/src/sagas/helpers**
+        * Methods of exported object **Helpers**
+    * Utils
+        * Directory: **/src/sagas/utils**
+        * Methods of exported object **Utils**
+    * Sagas
+        * Directory: **/src/sagas/processes**
+        * Using camelCase with postfix **Saga**
+
+### View layer
+* Atoms for view
+    * Directory: **/src/atoms**
+    * Using camelCase with postfix **ViewAtom**
+* Pages
+    * Directory: **/src/pages**
+    * Using PascalCase with postfix **Page**
+* Widgets
+    * Directory: **/src/widgets**
+    * Using PascalCase with postfix **Widget**
+* Components
+    * Directory: **/src/components**
+    * Using PascalCase
+
 ## Articles
 
 ### Service Workers

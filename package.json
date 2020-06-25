@@ -45,6 +45,7 @@
     "build": "react-scripts build",
     "postbuild": "npm run sw:build",
     "test": "react-scripts test --coverage",
+    "coverage": "CI=true react-scripts test --coverage",
     "eject": "react-scripts eject",
     "serve": "serve -s build",
     "sw:clear": "rm -f publish/service-worker.js",
