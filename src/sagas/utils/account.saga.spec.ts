@@ -1,17 +1,17 @@
-import { Month } from '../../month/month.class';
-import { Account } from '../../account/account.class';
+import { Month } from '../../models/month/month.class';
+import { Account } from '../../models/account/account.class';
 import { AccountUtils } from './account.saga';
 import { CallEffect } from 'redux-saga/effects';
-import { SyncStatus } from '../../month/month.types';
-import { Transaction } from '../../transaction/transaction.class';
-import { TransactionType } from '../../transaction/transaction.types';
+import { SyncStatus } from '../../models/month/month.types';
+import { Transaction } from '../../models/transaction/transaction.class';
+import { TransactionType } from '../../models/transaction/transaction.types';
 import { SagaTestBed } from '../helpers/saga-test-bed';
-import { Accounts } from '../../accounts/accounts.atom';
-import { loadAccountsSuccess } from '../../accounts/accounts.actions';
+import { Accounts } from '../../atoms/accounts/accounts.atom';
+import { loadAccountsSuccess } from '../../atoms/accounts/accounts.actions';
 import { expectCallEffect } from '../helpers/helpers.spec';
 import { MonthUtils } from './month.saga';
-import { UUID } from '../../common/common.types';
-import { saveMonths, saveMonthsSuccess } from '../../months/months.actions';
+import { UUID } from '../../models/common/common.types';
+import { saveMonths, saveMonthsSuccess } from '../../atoms/months/months.actions';
 import { delay } from '../helpers/helpers';
 
 describe('AccountUtils', () => {

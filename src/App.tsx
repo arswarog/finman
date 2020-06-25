@@ -5,17 +5,17 @@ import { BrowserRouter } from 'react-router-dom';
 import { NavBar } from './widgets/NavBar';
 import { TransactionsPage } from './pages/TransactionsPage';
 import { useAction, useAtom } from '@reatom/react';
-import { Client } from './models/client/client.atom';
-import { startListenOnlineStatus } from './models/client/client.service';
+import { Client } from './atoms/client/client.atom';
+import { startListenOnlineStatus } from './atoms/client/client.service';
 import { SubsetsPage } from './pages/SubsetsPage';
-import { refreshAll } from './models/subsets/subsets.service';
+import { refreshAll } from './atoms/subsets/subsets.service';
 import { AccountsPage } from './pages/AccountsPage';
 import { TransactionAddPage } from './pages/TransactionAddPage';
-import { loadAccounts } from './models/accounts/accounts.actions';
+import { loadAccounts } from './atoms/accounts/accounts.actions';
 import { store } from './store/store';
 import { useDBReady } from './store/db';
-import './models/sagas';
-import { sagaLauncher } from './models/sagas';
+import './sagas';
+import { sagaLauncher } from './sagas';
 
 export const App = () => {
     const client = useAtom(Client);

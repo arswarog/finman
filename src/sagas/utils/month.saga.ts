@@ -1,8 +1,8 @@
 import { put, take } from 'redux-saga/effects';
 import { Action } from '@reatom/core';
-import { MonthDate } from '../../common/date.types';
-import { Account } from '../../account/account.class';
-import { Month } from '../../month/month.class';
+import { MonthDate } from '../../models/common/date.types';
+import { Account } from '../../models/account/account.class';
+import { Month } from '../../models/month/month.class';
 import { getTimestamp, selectAtom } from '../helpers/helpers';
 import { SagaPacker } from '../saga-launcher';
 import {
@@ -12,9 +12,9 @@ import {
     loadMonths,
     loadMonthsSuccess,
     loadMonthsFailed,
-} from '../../months/months.actions';
-import { UUID } from '../../common/common.types';
-import { Months } from '../../months/months.atom';
+} from '../../atoms/months/months.actions';
+import { UUID } from '../../models/common/common.types';
+import { Months } from '../../atoms/months/months.atom';
 
 export const MonthUtils = {
     /**

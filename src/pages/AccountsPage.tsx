@@ -3,9 +3,9 @@ import { useAction, useAtom } from '@reatom/react';
 import { MoneyView } from '../components/MoneyView';
 
 import styles from './AccountsPage.module.scss';
-import { Accounts } from '../models/accounts/accounts.atom';
+import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useHistory } from 'react-router';
-import { chooseAccount } from '../models/accounts/accounts.actions';
+import { chooseAccount } from '../atoms/accounts/accounts.actions';
 
 export const AccountsPage = () => {
     const history = useHistory();

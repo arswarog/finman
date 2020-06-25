@@ -1,15 +1,15 @@
 import { addTransactionSaga } from './transaction-add.saga';
-import { addTransaction } from '../../transaction/transaction.actions';
-import { TransactionType } from '../../transaction/transaction.types';
-import { Account } from '../../account/account.class';
-import { Month } from '../../month/month.class';
+import { addTransaction } from '../../models/transaction/transaction.actions';
+import { TransactionType } from '../../models/transaction/transaction.types';
+import { Account } from '../../models/account/account.class';
+import { Month } from '../../models/month/month.class';
 import { AccountUtils } from '../utils/account.saga';
 import { expectCallEffect } from '../helpers/helpers.spec';
 import { MonthUtils } from '../utils/month.saga';
-import { Money } from '../../money/money.class';
-import { Day } from '../../day/day.class';
-import { Transaction } from '../../transaction/transaction.class';
-import { isVersionOfMonth } from '../../account/chain.utils';
+import { Money } from '../../models/money/money.class';
+import { Day } from '../../models/day/day.class';
+import { Transaction } from '../../models/transaction/transaction.class';
+import { isVersionOfMonth } from '../../models/account/chain.utils';
 
 describe('addTransactionSaga', () => {
     const baseAccount = Account.create('test');

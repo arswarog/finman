@@ -1,7 +1,7 @@
 import { declareAtom } from '@reatom/core';
 import { ISubsetsState } from './subsets.types';
-import { Subset } from '../subset/subset.class';
-import { Money } from '../money/money.class';
+import { Subset } from '../../models/subset/subset.class';
+import { Money } from '../../models/money/money.class';
 import { refreshAllSuccess } from './subsets.service';
 import { chooseSubset } from './subsets.actions';
 

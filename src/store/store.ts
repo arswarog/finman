@@ -1,9 +1,9 @@
 import { combine, createStore } from '@reatom/core';
 import { connectReduxDevtools } from '@reatom/debug';
-import { Client } from '../models/client/client.atom';
-import { Accounts } from '../models/accounts/accounts.atom';
-import { Months } from '../models/months/months.atom';
-import { initFakeIndexedDB } from '../models/sagas/fakeIndexedDB';
+import { Client } from '../atoms/client/client.atom';
+import { Accounts } from '../atoms/accounts/accounts.atom';
+import { Months } from '../atoms/months/months.atom';
+import { initFakeIndexedDB } from '../sagas/fakeIndexedDB';
 
 export const store = createStore(combine({
     Client,

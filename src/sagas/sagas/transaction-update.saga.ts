@@ -1,6 +1,6 @@
 import { take } from 'redux-saga/effects';
 import { sagaLauncher } from '../saga-launcher';
-import { loadAccountsSuccess } from '../../accounts/accounts.actions';
+import { loadAccountsSuccess } from '../../atoms/accounts/accounts.actions';
 
 sagaLauncher.register(transactionUpdateSaga);
 

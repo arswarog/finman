@@ -1,10 +1,10 @@
 import { Store } from '@reatom/core';
-import { loadMonths, loadMonthsSuccess, saveMonths, saveMonthsSuccess } from '../months/months.actions';
-import { Months } from '../months/months.atom';
-import { UUID } from '../common/common.types';
-import { Month } from '../month/month.class';
-import { loadAccounts, loadAccountsSuccess, saveAccount, saveAccountSuccess } from '../accounts/accounts.actions';
-import { Account } from '../account/account.class';
+import { loadMonths, loadMonthsSuccess, saveMonths, saveMonthsSuccess } from '../atoms/months/months.actions';
+import { Months } from '../atoms/months/months.atom';
+import { UUID } from '../models/common/common.types';
+import { Month } from '../models/month/month.class';
+import { loadAccounts, loadAccountsSuccess, saveAccount, saveAccountSuccess } from '../atoms/accounts/accounts.actions';
+import { Account } from '../models/account/account.class';
 
 export function initFakeIndexedDB(store: Store) {
     store.subscribe(action => {

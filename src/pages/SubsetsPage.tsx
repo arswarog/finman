@@ -1,11 +1,11 @@
 import React from 'react';
 import { upgrade } from '../indexed-db';
-import { Subsets } from '../models/subsets/subsets.atom';
+import { Subsets } from '../atoms/subsets/subsets.atom';
 import { useAction, useAtom } from '@reatom/react';
 import { MoneyView } from '../components/MoneyView';
 
 import styles from './SubsetsPage.module.scss';
-import { chooseSubset } from '../models/subsets/subsets.actions';
+import { chooseSubset } from '../atoms/subsets/subsets.actions';
 
 export const SubsetsPage = () => {
     const subsets = useAtom(Subsets);

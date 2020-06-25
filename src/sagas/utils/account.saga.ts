@@ -1,11 +1,11 @@
-import { Month } from '../../month/month.class';
-import { Account } from '../../account/account.class';
+import { Month } from '../../models/month/month.class';
+import { Account } from '../../models/account/account.class';
 import { Helpers } from '../helpers';
-import { UUID } from '../../common/common.types';
+import { UUID } from '../../models/common/common.types';
 import { SagaPacker } from '../saga-launcher';
-import { Accounts, IAccountsState } from '../../accounts/accounts.atom';
+import { Accounts, IAccountsState } from '../../atoms/accounts/accounts.atom';
 import { select, put, take } from 'redux-saga/effects';
-import { saveAccount, saveAccountSuccess, saveAccountFailed } from '../../accounts/accounts.actions';
+import { saveAccount, saveAccountSuccess, saveAccountFailed } from '../../atoms/accounts/accounts.actions';
 import { MonthUtils } from './month.saga';
 
 export const AccountUtils = {

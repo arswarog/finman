@@ -1,6 +1,6 @@
 import { declareAction } from '@reatom/core';
-import { UUID } from '../common/common.types';
-import { Account } from '../account/account.class';
+import { UUID } from '../../models/common/common.types';
+import { Account } from '../../models/account/account.class';
 
 const NS = 'accounts';
 export const chooseAccount = declareAction<UUID>(NS + ':chooseAccount');

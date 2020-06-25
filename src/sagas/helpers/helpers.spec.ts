@@ -1,16 +1,16 @@
-import { Months } from '../../months/months.atom';
+import { Months } from '../../atoms/months/months.atom';
 import {
     getTimestamp,
 } from './helpers';
-import { UUID } from '../../common/common.types';
-import { Month } from '../../month/month.class';
+import { UUID } from '../../models/common/common.types';
+import { Month } from '../../models/month/month.class';
 import {
     loadMonths,
     loadMonthsFailed,
     loadMonthsSuccess,
     saveMonths,
     saveMonthsSuccess,
-} from '../../months/months.actions';
+} from '../../atoms/months/months.actions';
 import { SagaTestBed } from './saga-test-bed';
 import { CallEffect } from 'redux-saga/effects';
 import { PackedSaga } from '../saga-launcher';

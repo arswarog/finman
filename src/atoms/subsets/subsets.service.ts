@@ -1,6 +1,6 @@
 import { declareAction } from '@reatom/core';
-import { SubsetScheme } from '../subset/subset.scheme';
-import { ISubset } from '../subset/subset.types';
+import { SubsetScheme } from '../../models/subset/subset.scheme';
+import { ISubset } from '../../models/subset/subset.types';
 import { db } from '../../store/db';
 
 const NS = 'subsets/service';

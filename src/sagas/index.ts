@@ -1,2 +1,2 @@
 export * from './saga-launcher';
-export * from './processes';
+export * from './sagas';

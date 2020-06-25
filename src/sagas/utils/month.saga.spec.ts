@@ -2,9 +2,9 @@ import { createStore, Store } from '@reatom/core';
 import { stdChannel } from 'redux-saga';
 import { CallEffect } from 'redux-saga/effects';
 import { MonthUtils } from './month.saga';
-import { Account } from '../../account/account.class';
-import { Month } from '../../month/month.class';
-import { Months } from '../../months/months.atom';
+import { Account } from '../../models/account/account.class';
+import { Month } from '../../models/month/month.class';
+import { Months } from '../../atoms/months/months.atom';
 import { getTimestampFn, delay } from '../helpers/helpers';
 import { expectCallEffect } from '../helpers/helpers.spec';
 import { SagaTestBed } from '../helpers/saga-test-bed';
@@ -14,8 +14,8 @@ import {
     loadMonthsSuccess,
     saveMonths,
     saveMonthsSuccess,
-} from '../../months/months.actions';
-import { UUID } from '../../common/common.types';
+} from '../../atoms/months/months.actions';
+import { UUID } from '../../models/common/common.types';
 
 describe('MonthUtils', () => {
     describe('getMonthsByIds', () => {

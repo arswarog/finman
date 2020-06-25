@@ -1,11 +1,11 @@
-import { addTransaction } from '../../transaction/transaction.actions';
+import { addTransaction } from '../../models/transaction/transaction.actions';
 import { sagaLauncher } from '../saga-launcher';
-import { IAddTransactionForm } from '../../transaction/transaction.types';
-import { dayDateToMonth } from '../../common/date.utils';
+import { IAddTransactionForm } from '../../models/transaction/transaction.types';
+import { dayDateToMonth } from '../../models/common/date.utils';
 import { Action } from '@reatom/core';
 import { AccountUtils } from '../utils/account.saga';
 import { MonthUtils } from '../utils/month.saga';
-import { Transaction } from '../../transaction/transaction.class';
+import { Transaction } from '../../models/transaction/transaction.class';
 
 sagaLauncher.onAction(addTransaction, addTransactionSaga);
 

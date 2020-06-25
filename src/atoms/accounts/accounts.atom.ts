@@ -1,7 +1,7 @@
 import { declareAtom } from '@reatom/core';
-import { Account } from '../account/account.class';
+import { Account } from '../../models/account/account.class';
 import { Map } from 'immutable';
-import { UUID } from '../common/common.types';
+import { UUID } from '../../models/common/common.types';
 import { chooseAccount, loadAccountsSuccess, saveAccount } from './accounts.actions';
 
 export interface IAccountsState {

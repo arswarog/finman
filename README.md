@@ -64,8 +64,11 @@ To learn React, check out the [React documentation](https://reactjs.org/).
         * Directory: **/src/sagas/utils**
         * Methods of exported object **Utils**
     * Sagas
-        * Directory: **/src/sagas/processes**
+        * Directory: **/src/sagas/sagas**
         * Using camelCase with postfix **Saga**
+    * Ui sagas
+        * Directory: **/src/sagas/ui**
+        * Using camelCase with postfix **UiSaga**
 
 ### View layer
 * Atoms for view
