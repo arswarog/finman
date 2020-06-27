@@ -1,4 +1,4 @@
-import { HASH, ISummary, UUID } from '../common/common.types';
+import { HASH, IExtendSummary, ISummary, UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';
 import { MonthDate } from '../common/date.types';
 
@@ -13,7 +13,7 @@ export enum SyncStatus {
 export interface IMonthBrief {
     id: UUID;
     month: MonthDate;
-    summary: ISummary;
+    summary: IExtendSummary;
     prevMonths: UUID[];
     prevVersions: UUID[];
     dataHash: string;

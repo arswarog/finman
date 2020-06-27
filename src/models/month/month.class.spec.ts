@@ -440,6 +440,39 @@ describe('Month class', () => {
             });
         });
     });
+    describe('updatePrevMonths', () => {
+        const lastPrevMonth = Month.createFirstBlock('test', '2020-01', 1593225331366)
+                                   .updateDay(Day.create('2020-01-05')
+                                                 .addTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')),
+                                   );
+        const baseMonth = lastPrevMonth.createNextBlock('2020-02', 1593225473070)
+                                       .updateDay(Day.create('2020-02-01')
+                                                     .addTransaction(Transaction.create(TransactionType.Income, 100, 'RUB')),
+                                       );
+
+        it('createNextBlock must create with start balance from prevMonth', () => {
+            // expect
+            expect(lastPrevMonth.summary.balanceOnEnd.toJSON()).toEqual(Money.create(1, 'RUB').toJSON());
+
+            expect(baseMonth.summary.balanceOnStart.toJSON()).toEqual(lastPrevMonth.summary.balanceOnEnd.toJSON());
+            expect(baseMonth.summary.balanceOnEnd.toJSON()).toEqual(Money.create(101, 'RUB').toJSON())
+        });
+
+        it('updatePrevMonths must update prevMonths and start balance', () => {
+            // arrange
+            const prevMonth = lastPrevMonth.updateDay(Day.create('2020-01-10')
+                                                         .addTransaction(Transaction.create(TransactionType.Income, 4, 'RUB')));
+
+            // act
+            const month = baseMonth.updatePrevMonths([prevMonth], 1593226052164);
+
+            // assert
+            expect(month.prevMonths).toEqual([prevMonth.id])
+            expect(month.summary.balanceOnStart.toJSON()).toEqual(Money.create(5, 'RUB').toJSON())
+            expect(month.summary.balance.toJSON()).toEqual(Money.create(100, 'RUB').toJSON())
+            expect(month.summary.balanceOnEnd.toJSON()).toEqual(Money.create(105, 'RUB').toJSON())
+        });
+    });
     describe('recalculateWithNewStartBalance', () => {
         let month: Month;
         beforeEach(() => {
@@ -479,11 +512,11 @@ describe('Month class', () => {
     });
     describe('chaining (user stories)', () => {
         const dayToUnfix1 = Day.create('2020-01-03')
-                       .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                       .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                               .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                               .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
         const dayToUnfix3 = Day.create('2020-03-03')
-                       .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                       .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                               .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                               .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
 
         it('update second month', () => {
             // arrange

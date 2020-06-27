@@ -196,6 +196,22 @@ export class Month implements IMonth {
         });
     }
 
+    public updatePrevMonths(prevMonths: IMonthBrief[], timestamp: number): Month {
+        if (prevMonths.length !== 1)
+            throw new Error(`Sorry, can not process not one prevMonths`);
+        return new Month({
+            ...this,
+            timestamp,
+            prevMonths: prevMonths.map(item => item.id),
+            prevVersions: this.syncStatus
+                ? this.id
+                    ? [this.id]
+                    : []
+                : this.prevVersions || [],
+            summary: calculateSummaryFromStartBalance(Money.from(prevMonths[0].summary.balanceOnEnd), this.days),
+        });
+    }
+
     public getDay(dayDate: DayDate): Day {
         const day = this.days.find(item => item.date === dayDate);
         return day || this.createDay(dayDate);

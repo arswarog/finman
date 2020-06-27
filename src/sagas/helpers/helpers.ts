@@ -16,8 +16,20 @@ import { Account } from '../../models/account/account.class';
 import { saveAccount, saveAccountFailed, saveAccountSuccess } from '../../atoms/accounts/accounts.actions';
 import { SagaPacker } from '../saga-launcher';
 
+export const SagaUtils = {
+    /**
+     * Select atom from Store
+     * @param atom
+     */
+    selectAtom: SagaPacker.call(selectAtomFn),
+    /**
+     * Get current timestamp
+     */
+    getTimestamp: SagaPacker.call(getTimestampFn),
+};
+
 /**
- * Select atom from Store
+ * @deprecated
  * @param atom
  */
 export const selectAtom = atom => call(selectAtomFn, atom);
@@ -27,7 +39,7 @@ export function* selectAtomFn(atom: Atom<any>) {
 }
 
 /**
- * Get current timestamp
+ * @deprecated
  */
 export const getTimestamp = () => call(getTimestampFn);
 
