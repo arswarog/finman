@@ -208,6 +208,7 @@ describe('Month class', () => {
                               .addTransaction(tx);
 
             const month = month1.updateDay(day);
+            expect(month.id).not.toEqual(month1.id);
 
             expect(month.summary).toEqual(<IExtendSummary>{
                 balance: Money.fromJSON('1 RUB'),
@@ -455,7 +456,7 @@ describe('Month class', () => {
             expect(lastPrevMonth.summary.balanceOnEnd.toJSON()).toEqual(Money.create(1, 'RUB').toJSON());
 
             expect(baseMonth.summary.balanceOnStart.toJSON()).toEqual(lastPrevMonth.summary.balanceOnEnd.toJSON());
-            expect(baseMonth.summary.balanceOnEnd.toJSON()).toEqual(Money.create(101, 'RUB').toJSON())
+            expect(baseMonth.summary.balanceOnEnd.toJSON()).toEqual(Money.create(101, 'RUB').toJSON());
         });
 
         it('updatePrevMonths must update prevMonths and start balance', () => {
@@ -467,10 +468,10 @@ describe('Month class', () => {
             const month = baseMonth.updatePrevMonths([prevMonth], 1593226052164);
 
             // assert
-            expect(month.prevMonths).toEqual([prevMonth.id])
-            expect(month.summary.balanceOnStart.toJSON()).toEqual(Money.create(5, 'RUB').toJSON())
-            expect(month.summary.balance.toJSON()).toEqual(Money.create(100, 'RUB').toJSON())
-            expect(month.summary.balanceOnEnd.toJSON()).toEqual(Money.create(105, 'RUB').toJSON())
+            expect(month.prevMonths).toEqual([prevMonth.id]);
+            expect(month.summary.balanceOnStart.toJSON()).toEqual(Money.create(5, 'RUB').toJSON());
+            expect(month.summary.balance.toJSON()).toEqual(Money.create(100, 'RUB').toJSON());
+            expect(month.summary.balanceOnEnd.toJSON()).toEqual(Money.create(105, 'RUB').toJSON());
         });
     });
     describe('recalculateWithNewStartBalance', () => {

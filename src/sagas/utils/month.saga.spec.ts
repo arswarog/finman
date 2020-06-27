@@ -64,8 +64,8 @@ describe('MonthUtils', () => {
             // result
             testBed.run(test, ids).then(
                 (months: Map<UUID, Month>) => {
-                    expect(months.has(month2.id)).toBeTruthy();
-                    expect(months.has(month3.id)).toBeTruthy();
+                    expect(months[0].id).toBe(month2.id);
+                    expect(months[1].id).toBe(month3.id);
                 },
                 error => {
                     throw error;

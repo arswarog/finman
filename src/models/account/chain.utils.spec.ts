@@ -53,7 +53,10 @@ describe('chain utils', () => {
         describe('update', () => {
             const oldFirst = Month.createFirstBlock(account, '2020-01', 1590915748404);
             const oldSecond = oldFirst.createNextBlock('2020-02', 1590916683981);
-            const oldThird = oldSecond.createNextBlock('2020-03', 1590916753742);
+            const oldThird = oldSecond.createNextBlock('2020-03', 1590916753742)
+                                      .updateDay(Day.create('2020-03-01')
+                                                    .addTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')))
+                                      .changeSyncStatus(SyncStatus.Prepared);
 
             const oldChain = [
                 oldThird.getBrief(),
@@ -98,6 +101,9 @@ describe('chain utils', () => {
             });
             it('only head, recreate last month (fail)', () => {
                 const head = oldSecond.createNextBlock('2020-03', 1590929931406);
+
+                expect(head).toEqual(oldThird);
+                expect(head.id).not.toEqual(oldThird.id);
 
                 expect(() => updateMonthChain(head, [], oldChain))
                     .toThrow(`Can not fast forward`);
