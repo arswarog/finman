@@ -7,7 +7,7 @@ import { Accounts, IAccountsState } from '../../atoms/accounts/accounts.atom';
 import { select, put, take } from 'redux-saga/effects';
 import { saveAccount, saveAccountSuccess, saveAccountFailed } from '../../atoms/accounts/accounts.actions';
 import { MonthUtils } from './month.saga';
-import { RequiredMonthsError } from '../../models/account/chain.utils';
+import { isVersionOfMonth, RequiredMonthsError } from '../../models/account/chain.utils';
 import { SagaUtils } from '../helpers/helpers';
 import { IMonthBrief } from '../../models/month/month.types';
 
@@ -33,6 +33,9 @@ function* selectAccountSaga(id: UUID) {
 
 /**
  * Обновляет месяц в аккаунте, при необходимости правит оставшуюся цепочку, сохраняет
+ *
+ * FIXME So raw. Needs refactoring
+ *
  * @param account
  * @param month
  */
@@ -86,37 +89,27 @@ function* updateAccountSaga(account: Account, month: Month) {
     console.log('chain');
     console.log(account.months.map(item => `${item.month} ${item.id}`));
 
-    const updatingIndex = account.months.findIndex(item => item.month === month.month);
-    console.log('updatingIndex', updatingIndex, account.months[updatingIndex]?.month);
-    if (updatingIndex !== -1) {
-        let previousMonth: Month = month;
+    console.log('prevMonthIndex', prevMonthIndex, account.months[prevMonthIndex]?.month);
 
-        for (let index = updatingIndex - 1; index >= 0; index--) {
-            console.log('index', index, account.months[index].month);
-            const currentMonthId = account.months[index].id;
-            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
-            if (!currentMonth)
-                throw new RequiredMonthsError(currentMonthId);
-            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
-            additionalMonths.push(previousMonth);
-            monthsToUpdate.push(previousMonth);
-        }
+    if (currentMonthIndex === -1 && prevMonthIndex === -1)
+        throw new Error('Unexpection');
 
-        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
+    if (currentMonthIndex === -1 && prevMonthIndex !== -1) {
+        currentMonthIndex = prevMonthIndex;
+    } else {
+        const existsMonth = account.months[currentMonthIndex];
+        if (existsMonth.month !== month.month)
+            throw new Error('somethings wrong');
+        if (!isVersionOfMonth(month, existsMonth))
+            throw new Error('somethings wrong');
 
-        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
-
-        yield* MonthUtils.save(monthsToUpdate);
-        yield* AccountUtils.save(accountToUpdate);
-        return accountToUpdate;
     }
 
-    const startIndex = account.months.findIndex(item => item.month < month.month);
-    console.log('startIndex', startIndex, account.months[startIndex]?.month);
-    if (startIndex !== -1) {
+    console.log('currentMonthIndex', currentMonthIndex, account.months[currentMonthIndex]?.month);
+    if (currentMonthIndex !== -1) {
         let previousMonth: Month = month;
 
-        for (let index = startIndex - 1; index >= 0; index--) {
+        for (let index = currentMonthIndex - 1; index >= 0; index--) {
             console.log('index', index, account.months[index].month);
             const currentMonthId = account.months[index].id;
             const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
@@ -140,71 +133,6 @@ function* updateAccountSaga(account: Account, month: Month) {
     throw new Error('may be first');
 
 
-}
-
-export function updateAccount(account: Account, month: Month, timestamp: number, additionalMonths: Month[]): {
-    accountToUpdate: Account,
-    monthsToUpdate: Month[],
-} {
-    additionalMonths = [month, ...additionalMonths];
-    const monthsToUpdate = [month];
-
-    console.log('additional');
-    console.log(additionalMonths.map(item => `${item.month} ${item.id}`));
-    console.log('chain');
-    console.log(account.months.map(item => `${item.month} ${item.id}`));
-
-    const updatingIndex = account.months.findIndex(item => item.month === month.month);
-    console.log('updatingIndex', updatingIndex, account.months[updatingIndex]?.month);
-    if (updatingIndex !== -1) {
-        let previousMonth: Month = month;
-
-        for (let index = updatingIndex - 1; index >= 0; index--) {
-            console.log('index', index, account.months[index].month);
-            const currentMonthId = account.months[index].id;
-            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
-            if (!currentMonth)
-                throw new RequiredMonthsError(currentMonthId);
-            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
-            additionalMonths.push(previousMonth);
-            monthsToUpdate.push(previousMonth);
-        }
-
-        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
-
-        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
-        return {
-            accountToUpdate,
-            monthsToUpdate,
-        };
-    }
-
-    const startIndex = account.months.findIndex(item => item.month < month.month);
-    console.log('startIndex', startIndex, account.months[startIndex]?.month);
-    if (startIndex !== -1) {
-        let previousMonth: Month = month;
-
-        for (let index = startIndex - 1; index >= 0; index--) {
-            console.log('index', index, account.months[index].month);
-            const currentMonthId = account.months[index].id;
-            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
-            if (!currentMonth)
-                throw new RequiredMonthsError(currentMonthId);
-            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
-            additionalMonths.push(previousMonth);
-            monthsToUpdate.push(previousMonth);
-        }
-
-        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
-
-        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
-        return {
-            accountToUpdate,
-            monthsToUpdate,
-        };
-    }
-
-    throw new Error('may be first');
 }
 
 export function* saveAccountSaga(account: Account) {
