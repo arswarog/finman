@@ -446,8 +446,8 @@ describe('Month class', () => {
                                    .updateDay(Day.create('2020-01-05')
                                                  .addTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')),
                                    );
-        const baseMonth = lastPrevMonth.createNextBlock('2020-02', 1593225473070)
-                                       .updateDay(Day.create('2020-02-01')
+        const baseMonth = lastPrevMonth.createNextBlock('2020-03', 1593225473070)
+                                       .updateDay(Day.create('2020-03-01')
                                                      .addTransaction(Transaction.create(TransactionType.Income, 100, 'RUB')),
                                        );
 
@@ -457,6 +457,14 @@ describe('Month class', () => {
 
             expect(baseMonth.summary.balanceOnStart.toJSON()).toEqual(lastPrevMonth.summary.balanceOnEnd.toJSON());
             expect(baseMonth.summary.balanceOnEnd.toJSON()).toEqual(Money.create(101, 'RUB').toJSON());
+        });
+
+        it('updatePrevMonths must do nothing if no new prevMonths', () => {
+            // act
+            const month = baseMonth.updatePrevMonths([lastPrevMonth], 1593226052164);
+
+            // assert
+            expect(month).toStrictEqual(baseMonth);
         });
 
         it('updatePrevMonths must update prevMonths and start balance', () => {
@@ -472,6 +480,37 @@ describe('Month class', () => {
             expect(month.summary.balanceOnStart.toJSON()).toEqual(Money.create(5, 'RUB').toJSON());
             expect(month.summary.balance.toJSON()).toEqual(Money.create(100, 'RUB').toJSON());
             expect(month.summary.balanceOnEnd.toJSON()).toEqual(Money.create(105, 'RUB').toJSON());
+        });
+
+        it('updatePrevMonths can be new month in chain', () => {
+            // arrange
+            const prevMonth = lastPrevMonth.createNextBlock('2020-02', 1593252867289)
+                                           .updateDay(Day.create('2020-02-10')
+                                                         .addTransaction(Transaction.create(TransactionType.Income, 4, 'RUB')));
+
+            // act
+            const month = baseMonth.updatePrevMonths([prevMonth], 1593252886478);
+
+            // assert
+            expect(month.prevMonths).toEqual([prevMonth.id]);
+            expect(month.summary.balanceOnStart.toJSON()).toEqual(Money.create(5, 'RUB').toJSON());
+            expect(month.summary.balance.toJSON()).toEqual(Money.create(100, 'RUB').toJSON());
+            expect(month.summary.balanceOnEnd.toJSON()).toEqual(Money.create(105, 'RUB').toJSON());
+        });
+
+        it('updatePrevMonths can not be older then this month', () => {
+            // act
+            expect(() => lastPrevMonth.updatePrevMonths([baseMonth], 1593226052164))
+                .toThrow(`All prevMonths must be earlier then updating month`);
+        });
+
+        it('updatePrevMonths can not have same month number', () => {
+            // arrange
+            const prevMonth = lastPrevMonth.createNextBlock('2020-03', 1593253041423);
+
+            // act
+            expect(() => baseMonth.updatePrevMonths([prevMonth], 1593253041882))
+                .toThrow(`All prevMonths must be earlier then updating month`);
         });
     });
     describe('recalculateWithNewStartBalance', () => {

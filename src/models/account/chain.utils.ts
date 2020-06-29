@@ -166,8 +166,11 @@ export function findChain(head: IMonthBrief, items: ReadonlyArray<IMonthBrief>):
     } while (true);
 }
 
-function checkChain(chain: ReadonlyArray<IMonthBrief>): boolean {
+export function checkChain(chain: ReadonlyArray<IMonthBrief>): boolean {
     if (chain.length === 0) return false;
+
+    console.log('check chain');
+    console.table(chain);
 
     for (let i = 0; i < chain.length - 1; i++) {
         const current = chain[i];
@@ -182,7 +185,7 @@ function checkChain(chain: ReadonlyArray<IMonthBrief>): boolean {
             throw new MonthChainError(`can not process month with not 1 prevMonths`, chain, current);
 
         if (current.prevMonths[0] !== next.id)
-            throw new RequiredMonthsError(current.prevMonths[0]);
+            throw new MonthChainError('invalid prevMonth', chain, current);
     }
 
     // let lastBlock: IMonthBrief | undefined = head;

@@ -255,7 +255,48 @@ describe('MonthUtils', () => {
             expect(r3.prevMonths).toEqual([month04.id]);
         });
         it('create month in the middle of chain', () => {
-            throw new Error('not implements');
+            // act
+            const saga = MonthUtils.get.originalSaga(account, '2020-03');
+
+            // get months
+            {
+                const value = saga.next().value as CallEffect<number>;
+                console.log(value);
+                expectCallEffect(value, MonthUtils.getByIds);
+                expect(value.payload.args).toEqual([[month04.id, month02.id]]);
+            }
+
+            // get timestamp
+            {
+                const value = saga.next([month04, month02]).value as CallEffect<number>;
+                console.log(value);
+                expect(value.type).toBe('CALL');
+                expect(value.payload.fn).toBe(getTimestampFn);
+            }
+
+            let newMonth: Month;
+            // save months
+            {
+                const value = saga.next(1593229910887).value as CallEffect<number>;
+                console.log(value);
+                expectCallEffect(value, MonthUtils.save);
+                const months = value.payload.args[0];
+                newMonth = months[0];
+                expect(months[0].month).toEqual('2020-03');
+                expect(months[1].id).not.toEqual(month04.id);
+                expect(months[1].month).toEqual(month04.month);
+            }
+
+            // load month 02 and 04
+            {
+                const next = saga.next();
+                const value = next.value as Month;
+                expect(value).toStrictEqual(newMonth);
+                expect(value.account).toEqual(account.id);
+                expect(value.timestamp).toEqual(1593229910887);
+                expect(value.month).toEqual('2020-03');
+                expect(value.prevMonths).toEqual([month02.id]);
+            }
         });
     });
 });

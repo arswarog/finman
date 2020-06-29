@@ -3,7 +3,7 @@ import { Action } from '@reatom/core';
 import { MonthDate } from '../../models/common/date.types';
 import { Account } from '../../models/account/account.class';
 import { Month } from '../../models/month/month.class';
-import { getTimestamp, selectAtom } from '../helpers/helpers';
+import { getTimestamp, SagaUtils, selectAtom } from '../helpers/helpers';
 import { SagaPacker } from '../saga-launcher';
 import {
     saveMonths,
@@ -47,7 +47,7 @@ function* getMonthsByIdsSaga(ids: UUID[]): Generator<any, Month[], any> {
         if (action.type === loadMonthsSuccess.getType()) {
             if (action.payload.every((item, index) => item.id === notExists[index])) {
                 const months = yield selectAtom(Months);
-                return ids.map(id => months.get(id))
+                return ids.map(id => months.get(id));
             }
         } else {
             if (action.payload.ids.every((item, index) => item === notExists[index]))
@@ -63,22 +63,58 @@ function* getMonthSaga(account: Account, monthDate: MonthDate) {
         return Month.createFirstBlock(account.id, monthDate, timestamp);
     }
 
-    if (monthDate > account.head.month) { // create next block
+    // create next block
+    if (monthDate > account.head.month) {
         const [head]: Month[] = yield* MonthUtils.getByIds([account.head.id]);
         const timestamp: number = yield getTimestamp();
         return head.createNextBlock(monthDate, timestamp);
     }
 
-    const indexOfMonth = account.months.findIndex(item => item.month === monthDate);
-    if (indexOfMonth > -1) {
-        const monthsIds = account.months
-                                 .slice(0, indexOfMonth + 1)
-                                 .map(item => item.id);
-        const months = yield* MonthUtils.getByIds(monthsIds);
-        return months.pop();
+    // return exists month
+    {
+        const indexOfMonth = account.months.findIndex(item => item.month === monthDate);
+        if (indexOfMonth > -1) {
+            const monthsIds = account.months
+                                     .slice(0, indexOfMonth + 1)
+                                     .map(item => item.id);
+            const months = yield* MonthUtils.getByIds(monthsIds);
+            return months.pop();
+        }
     }
 
-    return null;
+    // create block in the middle of chain
+    {
+        const monthsIds: UUID[] = [];
+
+        for (let i = 0; i < account.months.length; i++) {
+            const currentMonth = account.months[i];
+
+            monthsIds.push(currentMonth.id);
+
+            if (currentMonth.month < monthDate)
+                break;
+        }
+
+        const months = yield* MonthUtils.getByIds(monthsIds);
+        const monthsToSave: Month[] = [];
+
+        const timestamp = yield* SagaUtils.getTimestamp();
+
+        let lastMonth = months.pop();
+
+        const newMonth = lastMonth = lastMonth.createNextBlock(monthDate, timestamp);
+        monthsToSave.push(lastMonth);
+
+        for (let month = months.pop(); month; month = months.pop()) {
+            const updated = month.updatePrevMonths([lastMonth], timestamp);
+            monthsToSave.push(updated);
+            lastMonth = updated;
+        }
+
+        yield* MonthUtils.save(monthsToSave);
+
+        return newMonth;
+    }
 }
 
 function* saveMonthsSaga(months: Month[]) {

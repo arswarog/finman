@@ -19,6 +19,8 @@ import { UUID } from '../../models/common/common.types';
 import { saveMonths, saveMonthsSuccess } from '../../atoms/months/months.actions';
 import { delay, SagaUtils } from '../helpers/helpers';
 import { Money } from '../../models/money/money.class';
+import { checkChain } from '../../models/account/chain.utils';
+import { Day } from '../../models/day/day.class';
 
 describe('AccountUtils', () => {
     describe('select account saga', () => {
@@ -73,13 +75,13 @@ describe('AccountUtils', () => {
                 const gen = AccountUtils.update.originalSaga(baseAccount, month01);
 
                 // get timestamp
-                {
-                    const next = gen.next();
-                    const effect = next.value as CallEffect;
-                    expect(next.done).toBeFalsy();
-                    expectCallEffect(effect, SagaUtils.getTimestamp);
-                    expect(effect.payload.args).toEqual([]);
-                }
+                // {
+                //     const next = gen.next();
+                //     const effect = next.value as CallEffect;
+                //     expect(next.done).toBeFalsy();
+                //     expectCallEffect(effect, SagaUtils.getTimestamp);
+                //     expect(effect.payload.args).toEqual([]);
+                // }
 
                 // save months
                 {
@@ -111,9 +113,18 @@ describe('AccountUtils', () => {
             it('base', () => {
                 const gen = AccountUtils.update.originalSaga(startAccount, month04);
 
-                // get timestamp
+                // get months
                 {
                     const next = gen.next();
+                    const effect = next.value as CallEffect;
+                    expect(next.done).toBeFalsy();
+                    expectCallEffect(effect, MonthUtils.getByIds);
+                    expect(effect.payload.args).toEqual([[month02.id]]);
+                }
+
+                // get timestamp
+                {
+                    const next = gen.next([month02]);
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, SagaUtils.getTimestamp);
@@ -121,11 +132,13 @@ describe('AccountUtils', () => {
                 }
 
                 // save months
-                const r1 = gen.next(1593226547352);
-                const r1effect = r1.value as CallEffect;
-                expect(r1.done).toBeFalsy();
-                expectCallEffect(r1effect, MonthUtils.save);
-                expect(r1effect.payload.args).toEqual([[month04]]);
+                {
+                    const r1 = gen.next(1593226547352);
+                    const r1effect = r1.value as CallEffect;
+                    expect(r1.done).toBeFalsy();
+                    expectCallEffect(r1effect, MonthUtils.save);
+                    expect(r1effect.payload.args).toEqual([[month04]]);
+                }
 
                 // save account
                 const r2 = gen.next();
@@ -154,9 +167,18 @@ describe('AccountUtils', () => {
                 // act
                 const gen = AccountUtils.update.originalSaga(startAccount, month02upd);
 
-                // get timestamp
+                // load months
                 {
                     const next = gen.next();
+                    const effect = next.value as CallEffect;
+                    expect(next.done).toBeFalsy();
+                    expectCallEffect(effect, MonthUtils.getByIds);
+                    expect(effect.payload.args).toEqual([[month02.id]]);
+                }
+
+                // get timestamp
+                {
+                    const next = gen.next([month02]);
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, SagaUtils.getTimestamp);
@@ -191,13 +213,14 @@ describe('AccountUtils', () => {
             });
             it('update month in the middle', () => {
                 // arrange
-                const day = month02.createDay(3)
-                                   .addTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 1, 'RUB'));
-                const month02upd = month02.updateDay(day);
-                const accountUpd = startAccount.updateHead(month04);
+                const month03 = month02.createNextBlock('2020-03', 1593319801736)
+                                       .updateDay(Day.create('2020-03-05')
+                                                     .addTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 1, 'RUB')));
+
+                const account = startAccount.updateHead(month04);
 
                 // act
-                const gen = AccountUtils.update.originalSaga(accountUpd, month02upd);
+                const gen = AccountUtils.update.originalSaga(account, month03);
 
                 // load months
                 {
@@ -205,20 +228,20 @@ describe('AccountUtils', () => {
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, MonthUtils.getByIds);
-                    expect(effect.payload.args).toEqual([[month04.id]]);
+                    expect(effect.payload.args).toEqual([[month04.id, month02.id]]);
                 }
 
                 // get timestamp
                 {
-                    const next = gen.next([month04]);
+                    const next = gen.next([month04, month02]);
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, SagaUtils.getTimestamp);
                     expect(effect.payload.args).toEqual([]);
                 }
-
                 const timestamp = 1593184787882;
-                const month04upd = month04.updatePrevMonths([month02upd], timestamp);
+
+                const month04upd = month04.updatePrevMonths([month03], timestamp);
 
                 // expect(month04upd.summary.balanceOnStart.toString()).toEqual(month02upd.summary.balanceOnEnd.toString());
 
@@ -228,7 +251,7 @@ describe('AccountUtils', () => {
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, MonthUtils.save);
-                    expect(effect.payload.args).toEqual([[month02upd, month04upd]]);
+                    expect(effect.payload.args).toEqual([[month03, month04upd]]);
                 }
 
                 // save account
@@ -247,12 +270,22 @@ describe('AccountUtils', () => {
                 }
 
                 // return updated account
-                const r4 = gen.next();
-                expect(r4.done).toBeTruthy();
-                expect(r4.value).toStrictEqual(acc);
+                {
+                    const next = gen.next();
+                    expect(next.done).toBeTruthy();
+                    expect(next.value).toStrictEqual(acc);
+                }
 
                 console.log(acc.balance.toString(), startAccount.balance.toString());
                 expect(acc.balance.toString()).not.toEqual(startAccount.balance.toString());
+
+                expect(checkChain(acc.months)).toBeTruthy();
+                expect(acc.months.length).toBe(4);
+
+                expect(acc.months[0].prevMonths).toEqual([month03.id]);
+                expect(acc.months[1]).toEqual(month03.getBrief());
+                expect(acc.months[1].prevMonths).toEqual([acc.months[2].id]);
+
             });
             it('update first month', () => {
                 // arrange
@@ -271,12 +304,12 @@ describe('AccountUtils', () => {
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, MonthUtils.getByIds);
-                    expect(effect.payload.args).toEqual([[month04.id, month02.id]]);
+                    expect(effect.payload.args).toEqual([[month04.id, month02.id, month01.id]]);
                 }
 
                 // get timestamp
                 {
-                    const next = gen.next([month04, month02]);
+                    const next = gen.next([month04, month02, month01]);
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, SagaUtils.getTimestamp);
@@ -357,7 +390,6 @@ describe('AccountUtils', () => {
             await delay();
             expect(testBed.isCompleted).toBeTruthy();
         });
-
         it('error loading', async () => {
             const account = Account.create('test');
 

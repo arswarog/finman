@@ -199,6 +199,14 @@ export class Month implements IMonth {
     public updatePrevMonths(prevMonths: IMonthBrief[], timestamp: number): Month {
         if (prevMonths.length !== 1)
             throw new Error(`Sorry, can not process not one prevMonths`);
+
+        if (prevMonths[0].month >= this.month)
+            throw new Error(`All prevMonths must be earlier then updating month`);
+
+        if (prevMonths.length === this.prevMonths.length
+            && prevMonths.every((item, index) => this.prevMonths[index] === item.id))
+            return this;
+
         return new Month({
             ...this,
             timestamp,

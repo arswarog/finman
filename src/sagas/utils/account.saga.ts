@@ -37,22 +37,34 @@ function* selectAccountSaga(id: UUID) {
  * @param month
  */
 function* updateAccountSaga(account: Account, month: Month) {
+    console.log('*** updateAccountSaga');
     console.log(account.months.map(item => item.month));
+    console.log(month.month, month.id);
     let currentMonthIndex = account.months.findIndex(item => item.month === month.month);
     let prevMonthIndex = account.months.findIndex(item => item.month < month.month);
+
+    if (!account.head) {
+        yield* MonthUtils.save([month]);
+        const accountToUpdate = account.updateHead(month);
+        yield* AccountUtils.save(accountToUpdate);
+        return accountToUpdate;
+    }
+
 
     let toIndex = currentMonthIndex === -1
         ? prevMonthIndex
         : currentMonthIndex;
 
     const monthsIds: UUID[] = account.months
-                                     .slice(0, toIndex)
+                                     .slice(0, toIndex + 1)
                                      .map(item => item.id);
 
-    const additions: Month[] = [month];
+    const additionalMonths: Month[] = [month];
+
+    console.log(monthsIds);
 
     if (monthsIds.length)
-        additions.push(...yield* MonthUtils.getByIds(monthsIds));
+        additionalMonths.push(...yield* MonthUtils.getByIds(monthsIds));
 
     const timestamp = yield* SagaUtils.getTimestamp();
 
@@ -60,15 +72,74 @@ function* updateAccountSaga(account: Account, month: Month) {
         currentMonthIndex,
         prevMonthIndex,
         toIndex,
+        additions: additionalMonths.map(item => [item.month + ' ' + item.id]),
         months: account.months
                        .slice(0, toIndex + 1)
                        .map(item => item.month),
     });
 
-    let {accountToUpdate, monthsToUpdate} = updateAccount(account, month, timestamp, additions);
-    yield* MonthUtils.save(monthsToUpdate);
-    yield* AccountUtils.save(accountToUpdate);
-    return accountToUpdate;
+    let accountToUpdate: Account;
+    let monthsToUpdate = [month];
+
+    console.log('additional');
+    console.log(additionalMonths.map(item => `${item.month} ${item.id}`));
+    console.log('chain');
+    console.log(account.months.map(item => `${item.month} ${item.id}`));
+
+    const updatingIndex = account.months.findIndex(item => item.month === month.month);
+    console.log('updatingIndex', updatingIndex, account.months[updatingIndex]?.month);
+    if (updatingIndex !== -1) {
+        let previousMonth: Month = month;
+
+        for (let index = updatingIndex - 1; index >= 0; index--) {
+            console.log('index', index, account.months[index].month);
+            const currentMonthId = account.months[index].id;
+            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
+            if (!currentMonth)
+                throw new RequiredMonthsError(currentMonthId);
+            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
+            additionalMonths.push(previousMonth);
+            monthsToUpdate.push(previousMonth);
+        }
+
+        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
+
+        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
+
+        yield* MonthUtils.save(monthsToUpdate);
+        yield* AccountUtils.save(accountToUpdate);
+        return accountToUpdate;
+    }
+
+    const startIndex = account.months.findIndex(item => item.month < month.month);
+    console.log('startIndex', startIndex, account.months[startIndex]?.month);
+    if (startIndex !== -1) {
+        let previousMonth: Month = month;
+
+        for (let index = startIndex - 1; index >= 0; index--) {
+            console.log('index', index, account.months[index].month);
+            const currentMonthId = account.months[index].id;
+            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
+            if (!currentMonth)
+                throw new RequiredMonthsError(currentMonthId);
+            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
+            additionalMonths.push(previousMonth);
+            monthsToUpdate.push(previousMonth);
+        }
+
+        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
+
+        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
+
+        yield* MonthUtils.save(monthsToUpdate);
+        yield* AccountUtils.save(accountToUpdate);
+        return accountToUpdate;
+    }
+
+
+    throw new Error('may be first');
+
+
 }
 
 export function updateAccount(account: Account, month: Month, timestamp: number, additionalMonths: Month[]): {
@@ -83,27 +154,57 @@ export function updateAccount(account: Account, month: Month, timestamp: number,
     console.log('chain');
     console.log(account.months.map(item => `${item.month} ${item.id}`));
 
-    let startIndex = account.months.findIndex(item => item.month === month.month);
-    console.log('startIndex', startIndex);
+    const updatingIndex = account.months.findIndex(item => item.month === month.month);
+    console.log('updatingIndex', updatingIndex, account.months[updatingIndex]?.month);
+    if (updatingIndex !== -1) {
+        let previousMonth: Month = month;
 
-    let previousMonth: Month = month;
+        for (let index = updatingIndex - 1; index >= 0; index--) {
+            console.log('index', index, account.months[index].month);
+            const currentMonthId = account.months[index].id;
+            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
+            if (!currentMonth)
+                throw new RequiredMonthsError(currentMonthId);
+            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
+            additionalMonths.push(previousMonth);
+            monthsToUpdate.push(previousMonth);
+        }
 
-    for (let index = startIndex - 1; index >= 0; index--) {
-        console.log('index', index, account.months[index].month);
-        const currentMonthId = account.months[index].id;
-        const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
-        if (!currentMonth)
-            throw new RequiredMonthsError(currentMonthId);
-        previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
-        additionalMonths.push(previousMonth);
-        monthsToUpdate.push(previousMonth);
+        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
+
+        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
+        return {
+            accountToUpdate,
+            monthsToUpdate,
+        };
     }
 
-    const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
-    return {
-        accountToUpdate,
-        monthsToUpdate,
-    };
+    const startIndex = account.months.findIndex(item => item.month < month.month);
+    console.log('startIndex', startIndex, account.months[startIndex]?.month);
+    if (startIndex !== -1) {
+        let previousMonth: Month = month;
+
+        for (let index = startIndex - 1; index >= 0; index--) {
+            console.log('index', index, account.months[index].month);
+            const currentMonthId = account.months[index].id;
+            const currentMonth = additionalMonths.find(item => item.id === currentMonthId);
+            if (!currentMonth)
+                throw new RequiredMonthsError(currentMonthId);
+            previousMonth = currentMonth.updatePrevMonths([previousMonth], timestamp);
+            additionalMonths.push(previousMonth);
+            monthsToUpdate.push(previousMonth);
+        }
+
+        console.log('additionalMonths', additionalMonths.map(item => [item.month + ' ' + item.id]));
+
+        const accountToUpdate = account.updateHead(previousMonth, additionalMonths);
+        return {
+            accountToUpdate,
+            monthsToUpdate,
+        };
+    }
+
+    throw new Error('may be first');
 }
 
 export function* saveAccountSaga(account: Account) {
