@@ -5,13 +5,15 @@ import styles from './TxList.module.scss';
 import { Link } from 'react-router-dom';
 import { makeTxList } from './TxList.utils';
 import { MoneyView } from '../components/MoneyView';
+import { DayDate } from '../models/common/date.types';
 
 interface IProps {
     list: ITransaction[];
+    dayDate: DayDate;
 }
 
-export const TxList = React.memo(({list}: IProps) => {
-    const txList = makeTxList(list);
+export const TxList = React.memo(({list, dayDate}: IProps) => {
+    const txList = makeTxList(list, dayDate);
 
     return (
         <ul className={styles.txList}>

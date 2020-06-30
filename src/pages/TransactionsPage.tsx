@@ -86,7 +86,7 @@ export const TransactionsPage = () => {
                     <button>Траты</button>
                     <button>Приход</button>
                 </div>
-                <TxList list={transactions}/>
+                <TxList list={transactions} dayDate="2020-05-05"/>
             </main>
         </div>
     );

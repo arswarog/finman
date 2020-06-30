@@ -11,7 +11,10 @@ export const AccountsPage = () => {
     const history = useHistory();
     const accounts = useAtom(Accounts);
     const list = Array.from(accounts.accounts.values());
-    const chooseAccountHandler = useAction(chooseAccount);
+    const chooseAccountHandler = useAction(accountId => {
+        history.push(`/finman/account/${accountId}`);
+        // return chooseAccount(accountId);
+    }, []);
 
     function addTx() {
         if (accounts.current)

@@ -7,7 +7,6 @@ interface IProps {
     money: Money;
 }
 
-
 export const MoneyView = ({money}: IProps) => {
     return (
         <div className={styles.moneyView}>

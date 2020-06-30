@@ -126,4 +126,8 @@ export class Money {
     public getSymbol(): string {
         return this.currency.symbol;
     }
+
+    public negative(): Money {
+        return new Money(-this.subunits, this.currency);
+    }
 }

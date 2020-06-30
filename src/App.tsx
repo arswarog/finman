@@ -16,6 +16,8 @@ import { store } from './store/store';
 import { useDBReady } from './store/db';
 import './sagas';
 import { sagaLauncher } from './sagas';
+import { AccountMonthsPage } from './pages/AccountMonthsPage';
+import { AccountPage } from './pages/AccountPage';
 
 export const App = () => {
     const client = useAtom(Client);
@@ -29,8 +31,17 @@ export const App = () => {
                     <Route path="/finman/transaction/add">
                         <TransactionAddPage/>
                     </Route>
-                    <Route path="/finman/accounts">
+                    <Route path="/finman/accounts" exact>
                         <AccountsPage/>
+                    </Route>
+                    <Route path="/finman/account/:account" exact>
+                        <AccountPage/>
+                    </Route>
+                    <Route path="/finman/account/:account/months/:month">
+                        <AccountMonthsPage/>
+                    </Route>
+                    <Route path="/finman/account/:account/months">
+                        <AccountMonthsPage/>
                     </Route>
                     {/*<Route path="/finman/" exact={true}>*/}
                     {/*    <SubsetsPage/>*/}
