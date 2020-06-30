@@ -1,8 +1,8 @@
-import React, { ChangeEvent, FormEvent, useState } from 'react';
+import React, { FormEvent, useState } from 'react';
 import { IAddTransactionForm, TransactionType } from '../models/transaction/transaction.types';
 import { store } from '../store/store';
 import { addTransaction } from '../models/transaction/transaction.actions';
-import { useLocation, useParams } from 'react-router';
+import { useLocation } from 'react-router';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
@@ -65,11 +65,12 @@ export const TransactionAddPage = () => {
                     Type:
                     <input type="radio" id="type-income"
                            onChange={typeChangeHandler}
+                           checked={type === TransactionType.Income}
                            name="type" value={TransactionType.Income}/>
                     <label htmlFor="type-income">Income</label>
 
                     <input type="radio" id="type-expense"
-                           checked={true}
+                           checked={type === TransactionType.Expense}
                            onChange={typeChangeHandler}
                            name="type" value={TransactionType.Expense}/>
                     <label htmlFor="type-expense">Expense</label>

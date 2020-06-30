@@ -5,20 +5,19 @@ import { MoneyView } from '../components/MoneyView';
 import styles from './AccountsPage.module.scss';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useHistory } from 'react-router';
-import { chooseAccount } from '../atoms/accounts/accounts.actions';
+import { paths } from '../routes';
 
 export const AccountsPage = () => {
     const history = useHistory();
     const accounts = useAtom(Accounts);
     const list = Array.from(accounts.accounts.values());
     const chooseAccountHandler = useAction(accountId => {
-        history.push(`/finman/account/${accountId}`);
-        // return chooseAccount(accountId);
+        history.push(paths.account.view(accountId));
     }, []);
 
     function addTx() {
         if (accounts.current)
-            history.push(`/finman/transaction/add?account=${accounts.current.id}`);
+            history.push(paths.transactions.add({account: accounts.current.id}));
     }
 
     return (

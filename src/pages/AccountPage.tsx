@@ -5,6 +5,7 @@ import { useAtom } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useRouteMatch } from 'react-router';
 import { Link } from 'react-router-dom';
+import { paths } from '../routes';
 
 export const AccountPage = () => {
     const accounts = useAtom(Accounts);
@@ -24,7 +25,7 @@ export const AccountPage = () => {
                 <h4><MoneyView money={account.balance}/></h4>
                 <div>+<MoneyView money={account.income}/></div>
                 <div>-<MoneyView money={account.expense}/></div>
-                <Link to={`/finman/account/${account.id}/months`}>Show history</Link>
+                <Link to={paths.account.monthsList(account.id)}>Show history</Link>
             </div>
         </div>
     );

@@ -4,12 +4,11 @@ import { useAtom } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useRouteMatch } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
-import { Transaction } from '../models/transaction/transaction.class';
-import { TransactionType } from '../models/transaction/transaction.types';
 import { Link } from 'react-router-dom';
 import { MonthTxList } from '../widgets/MonthTxList';
 import { Months } from '../atoms/months/months.atom';
 import { Month } from '../models/month/month.class';
+import { paths } from '../routes';
 
 export const AccountMonthsPage = () => {
     const accounts = useAtom(Accounts);
@@ -50,10 +49,10 @@ export const AccountMonthsPage = () => {
             <div>
                 <div>
                     {prevMonth &&
-                    <Link to={`/finman/account/${account.id}/months/${prevMonth.month}`}>{prevMonth.month}</Link>
+                    <Link to={paths.account.months(account.id, prevMonth.month)}>{prevMonth.month}</Link>
                     }
                     {nextMonth &&
-                    <Link to={`/finman/account/${account.id}/months/${nextMonth.month}`}>{nextMonth.month}</Link>
+                    <Link to={paths.account.months(account.id, nextMonth.month)}>{nextMonth.month}</Link>
                     }
                 </div>
                 <h3>Month {month.month}</h3>

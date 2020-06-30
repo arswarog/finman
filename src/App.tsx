@@ -18,6 +18,7 @@ import './sagas';
 import { sagaLauncher } from './sagas';
 import { AccountMonthsPage } from './pages/AccountMonthsPage';
 import { AccountPage } from './pages/AccountPage';
+import { paths, routes } from './routes';
 
 export const App = () => {
     const client = useAtom(Client);
@@ -27,31 +28,11 @@ export const App = () => {
     return (
         <div className={styles.App}>
             <BrowserRouter>
-                <Switch>
-                    <Route path="/finman/transaction/add">
-                        <TransactionAddPage/>
-                    </Route>
-                    <Route path="/finman/accounts" exact>
-                        <AccountsPage/>
-                    </Route>
-                    <Route path="/finman/account/:account" exact>
-                        <AccountPage/>
-                    </Route>
-                    <Route path="/finman/account/:account/months/:month">
-                        <AccountMonthsPage/>
-                    </Route>
-                    <Route path="/finman/account/:account/months">
-                        <AccountMonthsPage/>
-                    </Route>
-                    {/*<Route path="/finman/" exact={true}>*/}
-                    {/*    <SubsetsPage/>*/}
-                    {/*</Route>*/}
-                    <Route path="/finman/transactions">
-                        <TransactionsPage/>
-                    </Route>
-                    <Redirect to="/finman/accounts"/>
-                </Switch>
                 <main>
+                    <Switch>
+                        {routes.map(route => <Route {...route}/>)}
+                        <Redirect to={paths.home()}/>
+                    </Switch>
                 </main>
                 <NavBar/>
             </BrowserRouter>
