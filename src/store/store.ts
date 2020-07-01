@@ -3,7 +3,7 @@ import { connectReduxDevtools } from '@reatom/debug';
 import { Client } from '../atoms/client/client.atom';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { Months } from '../atoms/months/months.atom';
-import { initFakeIndexedDB } from '../sagas/fakeIndexedDB';
+import { initIndexedDB } from './db';
 
 export const store = createStore(combine({
     Client,
@@ -13,4 +13,8 @@ export const store = createStore(combine({
 
 connectReduxDevtools(store);
 
-initFakeIndexedDB(store);
+// initIndexedDB(store);
+
+export function useStore() {
+    return store;
+}

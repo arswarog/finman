@@ -28,15 +28,32 @@ export class Account implements IAccount, ISummary {
         });
     }
 
-    public static fromJSON(data: IAccount): Account {
+    public static fromJSON(data: any): Account {
         return new Account({
-            //     id: id || uuidGenerator(),
-            //     name,
+            id: data.id,
+            name: data.name,
+            balance: Money.fromJSON(data.balance),
+            income: Money.fromJSON(data.income),
+            expense: Money.fromJSON(data.expense),
+            months: data.months,
+            head: data.head,
         });
     }
 
     private constructor(account: Partial<Account>) {
         return Object.assign(this, account);
+    }
+
+    public toJSON(): any {
+        return {
+            id: this.id,
+            name: this.name,
+            balance: this.balance.toJSON(),
+            income: this.income.toJSON(),
+            expense: this.expense.toJSON(),
+            months: this.months,
+            head: this.head,
+        };
     }
 
     public forceSetHead_unsafe(head: Month, months: Month[]): Account {

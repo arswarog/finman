@@ -7,4 +7,5 @@ export interface IAccount {
     name: string;
     balance: Money;
     months: ReadonlyArray<Readonly<IMonthBrief>>;
+    head: Readonly<IMonthBrief>;
 }

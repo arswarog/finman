@@ -7,7 +7,7 @@ export const chooseAccount = declareAction<UUID>(NS + ':chooseAccount');
 
 export const loadAccounts = declareAction(NS + ':loadAccounts');
 export const loadAccountsSuccess = declareAction<Account[]>(NS + ':loadAccounts success');
-export const loadAccountsFailed = declareAction(NS + ':loadAccounts failed');
+export const loadAccountsFailed = declareAction<any>(NS + ':loadAccounts failed');
 
 export const saveAccount = declareAction<Account>(NS + ':saveAccounts');
 export const saveAccountSuccess = declareAction<UUID>(NS + ':saveAccounts success');

@@ -1,5 +1,5 @@
 export function initDB() {
-
+    console.log('*************** initDB');
 // This is what our customer data looks like.
     const customerData = [
         {ssn: '444-44-4444', name: 'Bill', age: 35, email: 'bill@company.com'},
@@ -44,20 +44,4 @@ export function initDB() {
             objectStore.add(customerData[i]);
         }
     };
-
-
-};
-
-export function upgrade() {
-    console.log('upgrade');
-
-
-    import('./upgrade')
-        .then(
-            utils => {
-                console.log('downloaded');
-                utils.upgrade2to3();
-            },
-            console.error,
-        );
 }

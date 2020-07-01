@@ -93,12 +93,6 @@ export class Month implements IMonth {
         throw new Error();
     }
 
-    protected constructor(value: Partial<Month>) { // FIXME use all fields of Month
-        Object.assign(this, value);
-        this.dataHash = this.getDataHash();
-        this.id = Month.generateID(this, this.dataHash);
-    }
-
     public static getBrief(month: IMonthBrief): IMonthBrief {
         return {
             id: month.id,
@@ -108,6 +102,60 @@ export class Month implements IMonth {
             prevVersions: month.prevVersions,
             dataHash: month.dataHash,
         };
+    }
+
+    public static fromJSON(value: any): Month {
+        return new Month({
+            id: value.id,
+            version: value.version,
+            account: value.account,
+            month: value.month,
+            syncStatus: value.syncStatus,
+            prevMonths: value.prevMonths,
+            prevVersions: value.prevVersions,
+            dataHash: value.dataHash,
+            timestamp: value.timestamp,
+            updatedAt: value.updatedAt,
+            daysInMonth: value.daysInMonth,
+            summary: {
+                balance: Money.fromJSON(value.summary.balance),
+                income: Money.fromJSON(value.summary.income),
+                expense: Money.fromJSON(value.summary.expense),
+                balanceOnStart: Money.fromJSON(value.summary.balanceOnStart),
+                balanceOnEnd: Money.fromJSON(value.summary.balanceOnEnd),
+            },
+            days: value.days.map(Day.fromJSON),
+        });
+    }
+
+    public toJSON(): any {
+        return {
+            id: this.id,
+            version: this.version,
+            account: this.account,
+            month: this.month,
+            syncStatus: this.syncStatus,
+            prevMonths: this.prevMonths,
+            prevVersions: this.prevVersions,
+            dataHash: this.dataHash,
+            timestamp: this.timestamp,
+            updatedAt: this.updatedAt,
+            daysInMonth: this.daysInMonth,
+            summary: {
+                balance: this.summary.balance.toJSON(),
+                income: this.summary.income.toJSON(),
+                expense: this.summary.expense.toJSON(),
+                balanceOnStart: this.summary.balanceOnStart.toJSON(),
+                balanceOnEnd: this.summary.balanceOnEnd.toJSON(),
+            },
+            days: this.days.map(day => day.toJSON()),
+        };
+    }
+
+    protected constructor(value: Partial<Month>) { // FIXME use all fields of Month
+        Object.assign(this, value);
+        this.dataHash = this.getDataHash();
+        this.id = Month.generateID(this, this.dataHash);
     }
 
     public getBrief(): IMonthBrief {

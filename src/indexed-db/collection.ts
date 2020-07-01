@@ -1,4 +1,5 @@
 import { eventLogger } from './db.utils';
+import { UUID } from '../models/common/common.types';
 
 export class Collection<T = any> {
     private readonly transaction: IDBTransaction;
@@ -44,15 +45,36 @@ export class Collection<T = any> {
     // IDBObjectStore.delete()
     // Destroys the specified index in the connected database, used during a version upgrade.
     // IDBObjectStore.deleteIndex()
-    // Returns an IDBRequest object, and, in a separate thread, returns the store object store selected by the specified key. This is for retrieving specific records from an object store.
-    // IDBObjectStore.get()
+
+    /** Returns an IDBRequest object, and, in a separate thread, returns the store object store
+     *  selected by the specified key. This is for retrieving specific records from an object store.
+     *
+     *  *IDBObjectStore.get()*
+     */
+    public get(id: UUID): Promise<T> {
+        return new Promise((resolve, reject) => {
+            const request = this.storage.get(id);
+
+            eventLogger(request, 'request', [
+                'error',
+                'success',
+            ]);
+
+            request.onsuccess = (event: any) => resolve(event.target.result);
+            request.onerror = error => reject(error);
+        });
+    }
+
     // Returns an IDBRequest object, and, in a separate thread retrieves and returns the record key for the object in the object stored matching the specified parameter.
     // IDBObjectStore.getKey()
 
     // Returns an IDBRequest object retrieves all objects in the object store matching the specified parameter or all objects in the store if no parameters are given.
-    public getAll(query?: IDBValidKey | IDBKeyRange | null, count?: number): Promise<T[]> {
+    public getAll(query?: string[], count?: number): Promise<T[]> {
+        if (Array.isArray(query))
+            return Promise.all(query.map(id => this.get(id)));
+
         return new Promise((resolve, reject) => {
-            const request = this.storage.getAll();
+            const request = this.storage.getAll(query);
 
             eventLogger(request, 'request', [
                 'error',
@@ -73,6 +95,26 @@ export class Collection<T = any> {
     // IDBObjectStore.openCursor()
     // Returns an IDBRequest object, and, in a separate thread, returns a new IDBCursor. Used for iterating through an object store with a key.
     // IDBObjectStore.openKeyCursor()
-    // Returns an IDBRequest object, and, in a separate thread, creates a structured clone of the value, and stores the cloned value in the object store. This is for updating existing records in an object store when the transaction's mode is readwrite.
-    // IDBObjectStore.put()
+
+    /**
+     * Returns an IDBRequest object, and, in a separate thread, creates a structured clone
+     * of the value, and stores the cloned value in the object store. This is for updating
+     * existing records in an object store when the transaction's mode is readwrite.
+     *
+     * *IDBObjectStore.put()*
+     */
+    //
+    public update(value: T): Promise<T> {
+        return new Promise((resolve, reject) => {
+            const request = this.storage.put(value);
+
+            eventLogger(request, 'request', [
+                'error',
+                'success',
+            ]);
+
+            request.onsuccess = (event: any) => resolve(event.target.result);
+            request.onerror = error => reject(error);
+        });
+    }
 }

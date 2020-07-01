@@ -10,6 +10,7 @@ export class Subset implements ISubset {
     public name: string = '';
     public balance: Money = Money.empty;
     public months: IMonthBrief[] = [];
+    public head: IMonthBrief = null;
     public loaded = false;
 
     private constructor(subset: Partial<Subset>) {

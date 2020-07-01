@@ -14,31 +14,32 @@ export const Subsets = declareAtom<ISubsetsState>(
             balance: Money.create(123, 'RUB'),
             name: 'Main subset',
             months: [],
+            head: null,
         }),
     },
     on => ({
-        subsets: [
-            on(refreshAllSuccess, (state, payload) => {
-                console.log(payload);
-                const all = payload.map(data => Subset.fromJSON(data));
-                console.log(all);
-                return {
-                    ...state,
-                    all,
-                    current: all[1],
-                };
-            }),
-            on(chooseSubset, (state, id) => {
-                const current = Object.assign(state.current, {loaded: true});
-
-                if (current)
-                    return {
-                        ...state,
-                        current,
-                    };
-                else
-                    return state;
-            }),
-        ],
+        // subsets: [
+        //     on(refreshAllSuccess, (state, payload) => {
+        //         console.log(payload);
+        //         const all = payload.map(data => Subset.fromJSON(data));
+        //         console.log(all);
+        //         return {
+        //             ...state,
+        //             all,
+        //             current: all[1],
+        //         };
+        //     }),
+        //     on(chooseSubset, (state, id) => {
+        //         const current = Object.assign(state.current, {loaded: true});
+        //
+        //         if (current)
+        //             return {
+        //                 ...state,
+        //                 current,
+        //             };
+        //         else
+        //             return state;
+        //     }),
+        // ],
     }),
 );
