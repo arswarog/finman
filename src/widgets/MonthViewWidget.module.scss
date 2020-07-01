@@ -1,0 +1,78 @@
+.head {
+  position: relative;
+
+  .title {
+    color: var(--gray);
+    margin: 0;
+    padding: 5px;
+    font-size: 1em;
+  }
+
+  .prev, .next {
+    display: block;
+    position: absolute;
+    top: 0;
+
+    width: 40px;
+    height: 100%;
+
+    svg {
+      height: 23px;
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      margin: auto auto;
+    }
+  }
+
+  .prev {
+    left: 0;
+  }
+
+  .next {
+    right: 0;
+  }
+
+  .info {
+    position: relative;
+
+    .circle {
+      margin: 20px auto;
+      padding: 20px;
+
+      width: 120px;
+      height: 120px;
+
+      border-radius: 50%;
+      background-color: #f0f0f0;
+
+      .balance {
+        margin: 18px 0;
+        font-size: 1.4em;
+      }
+
+      svg {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        circle {
+          fill: rgba(0, 0, 0, 0);
+          stroke: #eee;
+          stroke-width: 15;
+          stroke-dasharray: 408px 408px;
+        }
+
+        circle:nth-child(2n) {
+          fill: rgba(0, 0, 0, 0);
+          stroke: #30bae7;
+          stroke-width: 15;
+        }
+      }
+    }
+  }
+}
+
+

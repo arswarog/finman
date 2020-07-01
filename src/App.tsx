@@ -29,12 +29,10 @@ export const App = () => {
     return (
         <div className={styles.App}>
             <BrowserRouter>
-                <main>
-                    <Switch>
-                        {routes.map(route => <Route {...route}/>)}
-                        <Redirect to={paths.home()}/>
-                    </Switch>
-                </main>
+                <Switch>
+                    {routes.map(route => <Route {...route}/>)}
+                    <Redirect to={paths.home()}/>
+                </Switch>
                 <NavBar/>
             </BrowserRouter>
         </div>

@@ -3,6 +3,8 @@ import React from 'react';
 import styles from './MonthTxList.module.scss';
 import { Month } from '../models/month/month.class';
 import { TxList } from './TxList';
+import { DayDate } from '../models/common/date.types';
+import format from 'date-fns/format';
 
 interface IProps {
     month: Month;
@@ -15,8 +17,8 @@ export const MonthTxList = React.memo(({month}: IProps) => {
         <ul className={styles.days}>
             {days.map(day => (
                 <li key={day.date} className={styles.day}>
-                    <div>
-                        {day.date}
+                    <div className={styles.title}>
+                        {formatDayDate(day.date)}
                         {/*<div className={styles.txItem__first}>*/}
                         {/*    {tx.first*/}
                         {/*        ? tx.first*/}
@@ -36,3 +38,8 @@ export const MonthTxList = React.memo(({month}: IProps) => {
         </ul>
     );
 });
+
+
+function formatDayDate(date: DayDate): string {
+    return format(new Date(date), 'do LLLL');
+}

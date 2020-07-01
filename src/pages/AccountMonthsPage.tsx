@@ -13,7 +13,8 @@ import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
 import { useStore } from '../store/store';
 import { UUID } from '../models/common/common.types';
-import { MonthWidget } from '../widgets/MonthViewWidget';
+import { MonthViewWidget } from '../widgets/MonthViewWidget';
+import { Header } from '../widgets/Header';
 
 export const AccountMonthsPage = () => {
     const {params} = useRouteMatch<{ account: string, month?: MonthDate }>();
@@ -51,15 +52,16 @@ export const AccountMonthsPage = () => {
         loadMonth(nextMonth.id);
 
     return (
-        <div>
-            AccountMonthsPage
-            <h3>{account.name}</h3>
-            <MonthWidget months={months}
-                         account={account}
-                         brief={monthBrief}
-                         prev={prevMonth}
-                         next={nextMonth}
-            />
-        </div>
+        <>
+            <Header title={`Account ${account.name}`}/>
+            <main>
+                <MonthViewWidget months={months}
+                                 account={account}
+                                 brief={monthBrief}
+                                 prev={prevMonth}
+                                 next={nextMonth}
+                />
+            </main>
+        </>
     );
 };
