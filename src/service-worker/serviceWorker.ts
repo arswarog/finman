@@ -51,6 +51,15 @@ self.addEventListener('activate', (event) => {
     console.log('activate', event);
     updateService.init();
 
+    event.waitUntil(
+        caches.keys()
+              .then(cacheNames => Promise.all(
+                  cacheNames
+                      .filter(cacheName => true)
+                      .map(cacheName => caches.delete(cacheName)),
+              )),
+    );
+    
     fetch('./asset-manifest.json')
         .then(req => req.json())
         .then(console.log);

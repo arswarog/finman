@@ -23,8 +23,6 @@ export const AccountMonthsPage = () => {
 
     const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);
 
-    const monthDate = params.month || account?.head.month || '';
-
     if (!account)
         return (
             <div>No account</div>
@@ -35,12 +33,14 @@ export const AccountMonthsPage = () => {
             <div>No months in this account</div>
         );
 
+    const monthDate = params.month || account.head.month || '';
+
     let monthIndex = account.months.findIndex(item => item.month === monthDate);
 
     if (monthIndex === -1)
         monthIndex = 0;
 
-    const monthBrief: IMonthBrief = account?.months[monthIndex];
+    const monthBrief: IMonthBrief = account.months[monthIndex];
     const prevMonth = account.months[monthIndex + 1];
     const nextMonth = account.months[monthIndex - 1];
 

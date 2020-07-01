@@ -1,7 +1,8 @@
 import React from 'react';
 import styles from './App.module.scss';
 import { Redirect, Route, Switch } from 'react-router';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
+import { BrowserRouter as Router } from 'react-router-dom';
 import { NavBar } from './widgets/NavBar';
 import { useAction, useAtom } from '@reatom/react';
 import { Client } from './atoms/client/client.atom';
@@ -28,13 +29,13 @@ export const App = () => {
 
     return (
         <div className={styles.App}>
-            <BrowserRouter>
+            <HashRouter>
                 <Switch>
                     {routes.map(route => <Route {...route}/>)}
                     <Redirect to={paths.home()}/>
                 </Switch>
                 <NavBar/>
-            </BrowserRouter>
+            </HashRouter>
         </div>
     );
 };

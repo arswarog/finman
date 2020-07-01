@@ -1,4 +1,4 @@
-export const baseUrl = '/finman';
+export const baseUrl = '';
 
 export function addQueryString(params: Record<string, string>): string {
     if (!params)
