@@ -76,7 +76,6 @@ const transactions: ITransaction[] = [
 export const TransactionsPage = () => {
     const month = '2020-05';
 
-
     return (
         <div className={styles.page}>
             <Header title={`Transactions of ${month}`}/>

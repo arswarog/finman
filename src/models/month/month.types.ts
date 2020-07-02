@@ -1,4 +1,4 @@
-import { HASH, IExtendSummary, ISummary, UUID } from '../common/common.types';
+import { IExtendSummary, UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';
 import { MonthDate } from '../common/date.types';
 

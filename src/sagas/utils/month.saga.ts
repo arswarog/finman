@@ -120,13 +120,16 @@ function* getMonthSaga(account: Account, monthDate: MonthDate) {
 function* saveMonthsSaga(months: Month[]) {
     yield put(saveMonths(months));
     for (; ;) {
-        const action = yield take([saveMonthsSuccess, saveMonthsFailed]);
+        const action = yield take([saveMonthsSuccess.getType(), saveMonthsFailed.getType()]);
+        console.log(action);
         if (action.type === saveMonthsSuccess.getType()) {
             if (months.every((item, index) => action.payload[index] === item.id))
                 return;
-        } else {
+        } else if (action.type === saveMonthsFailed.getType()) {
             if (months.every((item, index) => action.payload.ids[index] === item.id))
                 throw action.payload.error;
+        } else {
+            console.error('invalid action ' + action.type, action);
         }
     }
 }

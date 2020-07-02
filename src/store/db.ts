@@ -1,5 +1,5 @@
-import { DBStatus, IndexedDB, initDB } from '../indexed-db';
-import { useEffect, useState } from 'react';
+import { DBStatus, IndexedDB } from '../indexed-db';
+import { useEffect } from 'react';
 import { SubsetScheme } from '../models/subset/subset.scheme';
 import { Store } from '@reatom/core';
 import {
@@ -18,7 +18,6 @@ import {
     saveMonthsSuccess,
 } from '../atoms/months/months.actions';
 import { UUID } from '../models/common/common.types';
-import { Months } from '../atoms/months/months.atom';
 import { Month } from '../models/month/month.class';
 import { AccountScheme } from '../models/account/account.scheme';
 import { MonthScheme } from '../models/month/month.scheme';
@@ -32,14 +31,12 @@ export const db = new IndexedDB('test', [
 export function useDBReady(onReady: () => void) {
     console.log('useDBReady');
 
-    const [status, setStatus] = useState(db.status);
-
     const onChangeStatusEvent = (status: DBStatus) => {
         console.log(DBStatus[status]);
         if (status === DBStatus.Ready)
             onReady();
-        setStatus(status);
     };
+
 
     useEffect(() => {
         db.addStatusListener(onChangeStatusEvent);

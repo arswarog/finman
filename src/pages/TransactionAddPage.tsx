@@ -39,7 +39,7 @@ export const TransactionAddPage = () => {
     };
 
     const accountChangeHandler = (event) => {
-        setType(+event.target.value);
+        setAccount(event.target.value);
     };
 
     return (

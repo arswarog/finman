@@ -1,18 +1,11 @@
 import React from 'react';
-import { MoneyView } from '../components/MoneyView';
 import { useAction, useAtom } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useRouteMatch } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
-import { Link } from 'react-router-dom';
-import { MonthTxList } from '../widgets/MonthTxList';
 import { Months } from '../atoms/months/months.atom';
-import { Month } from '../models/month/month.class';
-import { paths } from '../routes';
 import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
-import { useStore } from '../store/store';
-import { UUID } from '../models/common/common.types';
 import { MonthViewWidget } from '../widgets/MonthViewWidget';
 import { Header } from '../widgets/Header';
 

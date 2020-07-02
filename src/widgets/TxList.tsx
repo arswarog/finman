@@ -2,7 +2,6 @@ import React from 'react';
 import { ITransaction } from '../models/transaction/transaction.types';
 
 import styles from './TxList.module.scss';
-import { Link } from 'react-router-dom';
 import { makeTxList } from './TxList.utils';
 import { MoneyView } from '../components/MoneyView';
 import { DayDate } from '../models/common/date.types';

@@ -42,7 +42,6 @@ export function calculateSummary(transactions: ITransaction[]): ISummary {
 
 export function calculateExtendSummary(transactions: ITransaction[]): IExtendSummary {
     let balanceOnStart = Money.empty;
-    let balanceOnEnd = Money.empty;
 
     const summary = calculateSummary(transactions);
 

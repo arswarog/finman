@@ -1,6 +1,5 @@
 import { Month } from '../../models/month/month.class';
 import { Account } from '../../models/account/account.class';
-import { Helpers } from '../helpers';
 import { UUID } from '../../models/common/common.types';
 import { SagaPacker } from '../saga-launcher';
 import { Accounts, IAccountsState } from '../../atoms/accounts/accounts.atom';
@@ -9,7 +8,6 @@ import { saveAccount, saveAccountSuccess, saveAccountFailed } from '../../atoms/
 import { MonthUtils } from './month.saga';
 import { isVersionOfMonth, RequiredMonthsError } from '../../models/account/chain.utils';
 import { SagaUtils } from '../helpers/helpers';
-import { IMonthBrief } from '../../models/month/month.types';
 
 export const AccountUtils = {
     select: SagaPacker.call(selectAccountSaga),
@@ -81,7 +79,6 @@ function* updateAccountSaga(account: Account, month: Month) {
                        .map(item => item.month),
     });
 
-    let accountToUpdate: Account;
     let monthsToUpdate = [month];
 
     console.log('additional');

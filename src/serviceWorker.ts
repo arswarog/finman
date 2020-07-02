@@ -10,7 +10,7 @@
 // To learn more about the benefits of this model and instructions on how to
 // opt-in, read https://bit.ly/CRA-PWA
 
-const SW_DEBUG = true;
+const SW_DEBUG = false;
 
 const isLocalhost = SW_DEBUG ||
     Boolean(

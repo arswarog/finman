@@ -2,7 +2,6 @@ import React from 'react';
 import styles from './App.module.scss';
 import { Redirect, Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
 import { NavBar } from './widgets/NavBar';
 import { useAction, useAtom } from '@reatom/react';
 import { Client } from './atoms/client/client.atom';

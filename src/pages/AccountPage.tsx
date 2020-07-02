@@ -18,7 +18,7 @@ export const AccountPage = () => {
         );
 
     return (
-        <div>
+        <div className={styles.accountPage}>
             AccountMonthsPage
             <div>
                 <h3>{account.name}</h3>

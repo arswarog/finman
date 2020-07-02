@@ -41,7 +41,6 @@ export class Money {
             throw new Error(`Invalid amount "${amountText}" when parse "${data}"`);
 
         const subunits = Math.round(units * 10 ** currency.precision);
-        const amount = (subunits / 10 ** currency.precision).toFixed(2);
 
         return new Money(subunits, currency);
     }

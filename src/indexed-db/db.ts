@@ -36,6 +36,7 @@ export class IndexedDB {
 
     public addStatusListener(fn: DBStatusListener): void {
         this.listeners.push(fn);
+        setTimeout(() => fn(this.status));
     }
 
     public removeStatusListener(fn: DBStatusListener): void {
@@ -43,6 +44,7 @@ export class IndexedDB {
     }
 
     private setStatus(status: DBStatus): void {
+        console.log(`change DB status to "${DBStatus[status]}"`);
         if (status === this._status)
             return;
         console.log(`Change DB status from "${DBStatus[this._status]}" to "${DBStatus[status]}"`);
