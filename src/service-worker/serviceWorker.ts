@@ -14,6 +14,15 @@ self.addEventListener('install', (event) => {
     console.log('install', event);
     event.waitUntil(
         new Promise(async (resolve, reject) => {
+            // Получение всех ключей из кэша.
+            await caches.keys().then((cacheNames) => Promise.all(
+                // Прохождение по всем кэшированным файлам.
+                cacheNames.map(cacheName => caches.delete(cacheName)),
+                ),
+            );
+
+            console.log('old cache cleaned');
+
             const assetManifest = await fetch('./asset-manifest.json')
                 .then(req => req.json());
             const files = Object
@@ -39,6 +48,7 @@ self.addEventListener('install', (event) => {
                                                 console.time('precaching');
                                                 console.log('cache ready. precaching');
                                                 const x = await cache.addAll(files);
+                                                console.log('cache ready. precaching complete');
                                                 console.timeEnd('precaching');
                                                 return x;
                                             },
@@ -51,28 +61,18 @@ self.addEventListener('activate', (event) => {
     console.log('activate', event);
     updateService.init();
 
-    event.waitUntil(
-        caches.keys()
-              .then(cacheNames => Promise.all(
-                  cacheNames
-                      .filter(cacheName => true)
-                      .map(cacheName => caches.delete(cacheName)),
-              )),
-    );
-    
+    // event.waitUntil(
+    //     caches.keys()
+    //           .then(cacheNames => Promise.all(
+    //               cacheNames
+    //                   .filter(cacheName => true)
+    //                   .map(cacheName => caches.delete(cacheName)),
+    //           )),
+    // );
+
     fetch('./asset-manifest.json')
         .then(req => req.json())
         .then(console.log);
-});
-self.addEventListener('activate', (event) => {
-    event.waitUntil(
-        // Получение всех ключей из кэша.
-        caches.keys().then((cacheNames) => Promise.all(
-            // Прохождение по всем кэшированным файлам.
-            cacheNames.map(cacheName => caches.delete(cacheName)),
-            ),
-        ),
-    );
 });
 self.addEventListener('message', (event) => {
     console.log('message', event);

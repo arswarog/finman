@@ -47,7 +47,7 @@
     "test": "react-scripts test --coverage",
     "coverage": "CI=true react-scripts test --coverage",
     "eject": "react-scripts eject",
-    "serve": "serve -s build",
+    "serve": "serve",
     "sw:clear": "rm -f publish/service-worker.js",
     "sw:serve": "webpack --config ./webpack.sw.dev.config.js --progress --colors",
     "sw:build": "webpack --config ./webpack.sw.prod.config.js --progress --colors",
@@ -68,5 +68,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "homepage": "https://arswarog.ru/finman/"
 }

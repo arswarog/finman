@@ -1,0 +1,27 @@
+{
+  "public": "build",
+  "rewrites": [
+    {
+      "source": "/finman",
+      "destination": "/index.html"
+    },
+    {
+      "source": "/finman/:p1",
+      "destination": "/:p1"
+    },
+    {
+      "source": "/finman/:p1/:p2",
+      "destination": "/:p1/:p2"
+    },
+    {
+      "source": "/finman/:p1/:p2/:p3",
+      "destination": "/:p1/:p2/:p3"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/finman/"
+    }
+  ]
+}

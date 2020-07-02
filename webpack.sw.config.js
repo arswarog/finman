@@ -9,11 +9,11 @@ module.exports = {
     target: "node",
     mode: "none",
     // WARNING: commented out to disable source maps
-    //devtool: 'inline-source-map',
+    // devtool: 'inline-source-map',
     entry: {
         index: path.join(__dirname, "src", "service-worker", "index.ts"),
     },
-    resolve: { extensions: [".js", ".ts"] },
+    resolve: {extensions: [".js", ".ts"]},
     output: {
         path: webBuildTargetFolder,
         filename: targetServiceWorkerFilename,
