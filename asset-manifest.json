@@ -1,14 +1,14 @@
 {
   "files": {
     "main.css": "/finman/static/css/main.fdf0403c.chunk.css",
-    "main.js": "/finman/static/js/main.192c7e12.chunk.js",
-    "main.js.map": "/finman/static/js/main.192c7e12.chunk.js.map",
+    "main.js": "/finman/static/js/main.2c127b4c.chunk.js",
+    "main.js.map": "/finman/static/js/main.2c127b4c.chunk.js.map",
     "runtime-main.js": "/finman/static/js/runtime-main.acadab5d.js",
     "runtime-main.js.map": "/finman/static/js/runtime-main.acadab5d.js.map",
     "static/js/2.073e01f9.chunk.js": "/finman/static/js/2.073e01f9.chunk.js",
     "static/js/2.073e01f9.chunk.js.map": "/finman/static/js/2.073e01f9.chunk.js.map",
     "index.html": "/finman/index.html",
-    "precache-manifest.ad3e1e23e331a09e06d6d7411012b206.js": "/finman/precache-manifest.ad3e1e23e331a09e06d6d7411012b206.js",
+    "precache-manifest.dbec66f232300a425cf897825e1c1b5e.js": "/finman/precache-manifest.dbec66f232300a425cf897825e1c1b5e.js",
     "service-worker.js": "/finman/service-worker.js",
     "static/css/main.fdf0403c.chunk.css.map": "/finman/static/css/main.fdf0403c.chunk.css.map",
     "static/js/2.073e01f9.chunk.js.LICENSE.txt": "/finman/static/js/2.073e01f9.chunk.js.LICENSE.txt"
@@ -17,6 +17,6 @@
     "static/js/runtime-main.acadab5d.js",
     "static/js/2.073e01f9.chunk.js",
     "static/css/main.fdf0403c.chunk.css",
-    "static/js/main.192c7e12.chunk.js"
+    "static/js/main.2c127b4c.chunk.js"
   ]
 }

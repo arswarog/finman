@@ -1,10 +1,10 @@
 self.__precacheManifest = (self.__precacheManifest || []).concat([
   {
-    "revision": "84d0ec4e5ea441dd2e7a8890d90c4d32",
+    "revision": "ad575cad2e506dee5961b554d7c6203b",
     "url": "/finman/index.html"
   },
   {
-    "revision": "c3268d0b53de609d9deb",
+    "revision": "aaa5af5b86902fcaff2f",
     "url": "/finman/static/css/main.fdf0403c.chunk.css"
   },
   {
@@ -16,8 +16,8 @@ self.__precacheManifest = (self.__precacheManifest || []).concat([
     "url": "/finman/static/js/2.073e01f9.chunk.js.LICENSE.txt"
   },
   {
-    "revision": "c3268d0b53de609d9deb",
-    "url": "/finman/static/js/main.192c7e12.chunk.js"
+    "revision": "aaa5af5b86902fcaff2f",
+    "url": "/finman/static/js/main.2c127b4c.chunk.js"
   },
   {
     "revision": "4d2b8b651984deead807",
