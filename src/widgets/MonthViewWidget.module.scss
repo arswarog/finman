@@ -54,20 +54,31 @@
       }
 
       svg {
+        margin: 0 auto;
         position: absolute;
         top: 0;
         left: 0;
+        right: 0;
 
         circle {
           fill: rgba(0, 0, 0, 0);
           stroke: #eee;
           stroke-width: 15;
-          stroke-dasharray: 408px 408px;
+
+          transition: 0.5s;
         }
 
+        // income
         circle:nth-child(2n) {
           fill: rgba(0, 0, 0, 0);
           stroke: #30bae7;
+          stroke-width: 15;
+        }
+
+        // expense
+        circle:nth-child(3n) {
+          fill: rgba(0, 0, 0, 0);
+          stroke: red;
           stroke-width: 15;
         }
       }

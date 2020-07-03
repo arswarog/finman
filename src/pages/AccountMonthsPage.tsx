@@ -1,18 +1,20 @@
 import React from 'react';
 import { useAction, useAtom } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
-import { useRouteMatch } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
 import { Months } from '../atoms/months/months.atom';
 import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
 import { MonthViewWidget } from '../widgets/MonthViewWidget';
 import { Header } from '../widgets/Header';
+import { paths } from '../routes';
 
 export const AccountMonthsPage = () => {
     const {params} = useRouteMatch<{ account: string, month?: MonthDate }>();
     const account = useAtom(Accounts, ({accounts}) => accounts.get(params.account), [params.account]);
     const months = useAtom(Months);
+    const history = useHistory();
 
     const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);
 
@@ -44,6 +46,15 @@ export const AccountMonthsPage = () => {
     if (nextMonth && !months.has(nextMonth.id))
         loadMonth(nextMonth.id);
 
+    const moveToPrev = () => {
+        if (prevMonth)
+            history.replace(paths.account.months(account.id, prevMonth.month));
+    };
+    const moveToNext = () => {
+        if (nextMonth)
+            history.replace(paths.account.months(account.id, nextMonth.month));
+    };
+
     return (
         <>
             <Header title={`Account ${account.name}`}/>
@@ -53,6 +64,8 @@ export const AccountMonthsPage = () => {
                                  brief={monthBrief}
                                  prev={prevMonth}
                                  next={nextMonth}
+                                 moveToPrev={moveToPrev}
+                                 moveToNext={moveToNext}
                 />
             </main>
         </>

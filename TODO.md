@@ -1,0 +1,2 @@
+- Detect app installation
+  - https://web.dev/customize-install/
