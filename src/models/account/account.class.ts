@@ -7,6 +7,7 @@ import { Month } from '../month/month.class';
 import { Map } from 'immutable';
 import { findChain, RequiredMonthsError, updateMonthChain } from './chain.utils';
 import { addSummary, EMPTY_SUMMARY } from '../transaction/transactions.utils';
+import { MonthBrief } from '../month/month.brief';
 
 /**
  * Contains information about Account
@@ -35,7 +36,7 @@ export class Account implements IAccount, ISummary {
             balance: Money.fromJSON(data.balance),
             income: Money.fromJSON(data.income),
             expense: Money.fromJSON(data.expense),
-            months: data.months,
+            months: data.months.map(MonthBrief.fromJSON),
             head: data.head,
         });
     }
@@ -51,7 +52,7 @@ export class Account implements IAccount, ISummary {
             balance: this.balance.toJSON(),
             income: this.income.toJSON(),
             expense: this.expense.toJSON(),
-            months: this.months,
+            months: this.months.map(MonthBrief.toJSON),
             head: this.head,
         };
     }

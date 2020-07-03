@@ -1,2 +1,3 @@
 - Detect app installation
   - https://web.dev/customize-install/
+- remove react-swipeable package

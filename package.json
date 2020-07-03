@@ -32,6 +32,7 @@
     "react-scripts": "3.4.1",
     "react-swipeable": "^5.5.1",
     "redux-saga": "^1.1.3",
+    "swipejs": "^2.2.18",
     "typescript": "^3.9.5",
     "uuid": "^8.1.0"
   },

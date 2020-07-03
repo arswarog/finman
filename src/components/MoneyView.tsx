@@ -8,6 +8,8 @@ interface IProps {
 }
 
 export const MoneyView = ({money}: IProps) => {
+    if (!(money instanceof Money))
+        throw new Error(`money must be instance of Money, but get ${typeof money} ${JSON.stringify(money)}"`);
     return (
         <div className={styles.moneyView}>
             <span className={styles.entire}>{money.getEntire()}</span>

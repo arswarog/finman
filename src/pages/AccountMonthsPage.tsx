@@ -1,23 +1,42 @@
-import React from 'react';
+import React, { useCallback, useState } from 'react';
 import { useAction, useAtom } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
-import { useHistory, useRouteMatch } from 'react-router';
+import { match, useHistory, useParams, useRouteMatch, withRouter } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
 import { Months } from '../atoms/months/months.atom';
 import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
-import { MonthViewWidget } from '../widgets/MonthViewWidget';
+import { MonthViewHeadWidget, MonthViewWidget } from '../widgets/MonthViewWidget';
 import { Header } from '../widgets/Header';
 import { paths } from '../routes';
+import styles from './AccountMonthsPage.module.scss';
+import { MonthTxList } from '../widgets/MonthTxList';
+import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
+
+interface IParams {
+    account: string;
+    month?: MonthDate;
+}
 
 export const AccountMonthsPage = () => {
-    const {params} = useRouteMatch<{ account: string, month?: MonthDate }>();
+    // prepare
+    const {params} = useRouteMatch<IParams>();
     const account = useAtom(Accounts, ({accounts}) => accounts.get(params.account), [params.account]);
     const months = useAtom(Months);
     const history = useHistory();
 
+    // create months list
+    const monthsList = [...account ? account.months : []];
+    monthsList.reverse();
+
+    // create handlers
+    const changeMonth = useCallback((newMonthNum) => {
+        history.replace(paths.account.months(account.id, newMonthNum));
+    }, [account]);
+
     const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);
 
+    // check before render
     if (!account)
         return (
             <div>No account</div>
@@ -28,17 +47,15 @@ export const AccountMonthsPage = () => {
             <div>No months in this account</div>
         );
 
-    const monthDate = params.month || account.head.month || '';
-
-    let monthIndex = account.months.findIndex(item => item.month === monthDate);
-
+    // get months
+    let monthIndex = account.months.findIndex(item => item.month === params.month);
     if (monthIndex === -1)
         monthIndex = 0;
-
     const monthBrief: IMonthBrief = account.months[monthIndex];
     const prevMonth = account.months[monthIndex + 1];
     const nextMonth = account.months[monthIndex - 1];
 
+    // load months
     if (monthBrief && !months.has(monthBrief.id))
         loadMonth(monthBrief.id);
     if (prevMonth && !months.has(prevMonth.id))
@@ -46,27 +63,25 @@ export const AccountMonthsPage = () => {
     if (nextMonth && !months.has(nextMonth.id))
         loadMonth(nextMonth.id);
 
-    const moveToPrev = () => {
-        if (prevMonth)
-            history.replace(paths.account.months(account.id, prevMonth.month));
-    };
-    const moveToNext = () => {
-        if (nextMonth)
-            history.replace(paths.account.months(account.id, nextMonth.month));
-    };
+    const currentMonth = months.get(monthBrief?.id);
 
+    // render
     return (
         <>
             <Header title={`Account ${account.name}`}/>
-            <main>
-                <MonthViewWidget months={months}
-                                 account={account}
-                                 brief={monthBrief}
-                                 prev={prevMonth}
-                                 next={nextMonth}
-                                 moveToPrev={moveToPrev}
-                                 moveToNext={moveToNext}
-                />
+            <main className={styles.main}>
+                <SwipeWidget onChange={changeMonth}
+                             current={monthBrief.month}
+                             showButtons>
+                    {monthsList.map(item => (
+                        <SwipeItemWidget key={item.month}>
+                            <MonthViewHeadWidget months={months}
+                                                 brief={item}
+                            />
+                        </SwipeItemWidget>
+                    ))}
+                </SwipeWidget>
+                <MonthTxList month={currentMonth}/>
             </main>
         </>
     );

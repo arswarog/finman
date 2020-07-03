@@ -30,7 +30,7 @@ export const App = () => {
         <div className={styles.App}>
             <HashRouter>
                 <Switch>
-                    {routes.map(route => <Route {...route}/>)}
+                    {routes.map((route, index) => <Route {...route} key={index}/>)}
                     <Redirect to={paths.home()}/>
                 </Switch>
                 <NavBar/>

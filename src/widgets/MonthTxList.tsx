@@ -11,6 +11,11 @@ interface IProps {
 }
 
 export const MonthTxList = React.memo(({month}: IProps) => {
+    if (!month)
+        return (
+            <div>No data</div>
+        );
+
     const days = month.days;
 
     return (
