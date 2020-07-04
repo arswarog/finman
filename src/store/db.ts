@@ -1,8 +1,9 @@
 import { DBStatus, IndexedDB } from '../indexed-db';
 import { useEffect } from 'react';
 import { SubsetScheme } from '../models/subset/subset.scheme';
-import { Store } from '@reatom/core';
+import { Action, Store, PayloadActionCreator } from '@reatom/core';
 import {
+    chooseAccount,
     loadAccounts,
     loadAccountsFailed,
     loadAccountsSuccess,
@@ -21,6 +22,9 @@ import { UUID } from '../models/common/common.types';
 import { Month } from '../models/month/month.class';
 import { AccountScheme } from '../models/account/account.scheme';
 import { MonthScheme } from '../models/month/month.scheme';
+import { Accounts } from '../atoms/accounts/accounts.atom';
+
+const CURRENT_ACCOUNT_KEY = 'currentAccount';
 
 export const db = new IndexedDB('test', [
     SubsetScheme,
@@ -37,25 +41,52 @@ export function useDBReady(onReady: () => void) {
             onReady();
     };
 
-
     useEffect(() => {
         db.addStatusListener(onChangeStatusEvent);
         return () => db.removeStatusListener(onChangeStatusEvent);
     });
 }
 
+const handlers: { [action: string]: Function } = {};
+
+function addActionHandler<T>(action: PayloadActionCreator<T>, handler: (payload: T, store: Store) => void) {
+    if (handlers[action.getType()])
+        throw new Error(`Can not add new handler for action "${action.getType()}"`);
+
+    handlers[action.getType()] = handler;
+}
+
+addActionHandler(chooseAccount, payload => {
+    localStorage.setItem(CURRENT_ACCOUNT_KEY, payload);
+});
+
+addActionHandler(loadAccounts, (_, store) => {
+    db.transaction(AccountScheme)
+      .getAll().then(
+        result => {
+            if (!result.length)
+                return console.warn('No accounts exists');
+
+            store.dispatch(loadAccountsSuccess(result.map(Account.fromJSON)));
+
+            const accounts = store.getState(Accounts);
+            let currentAccount = localStorage.getItem(CURRENT_ACCOUNT_KEY);
+            if (!accounts.accounts.has(currentAccount))
+                currentAccount = result[0].id;
+            store.dispatch(chooseAccount(currentAccount));
+        },
+        error => store.dispatch(loadAccountsFailed(error)),
+    );
+});
+
 export function initIndexedDB(store: Store) {
     store.subscribe(action => {
         console.log(action);
+
+        if (handlers[action.type])
+            handlers[action.type](action.payload, store);
+
         switch (action.type) {
-            case loadAccounts.getType(): {
-                db.transaction(AccountScheme)
-                  .getAll().then(
-                    result => store.dispatch(loadAccountsSuccess(result.map(Account.fromJSON))),
-                    error => store.dispatch(loadAccountsFailed(error)),
-                );
-                break;
-            }
             case saveAccount.getType(): {
                 const account = action.payload as Account;
                 db.transaction(AccountScheme)

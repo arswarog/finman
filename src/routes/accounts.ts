@@ -20,7 +20,7 @@ export const accountsRoutes: RouteProps[] = [
     {
         path: account.view(),
         exact: true,
-        component: AccountPage,
+        component: AccountsPage,
     },
     {
         path: account.months(),
