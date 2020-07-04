@@ -22,11 +22,14 @@ export const SwipeWidget = ({showButtons, children, onChange, current}: IProps) 
     if (currentIndex === -1)
         currentIndex = 0;
 
-    console.log(current, currentIndex);
+    console.log('!!!', current, currentIndex);
+    console.log(items);
     useEffect(() => swipeEl.slide(currentIndex, 0), [currentIndex]);
 
     const callback = (index) => {
+        console.log('current', index);
         const current = items[index];
+        console.log('current', current);
         onChange(current.key);
     };
 
@@ -47,7 +50,8 @@ export const SwipeWidget = ({showButtons, children, onChange, current}: IProps) 
                    className={styles.swipe}
                    callback={callback}
                    startSlide={currentIndex}
-                   auto={false}>
+                   speed={0}
+                   auto={0}>
                 {items}
             </Swipe>
             {prev && <div className={styles.prev}

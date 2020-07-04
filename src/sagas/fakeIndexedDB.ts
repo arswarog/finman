@@ -11,10 +11,12 @@ export function initFakeIndexedDB(store: Store) {
         switch (action.type) {
             case loadAccounts.getType(): {
                 setTimeout(() => {
-                    store.dispatch(loadAccountsSuccess([
-                        Account.create('test', '123123123'),
-                        Account.create('test 2', '567567567567'),
-                    ]));
+                    store.dispatch(loadAccountsSuccess({
+                        accounts: [
+                            Account.create('test', '123123123'),
+                            Account.create('test 2', '567567567567'),
+                        ],
+                    }));
                 }, 500);
                 break;
             }

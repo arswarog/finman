@@ -29,11 +29,13 @@ export const Accounts = declareAtom<IAccountsState>(
             }),
         ],
         load: [
-            on(loadAccountsSuccess, (state, accounts) => {
-                const map: Array<[string, Account]> = accounts.map(account => [account.id, account]);
+            on(loadAccountsSuccess, (state, {current, accounts}) => {
+                const list: Array<[string, Account]> = accounts.map(account => [account.id, account]);
+                const map = Map(list);
                 return {
-                    current: accounts[0] || null,
-                    accounts: Map(map),
+                    ...state,
+                    current: map.has(current) ? map.get(current) : accounts[0],
+                    accounts: map,
                 };
             }),
         ],

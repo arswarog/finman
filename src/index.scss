@@ -6,7 +6,26 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  --black: #000000;
+  --black: #050505;
   --gray: #909090;
+  --light-gray: #d0d0d0;
+  --bg-gray: #f0f0f0;
   --white: #ffffff;
+
+  --headerHeight: 36px;
+  --footerHeight: 70px;
+}
+
+header {
+  box-sizing: border-box;
+  height: var(--headerHeight);
+}
+
+main {
+  min-height: calc(100vh - var(--headerHeight) - var(--footerHeight));
+}
+
+footer {
+  box-sizing: border-box;
+  height: var(--footerHeight);
 }

@@ -67,13 +67,10 @@ addActionHandler(loadAccounts, (_, store) => {
             if (!result.length)
                 return console.warn('No accounts exists');
 
-            store.dispatch(loadAccountsSuccess(result.map(Account.fromJSON)));
-
-            const accounts = store.getState(Accounts);
-            let currentAccount = localStorage.getItem(CURRENT_ACCOUNT_KEY);
-            if (!accounts.accounts.has(currentAccount))
-                currentAccount = result[0].id;
-            store.dispatch(chooseAccount(currentAccount));
+            store.dispatch(loadAccountsSuccess({
+                current: localStorage.getItem(CURRENT_ACCOUNT_KEY),
+                accounts: result.map(Account.fromJSON),
+            }));
         },
         error => store.dispatch(loadAccountsFailed(error)),
     );
