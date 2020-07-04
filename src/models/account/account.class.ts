@@ -37,7 +37,7 @@ export class Account implements IAccount, ISummary {
             income: Money.fromJSON(data.income),
             expense: Money.fromJSON(data.expense),
             months: data.months.map(MonthBrief.fromJSON),
-            head: data.head,
+            head: data.head ? MonthBrief.fromJSON(data.head) : null,
         });
     }
 
@@ -53,7 +53,7 @@ export class Account implements IAccount, ISummary {
             income: this.income.toJSON(),
             expense: this.expense.toJSON(),
             months: this.months.map(MonthBrief.toJSON),
-            head: this.head,
+            head: this.head ? MonthBrief.toJSON(this.head) : null,
         };
     }
 

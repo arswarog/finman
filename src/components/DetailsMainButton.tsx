@@ -22,7 +22,7 @@ export type IDetailsMainButton = IDetailsMainButtonBase
 
 export interface IDetailsMainButtonBase {
     title: string;
-    amount: Money;
+    amount: Money | string | number;
     link?: string;
 }
 
@@ -68,7 +68,10 @@ const Button = (props: IDetailsMainButton) => {
                 </div>
             </div>
             <div className={styles.right}>
-                <MoneyView money={amount}/>
+                {amount instanceof Money
+                    ? <MoneyView money={amount || Money.empty}/>
+                    : amount
+                }
             </div>
         </Link>
     );

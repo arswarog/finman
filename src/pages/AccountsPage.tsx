@@ -12,6 +12,8 @@ import { chooseAccount } from '../atoms/accounts/accounts.actions';
 import { useAtom } from '../store/reatom';
 import { DetailsMain } from '../components/DetailsMainButton';
 import { Money } from '../models/money/money.class';
+import format from 'date-fns/format';
+import { getMonthName } from '../models/dates';
 
 interface IParams {
     account?: string;
@@ -23,12 +25,6 @@ export const AccountsPage = () => {
     const accounts = useAtom(Accounts, state => state.accounts, []);
     const chooseAccountHandler = useAction(id => id === 'create' ? null : chooseAccount(id));
     const list = Array.from(accounts.values());
-
-    // const [acc, setAcc] = useState(current);
-    // if (current !== acc)
-    //     setAcc(current);
-
-    console.log('---------', accounts.size, current?.id);
 
     if (!accounts.size)
         return (
@@ -50,33 +46,17 @@ export const AccountsPage = () => {
                             <AccountWidget account={account}/>
                         </SwipeItemWidget>
                     ))}
-                    <SwipeItemWidget key="create">
-                        Create account
-                    </SwipeItemWidget>
+                    {/*<SwipeItemWidget key="create"> FIXME*/}
+                    {/*    Create account*/}
+                    {/*</SwipeItemWidget>*/}
                 </SwipeWidget>
                 <DetailsMain.List cover>
-                    <DetailsMain.Button title="Расходы за месяц"
-                                        amount={Money.create(102, 'RUB')}/>
-                    <DetailsMain.Button title="Расходы за месяц"
-                                        amount={Money.create(153, 'RUB')}
-                                        percent={1.53} moreIsBetter/>
-                    <DetailsMain.Button title="Доходы за месяц"
-                                        amount={Money.create(83, 'RUB')}
-                                        percent={0.83} moreIsBetter/>
-                    <DetailsMain.Button title="Доходы за месяц"
-                                        amount={Money.create(99, 'RUB')}
-                                        percent={0.99} moreIsBetter/>
-                </DetailsMain.List>
-                <DetailsMain.List>
-                    <DetailsMain.Button title="Расходы за месяц"
-                                        amount={Money.create(102, 'RUB')}
-                                        percent={1.02} lessIsBetter/>
-                    <DetailsMain.Button title="Расходы за месяц"
-                                        amount={Money.create(130, 'RUB')}
-                                        percent={1.3} lessIsBetter/>
-                    <DetailsMain.Button title="Доходы за месяц"
-                                        amount={Money.create(40, 'RUB')}
-                                        percent={0.4} lessIsBetter/>
+                    <DetailsMain.Button title={`Expenses in ${getMonthName(current.head?.month)}`}
+                                        link={paths.account.monthsList(current.id)}
+                                        amount={current.head?.summary.expense}/>
+                    <DetailsMain.Button title={`Incomes in ${getMonthName(current.head?.month)}`}
+                                        link={paths.account.monthsList(current.id)}
+                                        amount={current.head?.summary.income}/>
                 </DetailsMain.List>
             </main>
         </>
