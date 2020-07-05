@@ -1,6 +1,8 @@
 import { RouteProps } from 'react-router';
 import { accountsRoutes } from './accounts';
 import { transactionRoutes } from './transactions';
+import { paths } from './index';
+import { LicensesPage } from '../pages/LicensesPage';
 
 export const routes: RouteProps[] = [
     // {
@@ -10,4 +12,8 @@ export const routes: RouteProps[] = [
     // },
     ...accountsRoutes,
     ...transactionRoutes,
+    {
+        path: paths.licenses(),
+        component: LicensesPage,
+    },
 ];

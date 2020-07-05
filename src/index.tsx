@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { context } from '@reatom/react';
-import './index.scss';
+import './styles/index.scss';
 import { App } from './App';
 import * as serviceWorker from './serviceWorker';
 import { initDB } from './indexed-db';
