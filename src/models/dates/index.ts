@@ -5,5 +5,5 @@ export function getMonthName(month?: MonthDate): string {
     if (month)
         return format(new Date(month), 'MMMM');
     else
-        return 'месяц';
+        return 'month';
 }

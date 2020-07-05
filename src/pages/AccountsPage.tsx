@@ -37,7 +37,7 @@ export const AccountsPage = () => {
     return (
         <>
             <Header title={`Accounts`}/>
-            <main className={styles.accountPage}>
+            <main className={styles.accountPage + ' noselect'}>
                 <SwipeWidget current={current?.id || ''}
                              showButtons
                              onChange={chooseAccountHandler as ((key: any) => void)}>

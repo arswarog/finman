@@ -69,7 +69,7 @@ export const AccountMonthsPage = () => {
     return (
         <>
             <Header title={`Account ${account.name}`}/>
-            <main className={styles.main}>
+            <main className={styles.main + ' noselect'}>
                 <SwipeWidget onChange={changeMonth}
                              current={monthBrief.month}
                              showButtons>

@@ -22,6 +22,12 @@ export class Money {
     }
 
     public static fromJSON(data: any): Money {
+        if (typeof data === 'object'
+            && typeof data.subunits === 'number'
+            && typeof data.currency === 'object'
+            && typeof data.currency.code === 'string')
+            return new Money(data.subunits, data.currency);
+
         if (typeof data !== 'string')
             throw new Error(`Amount "${data}" must be a string`);
 

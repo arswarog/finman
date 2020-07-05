@@ -1,6 +1,5 @@
 import { RouteProps } from 'react-router';
 import { AccountsPage } from '../pages/AccountsPage';
-import { AccountPage } from '../pages/AccountPage';
 import { AccountMonthsPage } from '../pages/AccountMonthsPage';
 import { baseUrl } from './config';
 

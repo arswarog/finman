@@ -54,8 +54,7 @@ export const MonthViewHeadWidget = ({months, brief, prev, next, moveToPrev, move
                         <circle className="expense"
                                 transform="rotate(-90)"
                                 r="72" cx="-80" cy="80"
-                                strokeDashoffset={incomePercent}
-                                strokeDasharray={[expensePercent, circumference].join(' ')}/>
+                                strokeDasharray={[0, incomePercent, expensePercent, circumference].join(' ')}/>
                     </svg>
                     <h4 className={styles.balance}><MoneyView money={brief.summary.balance}/></h4>
                     <div>+<MoneyView money={brief.summary.income}/></div>
