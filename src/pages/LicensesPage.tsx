@@ -14,7 +14,6 @@ export const LicensesPage = () => {
                         <p className={styles.license}>
                             License <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>
                         </p>
-                        <div className="icon dripicons-wifi"/>
                     </li>
                 </ol>
             </main>

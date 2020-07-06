@@ -1,4 +1,4 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# [Finance manager](https://arswarog.ru/finman)
 
 ## Available Scripts
 
