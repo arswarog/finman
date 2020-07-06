@@ -1,23 +1,23 @@
 {
   "files": {
-    "main.css": "/finman/static/css/main.915df786.chunk.css",
-    "main.js": "/finman/static/js/main.73b1d650.chunk.js",
-    "main.js.map": "/finman/static/js/main.73b1d650.chunk.js.map",
+    "main.css": "/finman/static/css/main.83bd219e.chunk.css",
+    "main.js": "/finman/static/js/main.3db261dc.chunk.js",
+    "main.js.map": "/finman/static/js/main.3db261dc.chunk.js.map",
     "runtime-main.js": "/finman/static/js/runtime-main.acadab5d.js",
     "runtime-main.js.map": "/finman/static/js/runtime-main.acadab5d.js.map",
     "static/js/2.092213cc.chunk.js": "/finman/static/js/2.092213cc.chunk.js",
     "static/js/2.092213cc.chunk.js.map": "/finman/static/js/2.092213cc.chunk.js.map",
     "index.html": "/finman/index.html",
-    "precache-manifest.305003806396d1cc00f1cead91ed9bae.js": "/finman/precache-manifest.305003806396d1cc00f1cead91ed9bae.js",
+    "precache-manifest.b753361388004bd35c9e6566949c7308.js": "/finman/precache-manifest.b753361388004bd35c9e6566949c7308.js",
     "service-worker.js": "/finman/service-worker.js",
-    "static/css/main.915df786.chunk.css.map": "/finman/static/css/main.915df786.chunk.css.map",
+    "static/css/main.83bd219e.chunk.css.map": "/finman/static/css/main.83bd219e.chunk.css.map",
     "static/js/2.092213cc.chunk.js.LICENSE.txt": "/finman/static/js/2.092213cc.chunk.js.LICENSE.txt",
     "static/media/index.scss": "/finman/static/media/dripicons-v2.cf09c981.ttf"
   },
   "entrypoints": [
     "static/js/runtime-main.acadab5d.js",
     "static/js/2.092213cc.chunk.js",
-    "static/css/main.915df786.chunk.css",
-    "static/js/main.73b1d650.chunk.js"
+    "static/css/main.83bd219e.chunk.css",
+    "static/js/main.3db261dc.chunk.js"
   ]
 }
