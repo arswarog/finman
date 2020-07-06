@@ -5,6 +5,14 @@ object-assign
 */
 
 /*!
+ * Swipe 2.2.18
+ *
+ * Brad Birdsall
+ * Copyright 2013, MIT License
+ *
+*/
+
+/*!
  * The buffer module from node.js, for the browser.
  *
  * @author   Feross Aboukhadijeh <http://feross.org>
