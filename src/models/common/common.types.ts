@@ -3,6 +3,14 @@ import { Money } from '../money/money.class';
 export type UUID = string;
 export type HASH = string;
 
+export enum SyncStatus {
+    NoSynced,
+    Prepared,
+    Syncing,
+    FullySynced,
+    Fixed,
+}
+
 export interface ISummary {
     balance: Money;
     income: Money;

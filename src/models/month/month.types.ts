@@ -1,14 +1,6 @@
-import { IExtendSummary, UUID } from '../common/common.types';
+import { IExtendSummary, SyncStatus, UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';
 import { MonthDate } from '../common/date.types';
-
-export enum SyncStatus {
-    NoSynced,
-    Prepared,
-    Syncing,
-    FullySynced,
-    Fixed,
-}
 
 export interface IMonthBrief {
     id: UUID;

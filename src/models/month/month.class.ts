@@ -1,6 +1,6 @@
 import sha1 from 'crypto-js/sha1';
-import { EmptyExtendSummary, EmptySummary, IExtendSummary, UUID } from '../common/common.types';
-import { IMonth, IMonthBrief, SyncStatus } from './month.types';
+import { EmptyExtendSummary, EmptySummary, IExtendSummary, SyncStatus, UUID } from '../common/common.types';
+import { IMonth, IMonthBrief } from './month.types';
 import { Day, IDay } from '../day/day.class';
 import { getDaysInMonth } from 'date-fns';
 import { parseMonthDate } from '../common/date.utils';
