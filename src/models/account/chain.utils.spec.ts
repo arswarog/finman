@@ -2,8 +2,8 @@ import { Month } from '../month/month.class';
 import { isVersionOfMonth, updateMonthChain } from './chain.utils';
 import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';
-import { SyncStatus } from '../month/month.types';
 import { Day } from '../day/day.class';
+import { SyncStatus } from '../common/common.types';
 
 describe('chain utils', () => {
     const account = '0-0-0-1';

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
     "target": "es6",
     "lib": [
       "dom",
@@ -7,6 +8,7 @@
       "ES2015.Iterable",
       "ES2015.Generator",
       "ES2018.AsyncIterable",
+      "ES2019.Array",
       "esnext"
     ],
     "allowJs": true,

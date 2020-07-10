@@ -4,7 +4,7 @@ import { Month } from '../month/month.class';
 import { makeTestMonth1, makeTestMonth2 } from '../month/month.class.spec';
 import { Day } from '../day/day.class';
 import { TransactionType } from '../transaction/transaction.types';
-import { SyncStatus } from '../month/month.types';
+import { SyncStatus } from '../common/common.types';
 
 describe('Account class', () => {
     describe('forceSetHead', () => {

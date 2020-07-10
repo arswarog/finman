@@ -1,10 +1,9 @@
 import { Month } from './month.class';
-import { EmptyExtendSummary, IExtendSummary, UUID } from '../common/common.types';
+import { EmptyExtendSummary, IExtendSummary, SyncStatus, UUID } from '../common/common.types';
 import { Day } from '../day/day.class';
 import { ITransaction, TransactionType } from '../transaction/transaction.types';
 import { Money } from '../money/money.class';
 import { Transaction } from '../transaction/transaction.class';
-import { SyncStatus } from './month.types';
 
 describe('Month class', () => {
     const accountID = '0-1-0-0';

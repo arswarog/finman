@@ -3,12 +3,11 @@ import { UUID } from '../common/common.types';
 import { TransactionType } from '../transaction/transaction.types';
 import { v4 } from 'uuid';
 
-
 export class Category implements ICategory {
     public readonly id: UUID = '';
     public readonly name: string = '';
     public readonly parent: UUID | null = null;
-    public readonly defaultTransactionType: DefaultTransactionType = TransactionType.Expense;
+    public readonly defaultTxType: DefaultTransactionType = TransactionType.Expense;
     public readonly image: string = 'default';
     public readonly isInitial = false;
 
@@ -21,7 +20,7 @@ export class Category implements ICategory {
             id: id || v4(),
             name,
             image,
-            defaultTransactionType,
+            defaultTxType: defaultTransactionType,
         }).setParent(parent);
     }
 
@@ -36,10 +35,32 @@ export class Category implements ICategory {
         });
     }
 
+    public static fromJSON(data: any): Category {
+        return new Category({
+            id: data.id,
+            name: data.name,
+            parent: data.parent,
+            defaultTxType: data.defaultTxType,
+            image: data.image,
+            isInitial: data.isInitial,
+        });
+    }
+
     private constructor(data: Partial<ICategory>) {
         if (!data.id) throw new Error('ID must be set');
         if (!data.name) throw new Error('Name must be set');
         Object.assign(this, data);
+    }
+
+    public toJSON(): any {
+        return {
+            id: this.id,
+            name: this.name,
+            parent: this.parent,
+            defaultTxType: this.defaultTxType,
+            image: this.image,
+            isInitial: this.isInitial,
+        };
     }
 
     public setName(name: string): Category {
@@ -55,7 +76,7 @@ export class Category implements ICategory {
     public setDefaultTransactionType(type: DefaultTransactionType): Category {
         return new Category({
             ...this,
-            defaultTransactionType: type,
+            defaultTxType: type,
         });
     }
 

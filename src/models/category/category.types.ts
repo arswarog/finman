@@ -6,21 +6,21 @@ export type DefaultTransactionType = TransactionType.Income | TransactionType.Ex
 export interface ICategory {
     id: UUID;
     name: string;
-    defaultTransactionType: DefaultTransactionType;
+    defaultTxType: DefaultTransactionType;
     image: string;
     parent: UUID | null;
     isInitial?: boolean;
 }
 
-export interface ICategoryTree {
+export type ICategoryTree = Array<{
     id: UUID;
     name: string;
-    defaultTransactionType: TransactionType
+    defaultType: DefaultTransactionType
     image: string;
     children: Array<{
         id: UUID;
         name: string;
-        defaultTransactionType: TransactionType;
+        defaultType: DefaultTransactionType;
         image: string;
     }>
-}
+}>

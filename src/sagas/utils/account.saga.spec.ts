@@ -2,7 +2,6 @@ import { Month } from '../../models/month/month.class';
 import { Account } from '../../models/account/account.class';
 import { AccountUtils } from './account.saga';
 import { CallEffect } from 'redux-saga/effects';
-import { SyncStatus } from '../../models/month/month.types';
 import { Transaction } from '../../models/transaction/transaction.class';
 import { TransactionType } from '../../models/transaction/transaction.types';
 import { SagaTestBed } from '../helpers/saga-test-bed';
@@ -15,8 +14,6 @@ import {
 } from '../../atoms/accounts/accounts.actions';
 import { expectCallEffect } from '../helpers/helpers.spec';
 import { MonthUtils } from './month.saga';
-import { UUID } from '../../models/common/common.types';
-import { saveMonths, saveMonthsSuccess } from '../../atoms/months/months.actions';
 import { delay, SagaUtils } from '../helpers/helpers';
 import { Money } from '../../models/money/money.class';
 import { checkChain } from '../../models/account/chain.utils';
@@ -30,10 +27,12 @@ describe('AccountUtils', () => {
             testBed = new SagaTestBed();
 
             testBed.subscribe(Accounts);
-            testBed.dispatch(loadAccountsSuccess([
-                Account.create('test', 'test'),
-                Account.create('test 2', '123'),
-            ]));
+            testBed.dispatch(loadAccountsSuccess({
+                accounts: [
+                    Account.create('test', 'test'),
+                    Account.create('test 2', '123'),
+                ],
+            }));
 
             const accounts = testBed.getState(Accounts).accounts;
             expect(accounts.has('test')).toBeTruthy();

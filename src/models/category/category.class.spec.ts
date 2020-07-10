@@ -9,7 +9,7 @@ describe('Category class', () => {
         id: 'this-is-parents-uuid',
         name: 'Parent',
         parent: null,
-        defaultTransactionType: TransactionType.Expense,
+        defaultTxType: TransactionType.Expense,
         image: 'default',
     };
 
@@ -17,7 +17,7 @@ describe('Category class', () => {
         id: 'this-is-demo-uuid',
         name: 'Demo',
         parent: parent.id,
-        defaultTransactionType: TransactionType.Income,
+        defaultTxType: TransactionType.Income,
         image: 'modern',
     };
 
@@ -26,14 +26,14 @@ describe('Category class', () => {
             it('without parent and id', () => {
                 const category = Category.create(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     null,
                 );
 
                 expect(category.id).not.toEqual(demo.id);
                 expect(category.id.length).toEqual(36);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.image).toEqual('default');
                 expect(category.parent).toEqual(null);
                 expect(category.isInitial).toEqual(false);
@@ -41,7 +41,7 @@ describe('Category class', () => {
             it('without parent and with id', () => {
                 const category = Category.create(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     null,
                     demo.image,
                     demo.id,
@@ -49,7 +49,7 @@ describe('Category class', () => {
 
                 expect(category.id).toEqual(demo.id);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.image).toEqual(demo.image);
                 expect(category.parent).toEqual(null);
                 expect(category.isInitial).toEqual(false);
@@ -57,28 +57,28 @@ describe('Category class', () => {
             it('with parent (UUID)', () => {
                 const category = Category.create(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     demo.parent,
                 );
 
                 expect(category.id).not.toEqual(demo.id);
                 expect(category.id.length).toEqual(36);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.parent).toEqual(demo.parent);
                 expect(category.isInitial).toEqual(false);
             });
             it('with parent (ICategory)', () => {
                 const category = Category.create(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     parent,
                 );
 
                 expect(category.id).not.toEqual(demo.id);
                 expect(category.id.length).toEqual(36);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.parent).toEqual(demo.parent);
                 expect(category.isInitial).toEqual(false);
             });
@@ -86,7 +86,7 @@ describe('Category class', () => {
         describe('update', () => {
             const category = Category.create(
                 demo.name,
-                demo.defaultTransactionType,
+                demo.defaultTxType,
                 demo.parent,
                 demo.image,
             );
@@ -98,7 +98,7 @@ describe('Category class', () => {
 
             it('update defaultTransactionType', () => {
                 const result = category.setDefaultTransactionType(TransactionType.Income);
-                expect(result.defaultTransactionType).toEqual(TransactionType.Income);
+                expect(result.defaultTxType).toEqual(TransactionType.Income);
             });
 
             it('update image', () => {
@@ -132,7 +132,7 @@ describe('Category class', () => {
             it('without parent', () => {
                 const category = Category.createInitial(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     null,
                     demo.image,
                     demo.id,
@@ -140,7 +140,7 @@ describe('Category class', () => {
 
                 expect(category.id).toEqual(demo.id);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.image).toEqual(demo.image);
                 expect(category.parent).toEqual(null);
                 expect(category.isInitial).toEqual(true);
@@ -148,7 +148,7 @@ describe('Category class', () => {
             it('with parent (UUID)', () => {
                 const category = Category.createInitial(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     demo.parent,
                     demo.image,
                     demo.id,
@@ -156,14 +156,14 @@ describe('Category class', () => {
 
                 expect(category.id).toEqual(demo.id);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.parent).toEqual(demo.parent);
                 expect(category.isInitial).toEqual(true);
             });
             it('with parent (ICategory)', () => {
                 const category = Category.createInitial(
                     demo.name,
-                    demo.defaultTransactionType,
+                    demo.defaultTxType,
                     parent,
                     demo.image,
                     demo.id,
@@ -171,7 +171,7 @@ describe('Category class', () => {
 
                 expect(category.id).toEqual(demo.id);
                 expect(category.name).toEqual(demo.name);
-                expect(category.defaultTransactionType).toEqual(demo.defaultTransactionType);
+                expect(category.defaultTxType).toEqual(demo.defaultTxType);
                 expect(category.parent).toEqual(demo.parent);
                 expect(category.isInitial).toEqual(true);
             });
@@ -179,7 +179,7 @@ describe('Category class', () => {
         describe('update', () => {
             const category = Category.createInitial(
                 demo.name,
-                demo.defaultTransactionType,
+                demo.defaultTxType,
                 demo.parent,
                 demo.image,
                 demo.id,
@@ -192,7 +192,7 @@ describe('Category class', () => {
 
             it('update defaultTransactionType', () => {
                 const result = category.setDefaultTransactionType(TransactionType.Income);
-                expect(result.defaultTransactionType).toEqual(TransactionType.Income);
+                expect(result.defaultTxType).toEqual(TransactionType.Income);
             });
 
             it('update image', () => {
