@@ -10,19 +10,47 @@ import {
 } from './packable.types';
 
 export class Packer<T> implements IPacker<T> {
-    static for<T>(rule: FieldRule<T>) {
+    private static getSafe(target: any): Packer<any> {
+        if (target === null || target === void 0)
+            return null;
+
+        if (EncoderSymbol in target && typeof target[EncoderSymbol] === 'function' &&
+            DecoderSymbol in target && typeof target[DecoderSymbol] === 'function')
+            return new Packer(target[DecoderSymbol], target[EncoderSymbol]);
+
+        if ('prototype' in target &&
+            EncoderSymbol in target.prototype && typeof target.prototype[EncoderSymbol] === 'function' &&
+            DecoderSymbol in target.prototype && typeof target.prototype[DecoderSymbol] === 'function')
+            return new Packer(target.prototype[DecoderSymbol], target.prototype[EncoderSymbol]);
+
+        return null;
+    }
+
+    static get(target: any): Packer<any> {
+        const packer = Packer.getSafe(target);
+
+        if (packer)
+            return packer;
+
+        throw new Error(`Target not a Packer`);
+    }
+
+    static for<T>(rule: FieldRule<T>): Packer<T> {
+        if (rule === null || rule === void 0)
+            throw new Error(`Rule not defined`);
+
         if (rule instanceof Packer)
             return rule;
 
-        if (EncoderSymbol in rule && typeof rule[EncoderSymbol] === 'function' &&
-            DecoderSymbol in rule && typeof rule[DecoderSymbol] === 'function')
-            return new Packer(rule[DecoderSymbol], rule[EncoderSymbol]);
+        const packer = Packer.getSafe(rule);
+        if (packer)
+            return packer;
 
         if (rule === String || rule === Number || rule === Boolean)
-            return Packer.forPrimitive(rule);
+            return Packer.forPrimitive(rule) as any;
 
         if (Array.isArray(rule))
-            return Packer.forArray(rule[0]);
+            return Packer.forArray(rule[0]) as any;
 
         throw new Error(`Invalid rule`);
     }
@@ -87,6 +115,9 @@ export class Packer<T> implements IPacker<T> {
     public encode: Encoder<T>;
 
     constructor(decoder: Decoder<T>, encoder: Encoder<T>) {
+        if (!encoder || typeof encoder !== 'function') throw new Error(`Encoder must be a function`);
+        if (!decoder || typeof decoder !== 'function') throw new Error(`Decoder must be a function`);
+
         this[EncoderSymbol] = encoder;
         this[DecoderSymbol] = decoder;
         this.encode = encoder;

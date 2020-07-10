@@ -1,3 +1,5 @@
+export type Type<T> = any;
+
 export type Encoder<T> = (obj: T) => any;
 export type Decoder<T> = (value: unknown) => T;
 
@@ -14,7 +16,7 @@ export type Fields<T> = { [key in keyof T]: T[key] }
 export type FieldTypePrimitive = StringConstructor | NumberConstructor | BooleanConstructor;
 
 export type FieldTypeArray<T> = any
-export type FieldRule<T> = IPacker<T> | FieldTypePrimitive | Array<FieldTypeArray<T>>;
+export type FieldRule<T> = IPacker<T> | Type<T> | FieldTypePrimitive | Array<FieldTypeArray<T>>;
 
 export type FieldsRules<T> = {
     [key in keyof T]: FieldRule<T[key]>;
