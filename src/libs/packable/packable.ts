@@ -116,6 +116,12 @@ export class Packer<T> implements IPacker<T> {
         return new Packer<T[]>(decoder, encoder);
     }
 
+    static maybe<T>(packer: Packer<T>): Packer<T | null> {
+        const encoder: Encoder<T | null> = obj => obj === null || obj === undefined ? null : packer.encode(obj);
+        const decoder: Decoder<T | null> = val => val === null || val === undefined ? null : packer.decode(val);
+        return new Packer<T | null>(decoder, encoder);
+    }
+
     public [DecoderSymbol]: Decoder<T>;
     public [EncoderSymbol]: Encoder<T>;
     public decode: Decoder<T>;

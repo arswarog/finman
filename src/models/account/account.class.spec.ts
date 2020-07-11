@@ -245,4 +245,15 @@ describe('Account class', () => {
             expect(account.checkChain()).toBeTruthy();
         });
     });
+    describe('packable', () => {
+        it('base', () => {
+            const prepareAccount = Account.create('test');
+            const baseMonth = makeTestMonth1(prepareAccount.id).changeSyncStatus(SyncStatus.Prepared);
+            const account = prepareAccount.updateHead(baseMonth, []);
+
+            const json = Account.toJSON(account);
+            const restored = Account.fromJSON(json);
+            expect(restored).toStrictEqual(account);
+        });
+    });
 });

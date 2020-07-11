@@ -1,6 +1,6 @@
 import { ISummary, UUID } from '../common/common.types';
 import { Money } from '../money/money.class';
-import { IMonthBrief } from '../month/month.types';
+import { IMonthBrief, monthBriefPacker } from '../month/month.types';
 import { IAccount } from './account.types';
 import { v1 as uuidGenerator } from 'uuid';
 import { Month } from '../month/month.class';
@@ -8,18 +8,21 @@ import { Map } from 'immutable';
 import { findChain, RequiredMonthsError, updateMonthChain } from './chain.utils';
 import { addSummary, EMPTY_SUMMARY } from '../transaction/transactions.utils';
 import { MonthBrief } from '../month/month.brief';
+import { Packable, PackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
 
 /**
  * Contains information about Account
  */
+@PackableClass(data => new Account(data))
 export class Account implements IAccount, ISummary {
-    public readonly id: UUID = '';
-    public readonly name: string = '';
-    public readonly balance: Money = Money.empty;
-    public readonly income: Money = Money.empty;
-    public readonly expense: Money = Money.empty;
-    public readonly head: IMonthBrief | null = null;
-    public readonly months: ReadonlyArray<Readonly<IMonthBrief>> = [];
+    @Packable(String) public readonly id: UUID = '';
+    @Packable(String) public readonly name: string = '';
+    @Packable(Money) public readonly balance: Money = Money.empty;
+    @Packable(Money) public readonly income: Money = Money.empty;
+    @Packable(Money) public readonly expense: Money = Money.empty;
+    @Packable(monthBriefPacker) public readonly head: IMonthBrief | null = null;
+    @Packable([monthBriefPacker]) public readonly months: ReadonlyArray<Readonly<IMonthBrief>> = [];
     public readonly fullMonths: Map<UUID, Month> = Map();
 
     public static create(name: string, id?: UUID): Account {
@@ -30,15 +33,11 @@ export class Account implements IAccount, ISummary {
     }
 
     public static fromJSON(data: any): Account {
-        return new Account({
-            id: data.id,
-            name: data.name,
-            balance: Money.fromJSON(data.balance),
-            income: Money.fromJSON(data.income),
-            expense: Money.fromJSON(data.expense),
-            months: data.months.map(MonthBrief.fromJSON),
-            head: data.head ? MonthBrief.fromJSON(data.head) : null,
-        });
+        return Packer.get(Account).decode(data);
+    }
+
+    public static toJSON(account: Account): any {
+        return account.toJSON();
     }
 
     private constructor(account: Partial<Account>) {
@@ -46,15 +45,7 @@ export class Account implements IAccount, ISummary {
     }
 
     public toJSON(): any {
-        return {
-            id: this.id,
-            name: this.name,
-            balance: this.balance.toJSON(),
-            income: this.income.toJSON(),
-            expense: this.expense.toJSON(),
-            months: this.months.map(MonthBrief.toJSON),
-            head: this.head ? MonthBrief.toJSON(this.head) : null,
-        };
+        return Packer.get(Account).encode(this);
     }
 
     public forceSetHead_unsafe(head: Month, months: Month[]): Account {
