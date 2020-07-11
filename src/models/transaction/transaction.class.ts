@@ -2,15 +2,18 @@ import { v1 as uuidGenerator } from 'uuid';
 import { ITransaction, TransactionType } from './transaction.types';
 import { UUID } from '../common/common.types';
 import { Money } from '../money/money.class';
+import { Packable, PackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
 
+@PackableClass(data => new Transaction(data))
 export class Transaction implements ITransaction {
-    public id: UUID = '';
-    public amount: Money = Money.empty;
-    public type: TransactionType = TransactionType.Removed;
-    public category: UUID | '' = '';
-    public title: string | '' = '';
-    public createdAt: number = 0;
-    public updatedAt: number = 0;
+    @Packable(String) public id: UUID = '';
+    @Packable(Money) public amount: Money = Money.empty;
+    @Packable(Number) public type: TransactionType = TransactionType.Removed;
+    @Packable(String) public category: UUID | '' = '';
+    @Packable(String) public title: string | '' = '';
+    @Packable(Number) public createdAt: number = 0;
+    @Packable(Number) public updatedAt: number = 0;
 
     public static createWithID(id: UUID, type?: TransactionType,
                                amount?: Money): Transaction;
@@ -62,32 +65,20 @@ export class Transaction implements ITransaction {
             return tx;
     }
 
-    public static fromJSON(data: ITransaction): Transaction { // TODO больше валидации
-        return new Transaction({
-            id: data.id,
-            amount: Money.from(data.amount),
-            type: data.type,
-            category: data.category,
-            title: data.title,
-            createdAt: data.createdAt,
-            updatedAt: data.updatedAt,
-        });
+    public static fromJSON(data: any): Transaction { // TODO больше валидации
+        return Packer.get(Transaction).decode(data);
     }
 
-    private constructor(data: ITransaction) {
+    public static toJSON(tx: Transaction): any {
+        return tx.toJSON();
+    }
+
+    private constructor(data: unknown) {
         Object.assign(this, data);
     }
 
     public toJSON(): object {
-        return {
-            id: this.id,
-            amount: this.amount.toJSON(),
-            type: this.type,
-            category: this.category,
-            title: this.title,
-            createdAt: this.createdAt,
-            updatedAt: this.updatedAt,
-        };
+        return Packer.get(Transaction).encode(this);
     }
 
     public setAmount(money: Money): Transaction;

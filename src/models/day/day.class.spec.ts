@@ -2,6 +2,7 @@ import { Day } from './day.class';
 import { EmptySummary, ISummary } from '../common/common.types';
 import { ITransaction, TransactionType } from '../transaction/transaction.types';
 import { Money } from '../money/money.class';
+import { Transaction } from '../transaction/transaction.class';
 
 describe('Day class', () => {
     describe('static create', () => {
@@ -13,7 +14,6 @@ describe('Day class', () => {
             expect(day.transactions).toEqual([]);
         });
     });
-
     describe('addTransaction', () => {
         it('add income 1 RUB tx', () => {
             const tx: ITransaction = {
@@ -71,6 +71,41 @@ describe('Day class', () => {
                 balance: Money.fromJSON('1 RUB'),
             });
             expect(day.transactions).toEqual([tx1, tx2]);
+        });
+    });
+    describe('packing', () => {
+        it('base', () => {
+            const tx = Transaction.createWithID(
+                '0-0-0-0',
+                TransactionType.Income,
+                Money.fromJSON('1 RUB'),
+            );
+            const day = Day.create('2020-05-01').addTransaction(tx);
+
+            expect(day.transactions[0]).toBeInstanceOf(Transaction);
+
+            const json = day.toJSON();
+            expect(json).toEqual({
+                date: '2020-05-01',
+                summary: {
+                    balance: '1.00 RUB',
+                    expense: '0 RUB',
+                    income: '1.00 RUB',
+                },
+                transactions: [
+                    {
+                        amount: '1.00 RUB',
+                        category: '',
+                        createdAt: 0,
+                        id: '0-0-0-0',
+                        title: '',
+                        type: 1,
+                        updatedAt: 0,
+                    },
+                ],
+            });
+            const unpacked = Day.fromJSON(json);
+            expect(unpacked).toStrictEqual(day);
         });
     });
 });

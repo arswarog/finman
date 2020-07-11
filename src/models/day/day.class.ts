@@ -1,10 +1,12 @@
-import { EmptySummary, ISummary } from '../common/common.types';
+import { EmptySummary, ISummary, summaryPacker } from '../common/common.types';
 import { ITransaction } from '../transaction/transaction.types';
 import { calculateSummary } from '../transaction/transactions.utils';
 import { DayDate } from '../common/date.types';
 import { parseDayDate } from '../common/date.utils';
 import { Money } from '../money/money.class';
 import { Transaction } from '../transaction/transaction.class';
+import { Packable, PackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
 
 export interface IDay {
     date: DayDate;
@@ -12,26 +14,19 @@ export interface IDay {
     transactions: ITransaction[];
 }
 
+@PackableClass(data => new Day(data))
 export class Day implements IDay {
-    public readonly date: DayDate = '';
+    @Packable(String) public readonly date: DayDate = '';
+    @Packable(summaryPacker) public readonly summary: ISummary = EmptySummary;
+    @Packable([Transaction]) public readonly transactions: Transaction[] = [];
     public readonly dateTime: Date = new Date();
-    public readonly summary: ISummary = EmptySummary;
-    public readonly transactions: Transaction[] = [];
 
     public static create(date: DayDate): Day {
         return new Day({date});
     }
 
     public static fromJSON(value: any): Day {
-        return new Day({
-            date: value.date,
-            summary: {
-                balance: Money.fromJSON(value.summary.balance),
-                income: Money.fromJSON(value.summary.income),
-                expense: Money.fromJSON(value.summary.expense),
-            },
-            transactions: value.transactions.map(Transaction.fromJSON),
-        });
+        return Packer.get(Day).decode(value);
     }
 
     protected constructor(data: Partial<Day>) {
@@ -40,17 +35,10 @@ export class Day implements IDay {
     }
 
     public toJSON(): any {
-        return {
-            date: this.date,
-            summary: {
-                balance: this.summary.balance.toJSON(),
-                income: this.summary.income.toJSON(),
-                expense: this.summary.expense.toJSON(),
-            },
-            transactions: this.transactions.map(tx => tx.toJSON()),
-        };
+        return Packer.get(Day).encode(this);
     }
 
+    // FIXME remove interface or make transaction by data
     public addTransaction(tx: ITransaction): Day {
         const transactions: ITransaction[] = [
             ...this.transactions,

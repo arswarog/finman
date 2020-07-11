@@ -1,3 +1,6 @@
+import { SelfPackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
+
 const DEFAULT_CURRENCY = 'RUB';
 
 export interface ICurrency {
@@ -10,6 +13,7 @@ export const currencies: { [key: string]: ICurrency } = {
     RUB: {code: 'RUB', symbol: '₽', precision: 2},
 };
 
+@SelfPackableClass(target =>  new Packer(target.fromJSON, target.toJSON))
 export class Money {
     public readonly amount: string = '';
 
@@ -51,6 +55,10 @@ export class Money {
         return new Money(subunits, currency);
     }
 
+    public static toJSON(money: Money): any {
+        return money.toJSON();
+    }
+
     public static create(amount: string | number, currencyName: string): Money {
         if (typeof currencyName !== 'string')
             throw new Error(`Invalid currency "${currencyName}"`);
@@ -75,7 +83,7 @@ export class Money {
         return new Money(subunits, currency);
     }
 
-    public static readonly empty = Money.create(0, DEFAULT_CURRENCY);
+    public static empty: Money;
 
     private constructor(public readonly subunits: number,
                         public readonly currency: ICurrency) {
@@ -136,3 +144,5 @@ export class Money {
         return new Money(-this.subunits, this.currency);
     }
 }
+
+Money.empty = Money.create(0, DEFAULT_CURRENCY);

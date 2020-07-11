@@ -1,5 +1,12 @@
 import sha1 from 'crypto-js/sha1';
-import { EmptyExtendSummary, EmptySummary, IExtendSummary, SyncStatus, UUID } from '../common/common.types';
+import {
+    EmptyExtendSummary,
+    EmptySummary,
+    extendSummaryPacker,
+    IExtendSummary,
+    SyncStatus,
+    UUID,
+} from '../common/common.types';
 import { IMonth, IMonthBrief } from './month.types';
 import { Day, IDay } from '../day/day.class';
 import { getDaysInMonth } from 'date-fns';
@@ -7,25 +14,28 @@ import { parseMonthDate } from '../common/date.utils';
 import { DayDate, MonthDate } from '../common/date.types';
 import { addSummary } from '../transaction/transactions.utils';
 import { Money } from '../money/money.class';
+import { Packable, PackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
 
 /**
  * ID является хешем от данных, при любом изменении создается новый экземпляр с новым ID
  * Класс гарантирует совпадение данных при совпадении ID
  */
+@PackableClass(data => new Month(data))
 export class Month implements IMonth {
-    public readonly id: UUID = '';
-    public readonly version: number = 1;
-    public readonly account: UUID = '';
-    public readonly month: MonthDate = '';
-    public readonly syncStatus: SyncStatus = SyncStatus.NoSynced;
-    public readonly prevMonths: UUID[] = [];
-    public readonly prevVersions: UUID[] = [];
-    public readonly dataHash: string = '';
-    public readonly timestamp: number = 0;
+    @Packable(String) public readonly id: UUID = '';
+    @Packable(Number) public readonly version: number = 1;
+    @Packable(String) public readonly account: UUID = '';
+    @Packable(String) public readonly month: MonthDate = '';
+    @Packable(Number) public readonly syncStatus: SyncStatus = SyncStatus.NoSynced;
+    @Packable([String]) public readonly prevMonths: UUID[] = [];
+    @Packable([String]) public readonly prevVersions: UUID[] = [];
+    @Packable(String) public readonly dataHash: string = '';
+    @Packable(Number) public readonly timestamp: number = 0;
     public readonly updatedAt: Date = new Date(0);
-    public readonly summary: IExtendSummary = EmptyExtendSummary;
-    public readonly days: Day[] = [];
-    public readonly daysInMonth: number = 0;
+    @Packable(extendSummaryPacker) public readonly summary: IExtendSummary = EmptyExtendSummary;
+    @Packable([Day]) public readonly days: Day[] = [];
+    @Packable(Number) public readonly daysInMonth: number = 0;
 
     /**
      * @param account
@@ -105,51 +115,11 @@ export class Month implements IMonth {
     }
 
     public static fromJSON(value: any): Month {
-        return new Month({
-            id: value.id,
-            version: value.version,
-            account: value.account,
-            month: value.month,
-            syncStatus: value.syncStatus,
-            prevMonths: value.prevMonths,
-            prevVersions: value.prevVersions,
-            dataHash: value.dataHash,
-            timestamp: value.timestamp,
-            updatedAt: value.updatedAt,
-            daysInMonth: value.daysInMonth,
-            summary: {
-                balance: Money.fromJSON(value.summary.balance),
-                income: Money.fromJSON(value.summary.income),
-                expense: Money.fromJSON(value.summary.expense),
-                balanceOnStart: Money.fromJSON(value.summary.balanceOnStart),
-                balanceOnEnd: Money.fromJSON(value.summary.balanceOnEnd),
-            },
-            days: value.days.map(Day.fromJSON),
-        });
+        return Packer.get(Month).decode(value);
     }
 
     public toJSON(): any {
-        return {
-            id: this.id,
-            version: this.version,
-            account: this.account,
-            month: this.month,
-            syncStatus: this.syncStatus,
-            prevMonths: this.prevMonths,
-            prevVersions: this.prevVersions,
-            dataHash: this.dataHash,
-            timestamp: this.timestamp,
-            updatedAt: this.updatedAt,
-            daysInMonth: this.daysInMonth,
-            summary: {
-                balance: this.summary.balance.toJSON(),
-                income: this.summary.income.toJSON(),
-                expense: this.summary.expense.toJSON(),
-                balanceOnStart: this.summary.balanceOnStart.toJSON(),
-                balanceOnEnd: this.summary.balanceOnEnd.toJSON(),
-            },
-            days: this.days.map(day => day.toJSON()),
-        };
+        return Packer.get(Month).encode(this);
     }
 
     protected constructor(value: Partial<Month>) { // FIXME use all fields of Month

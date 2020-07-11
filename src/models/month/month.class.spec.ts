@@ -30,7 +30,7 @@ describe('Month class', () => {
                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month2 = month.updateDay(day);
 
-            expect(month2.id).toBe('1e14b669-81c2-0d13-0213-3a96113d2f24');
+            expect(month2.id).toBe('1e14b669-81c2-0dcb-8f2e-c9f89c073ee9');
             expect(month2.month).toBe('2010-02');
             expect(month2.dataHash).not.toBe('0000000000000000000000000000000000000000');
             expect(month2.syncStatus).toBe(SyncStatus.NoSynced);
@@ -38,7 +38,7 @@ describe('Month class', () => {
             const day2 = day.addTransaction(Transaction.createWithID('0012', TransactionType.Expense, 25, 'RUB'));
             const month3 = month2.updateDay(day2);
 
-            expect(month3.id).toBe('1e14b669-81c2-0b24-54f0-fac193a8ab80');
+            expect(month3.id).toBe('1e14b669-81c2-0b70-7589-be5200e61ffd');
             expect(month3.month).toBe('2010-02');
             expect(month3.dataHash).not.toBe('0000000000000000000000000000000000000000');
             expect(month3.dataHash).not.toBe(month2.dataHash);
@@ -637,6 +637,49 @@ describe('Month class', () => {
             expect(brief.prevMonths).toEqual([]);
             expect(brief.prevVersions).toEqual([]);
             expect(brief.dataHash).toEqual('0000000000000000000000000000000000000000');
+        });
+    });
+    describe('packing', () => {
+        it('base', () => {
+            const baseMonth = Month.createFirstBlock(accountID, '2022-02', 123151213235);
+            const day = baseMonth.createDay(1);
+            const month = baseMonth.updateDay(day);
+
+            const json = month.toJSON();
+            expect(json).toEqual({
+                'account': '0-1-0-0',
+                'dataHash': 'c647ee7de35f4b85910b83a57e0fa081e3a4a16b',
+                'days': [
+                    {
+                        'date': '2022-02-01',
+                        'summary': {
+                            'balance': '0 RUB',
+                            'expense': '0 RUB',
+                            'income': '0 RUB',
+                        },
+                        'transactions': [],
+                    },
+                ],
+                'daysInMonth': 28,
+                'id': '27175723-6d3c-2a79-efd4-ce9c6447ad30',
+                'month': '2022-02',
+                'prevMonths': [],
+                'prevVersions': [
+                    '27175723-6d3c-2293-ff84-95771b82db9d',
+                ],
+                'summary': {
+                    'balance': '0 RUB',
+                    'balanceOnEnd': '0 RUB',
+                    'balanceOnStart': '0 RUB',
+                    'expense': '0 RUB',
+                    'income': '0 RUB',
+                },
+                'syncStatus': 0,
+                'timestamp': 123151213235,
+                'version': 1,
+            });
+            const restored = Month.fromJSON(json);
+            expect(restored).toStrictEqual(month);
         });
     });
 });
