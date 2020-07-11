@@ -57,7 +57,14 @@ export class Packer<T> implements IPacker<T> {
 
     static forPrimitive<T extends FieldTypePrimitive>(type: T): Packer<ReturnType<T>> {
         if (type === String)
-            return new Packer(raw => '' + raw, value => '' + value) as any;
+            return new Packer(
+                raw => typeof raw === 'string'
+                    ? '' + raw
+                    : null,
+                value => typeof value === 'string'
+                    ? value
+                    : null,
+            ) as any;
         if (type === Number)
             return new Packer(raw => +raw, value => +value) as any;
         if (type === Boolean)

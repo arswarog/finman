@@ -2,14 +2,17 @@ import { DefaultTransactionType, ICategory } from './category.types';
 import { UUID } from '../common/common.types';
 import { TransactionType } from '../transaction/transaction.types';
 import { v4 } from 'uuid';
+import { Packable, PackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
 
+@PackableClass(data => new Category(data))
 export class Category implements ICategory {
-    public readonly id: UUID = '';
-    public readonly name: string = '';
-    public readonly parent: UUID | null = null;
-    public readonly defaultTxType: DefaultTransactionType = TransactionType.Expense;
-    public readonly image: string = 'default';
-    public readonly isInitial = false;
+    @Packable(String) public readonly id: UUID = '';
+    @Packable(String) public readonly name: string = '';
+    @Packable(String) public readonly parent: UUID | null = null;
+    @Packable(Number) public readonly defaultTxType: DefaultTransactionType = TransactionType.Expense;
+    @Packable(String) public readonly image: string = 'default';
+    @Packable(Boolean) public readonly isInitial = false;
 
     public static create(name: string,
                          defaultTransactionType: DefaultTransactionType,
@@ -29,6 +32,7 @@ export class Category implements ICategory {
                                 parent: ICategory | UUID | null,
                                 image: string,
                                 id: UUID): Category {
+        if (!id) throw new Error('ID must be set');
         return new Category({
             ...Category.create(name, defaultTransactionType, parent, image, id),
             isInitial: true,
@@ -36,31 +40,20 @@ export class Category implements ICategory {
     }
 
     public static fromJSON(data: any): Category {
-        return new Category({
-            id: data.id,
-            name: data.name,
-            parent: data.parent,
-            defaultTxType: data.defaultTxType,
-            image: data.image,
-            isInitial: data.isInitial,
-        });
+        return Packer.get(Category).decode(data);
+    }
+
+    public static toJSON(category: Category): any {
+        return category.toJSON();
     }
 
     private constructor(data: Partial<ICategory>) {
-        if (!data.id) throw new Error('ID must be set');
         if (!data.name) throw new Error('Name must be set');
         Object.assign(this, data);
     }
 
     public toJSON(): any {
-        return {
-            id: this.id,
-            name: this.name,
-            parent: this.parent,
-            defaultTxType: this.defaultTxType,
-            image: this.image,
-            isInitial: this.isInitial,
-        };
+        return Packer.get(Category).encode(this);
     }
 
     public setName(name: string): Category {

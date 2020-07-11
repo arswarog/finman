@@ -52,6 +52,13 @@ describe('CategoryBlock class', () => {
 
     describe('service methods', () => {
         describe('getDataHash', () => {
+            it('empty', () => {
+                const list = [];
+
+                const hash = CategoryBlock.getDataHash({list});
+
+                expect(hash).toBe('0000000000000000000000000000000000000000');
+            });
             it('base', () => {
                 const list = baseInitialsCategories.map(
                     parent => Category.createInitial(
@@ -98,6 +105,19 @@ describe('CategoryBlock class', () => {
 
                 expect(id.length).toBe(36);
                 expect(id).toBe('5bc54e20-0828-1d05-deb5-a5f0c93b94a1');
+            });
+            it('calculate dataHash', () => {
+                const block = {
+                    version: 1,
+                    account: accountId,
+                    prevVersions: [],
+                    timestamp: 1594156526682,
+                    list: [],
+                };
+
+                const id = CategoryBlock.generateID(block as any);
+
+                expect(id).toBe('00000000-0000-0000-0000-000000000000');
             });
         });
     });
@@ -317,6 +337,19 @@ describe('CategoryBlock class', () => {
             'default',
             '0001-0000',
         );
+        describe('get', () => {
+            it('exists', () => {
+                const category = baseBlock.get('03-00');
+                expect(category.id).toBe('03-00');
+                expect(category.name).toBe('Work');
+                expect(category.defaultTxType).toBe(TransactionType.Expense);
+                expect(category.image).toBe('work');
+            });
+            it('not exists', () => {
+                const category = baseBlock.get('invalid-id');
+                expect(category).toBeUndefined();
+            });
+        });
         describe('add', () => {
             it('add new', () => {
                 const block = baseBlock.addCategory(someCategory);
@@ -440,21 +473,48 @@ describe('CategoryBlock class', () => {
                 expect(block.list.length).toEqual(updatedBlock.list.length - 1);
             });
             it('deny to delete unknown category', () => {
-                expect(() => updatedBlock.removeCategory(  'another-id'))
+                expect(() => updatedBlock.removeCategory('another-id'))
                     .toThrow(`Category another-id not found`);
             });
         });
     });
     describe('encoding/decoding', () => {
-        describe('fromJSON', () => {
-            it('base', () => {
-                throw new Error('Not implemented');
-            });
+        it('base', () => {
+            const timestamp = 1588291200000;
+            const baseBlock = CategoryBlock.createInitialBlock(
+                accountId,
+                baseInitialsCategories,
+                timestamp,
+            );
+            const someCategory = Category.createInitial(
+                'category',
+                TransactionType.Income,
+                null,
+                'default',
+                '0001-0000',
+            );
+
+            const block = baseBlock.addCategory(someCategory);
+
+            const json = CategoryBlock.toJSON(block);
+            expect(json.list.length).toEqual(7);
+            const restored = CategoryBlock.fromJSON(json);
+            expect(restored).toStrictEqual(block);
         });
-        describe('toJSON', () => {
-            it('base', () => {
-                throw new Error('Not implemented');
-            });
+        it('restore unsupported version', () => {
+            const json = {
+                'account': '0000-0001',
+                'dataHash': '861aa40a47abfddcb8a836bcc1e261b1e5a59530',
+                'id': '4533df55-f520-05bb-1012-c153d9a42e89',
+                'list': [],
+                'prevVersions': [],
+                'syncStatus': 0,
+                'timestamp': 1588291200000,
+                'version': 2,
+            };
+
+            expect(() => CategoryBlock.fromJSON(json))
+                .toThrow(`Version 2 not supported`);
         });
     });
 });

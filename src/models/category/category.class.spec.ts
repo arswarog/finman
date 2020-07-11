@@ -1,8 +1,6 @@
 import { ICategory } from './category.types';
 import { TransactionType } from '../transaction/transaction.types';
 import { Category } from './category.class';
-import { prepareButtonData } from '../../components/DetailsMainButton';
-import { totalmem } from 'os';
 
 describe('Category class', () => {
     const parent: ICategory = {
@@ -21,6 +19,26 @@ describe('Category class', () => {
         image: 'modern',
     };
 
+    describe('constructor', () => {
+        it('can not create without id', () => {
+            expect(() => Category.createInitial(
+                'name',
+                TransactionType.Income,
+                null,
+                'image',
+                '',
+            )).toThrow();
+        });
+        it('can not create without name', () => {
+            expect(() => Category.create(
+                '',
+                TransactionType.Income,
+                null,
+                'image',
+                '',
+            )).toThrow();
+        });
+    });
     describe('usual category', () => {
         describe('create', () => {
             it('without parent and id', () => {
@@ -126,6 +144,28 @@ describe('Category class', () => {
                 expect(result.parent).toEqual(newParent.id);
             });
         });
+        describe('packing', () => {
+            it('base', () => {
+                const category = Category.create(
+                    demo.name,
+                    demo.defaultTxType,
+                    demo.parent,
+                    demo.image,
+                    demo.id,
+                );
+                const json = category.toJSON();
+                expect(json).toEqual({
+                    defaultTxType: demo.defaultTxType,
+                    id: demo.id,
+                    image: demo.image,
+                    isInitial: false,
+                    name: demo.name,
+                    parent: demo.parent,
+                });
+                const restored = Category.fromJSON(json);
+                expect(restored).toStrictEqual(category);
+            });
+        });
     });
     describe('initial category', () => {
         describe('create', () => {
@@ -218,6 +258,28 @@ describe('Category class', () => {
 
                 expect(() => category.setParent(newParent))
                     .toThrow(`Can not set parent to initial category`);
+            });
+        });
+        describe('packing', () => {
+            it('base', () => {
+                const category = Category.create(
+                    demo.name,
+                    demo.defaultTxType,
+                    demo.parent,
+                    demo.image,
+                    demo.id,
+                );
+                const json = Category.toJSON(category);
+                expect(json).toEqual({
+                    defaultTxType: demo.defaultTxType,
+                    id: demo.id,
+                    image: demo.image,
+                    isInitial: false,
+                    name: demo.name,
+                    parent: demo.parent,
+                });
+                const restored = Category.fromJSON(json);
+                expect(restored).toStrictEqual(category);
             });
         });
     });

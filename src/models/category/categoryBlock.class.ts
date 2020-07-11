@@ -2,23 +2,26 @@ import sha1 from 'crypto-js/sha1';
 import { ICategory, ICategoryTree } from './category.types';
 import { SyncStatus, UUID } from '../common/common.types';
 import { Category } from './category.class';
+import { Packable, PackableClass } from '../../libs/packable/decorator';
+import { Packer } from '../../libs/packable/packable';
 
 /**
  * ID является хешем от данных, при любом изменении создается новый экземпляр с новым ID
  * Класс гарантирует совпадение данных при совпадении ID
  */
+@PackableClass(data => new CategoryBlock(data))
 export class CategoryBlock {
-    public readonly id: UUID = '';
-    public readonly account: UUID = '';
-    public readonly version: number = 1;
-    public readonly syncStatus: SyncStatus = SyncStatus.NoSynced;
-    public readonly dataHash: string = '';
-    public readonly timestamp: number = 0;
+    @Packable(String) public readonly id: UUID = '';
+    @Packable(String) public readonly account: UUID = '';
+    @Packable(Number) public readonly version: number = 1;
+    @Packable(Number) public readonly syncStatus: SyncStatus = SyncStatus.NoSynced;
+    @Packable(String) public readonly dataHash: string = '';
+    @Packable(Number) public readonly timestamp: number = 0;
 
-    public readonly prevVersions: UUID[] = [];
+    @Packable([String]) public readonly prevVersions: UUID[] = [];
     public readonly updatedAt: Date = new Date(0);
 
-    public readonly list: ReadonlyArray<Category>;
+    @Packable([Category]) public readonly list: ReadonlyArray<Category>;
 
     /**
      * @param account
@@ -26,7 +29,6 @@ export class CategoryBlock {
      * @param timestamp
      */
     public static createInitialBlock(account: UUID, initialsCategories: ICategoryTree, timestamp: number): CategoryBlock {
-        console.log(initialsCategories.length);
         const list: Category [] = initialsCategories.flatMap(
             parent => [
                 Category.createInitial(
@@ -72,6 +74,8 @@ export class CategoryBlock {
         if (block.version !== 1)
             throw new Error(`Version ${block.version} not supported`);
 
+        if (!dataHash)
+            dataHash = CategoryBlock.getDataHash(block);
         if (dataHash === '0000000000000000000000000000000000000000')
             return '00000000-0000-0000-0000-000000000000';
 
@@ -79,7 +83,7 @@ export class CategoryBlock {
             version: block.version,
             account: block.account,
             prevVersions: block.prevVersions,
-            dataHash: dataHash || CategoryBlock.getDataHash(block),
+            dataHash,
         };
 
         const hash = sha1(JSON.stringify(data)).toString();
@@ -112,7 +116,11 @@ export class CategoryBlock {
     }
 
     public static fromJSON(value: any): CategoryBlock {
-        throw new Error('Not implemented');
+        return Packer.get(CategoryBlock).decode(value);
+    }
+
+    public static toJSON(category: CategoryBlock): any {
+        return category.toJSON();
     }
 
     protected constructor(value: Partial<CategoryBlock>) { // FIXME use all fields of Month
@@ -123,7 +131,11 @@ export class CategoryBlock {
     }
 
     public toJSON(): any {
-        throw new Error('Not implemented');
+        return Packer.get(CategoryBlock).encode(this);
+    }
+
+    public get(id: UUID): Category {
+        return this.list.find(item => item.id === id);
     }
 
     public getList(parent?: UUID): ReadonlyArray<Category> {
