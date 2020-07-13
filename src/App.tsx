@@ -7,7 +7,7 @@ import { useAction, useAtom } from '@reatom/react';
 import { Client } from './atoms/client/client.atom';
 import { startListenOnlineStatus } from './atoms/client/client.service';
 import { store } from './store/store';
-import { initIndexedDB, useDBReady } from './store/db';
+import { initIndexedDB, useDBReady } from './db';
 import './sagas';
 import { sagaLauncher } from './sagas';
 import { paths, routes } from './routes';

@@ -1,7 +1,7 @@
 import { declareAction } from '@reatom/core';
-import { SubsetScheme } from '../../models/subset/subset.scheme';
+import { SubsetScheme } from '../../db/schemes/subset.scheme';
 import { ISubset } from '../../models/subset/subset.types';
-import { db } from '../../store/db';
+import { db } from '../../db';
 import { store } from '../../store/store';
 import { loadAccounts } from '../accounts/accounts.actions';
 
