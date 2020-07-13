@@ -1,5 +1,5 @@
-import { IScheme } from '../../indexed-db';
-import { IMonth } from './month.types';
+import { IScheme } from '../../libs/indexed-db';
+import { IMonth } from '../../models/month/month.types';
 
 export const MonthScheme: IScheme<IMonth> = {
     collection: 'months',
@@ -7,9 +7,5 @@ export const MonthScheme: IScheme<IMonth> = {
     key: 'id',
     upgrade(objectStore, oldVersion, newVersion): void {
         console.log('update months from ', oldVersion, newVersion);
-
-        // const defaultAccount = Month.create('Default');
-        //
-        // objectStore.add(defaultAccount.toJSON());
     },
 };

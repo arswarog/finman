@@ -1,5 +1,5 @@
 import { eventLogger } from './db.utils';
-import { UUID } from '../models/common/common.types';
+import { UUID } from '../../models/common/common.types';
 
 export class Collection<T = any> {
     private readonly transaction: IDBTransaction;
@@ -28,11 +28,18 @@ export class Collection<T = any> {
 
 
     // Returns an IDBRequest object, and, in a separate thread, creates a structured clone of the value, and stores the cloned value in the object store. This is for adding new records to an object store.
-    public add(value: T, key?: string): Promise<T> {
+    public add(value: T): Promise<T> {
         return new Promise((resolve, reject) => {
+            const request = this.storage.add(value);
 
+            eventLogger(request, 'request', [
+                'error',
+                'success',
+            ]);
+
+            request.onsuccess = (event: any) => resolve(event.target.result);
+            request.onerror = error => reject(error);
         });
-        // return this.storage.add(value, key);
     }
 
     // Creates and immediately returns an IDBRequest object, and clears this object store in a separate thread. This is for deleting all current records out of an object store.

@@ -13,9 +13,19 @@ export class IndexedDB {
 
     private db: IDBDatabase | null = null;
 
-    constructor(dbName: string, public schemes: IScheme[]) {
+    constructor(dbName: string,
+                public schemes: IScheme[],
+                private onInstall: (objectStore: IndexedDB) => Promise<void>,
+                private onUpgrade?: (objectStore: IndexedDB, oldVersion: number, newVersion: number) => Promise<void>,
+    ) {
         if (!window.indexedDB)
             throw new Error('IndexedDB not supported');
+
+        schemes.forEach(scheme => {
+            const exists = schemes.find(item => item !== scheme && item.collection === scheme.collection);
+            if (exists)
+                throw new Error(`Collection "${scheme.collection}" used in different schemes.\nYou can use collection only in one scheme`);
+        });
 
         const version = Math.max(1, ...schemes.map(model => model.dbVersion));
 
@@ -28,7 +38,7 @@ export class IndexedDB {
     }
 
     public transaction<T>(scheme: IScheme<T>): Collection<T> {
-        if (this._status !== DBStatus.Ready)
+        if (this._status !== DBStatus.Ready && this._status !== DBStatus.Migrating)
             throw new Error('Database not ready');
 
         return this.getAccessor(scheme);
@@ -102,16 +112,25 @@ export class IndexedDB {
                         scheme.upgrade(objectStore!, oldVersion, newVersion);
                     }
                 });
-            });
-            openRequest.addEventListener('success', (event: any) => {
-                this.db = event.target.result;
-                this.setStatus(DBStatus.Ready);
-                resolve();
-            });
-            openRequest.addEventListener('error', (event: any) => {
-                console.log(event);
-                this.setStatus(DBStatus.Failed);
-                reject(event);
+
+                openRequest.addEventListener('success', async (event: any) => {
+                    this.setStatus(DBStatus.Migrating);
+
+                    this.db = event.target.result;
+
+                    if (!oldVersion)
+                        await this.onInstall(this);
+                    else if (this.onUpgrade)
+                        await this.onUpgrade(this, oldVersion, newVersion);
+
+                    this.setStatus(DBStatus.Ready);
+                    resolve();
+                });
+                openRequest.addEventListener('error', (event: any) => {
+                    console.log(event);
+                    this.setStatus(DBStatus.Failed);
+                    reject(event);
+                });
             });
         }));
     }

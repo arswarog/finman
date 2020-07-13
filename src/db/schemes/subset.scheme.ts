@@ -1,5 +1,5 @@
-import { Subset } from './subset.class';
-import { IScheme } from '../../indexed-db';
+import { Subset } from '../../models/subset/subset.class';
+import { IScheme } from '../../libs/indexed-db';
 
 export const SubsetScheme: IScheme<Subset> = {
     collection: 'subsets',

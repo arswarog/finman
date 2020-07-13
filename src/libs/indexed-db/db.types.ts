@@ -1,6 +1,7 @@
 export enum DBStatus {
     Initializing,
     Upgrading,
+    Migrating,
     Ready,
     Failed,
 }
