@@ -12,7 +12,7 @@ export interface ICategory {
     isInitial?: boolean;
 }
 
-export type ICategoryTree = Array<{
+export type IInitialCategoryTree = Array<{
     id: UUID;
     name: string;
     defaultType: DefaultTransactionType

@@ -10,6 +10,7 @@ import { addSummary, EMPTY_SUMMARY } from '../transaction/transactions.utils';
 import { MonthBrief } from '../month/month.brief';
 import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';
+import { CategoriesBlock } from '../category/categoryBlock.class';
 
 /**
  * Contains information about Account
@@ -21,6 +22,7 @@ export class Account implements IAccount, ISummary {
     @Packable(Money) public readonly balance: Money = Money.empty;
     @Packable(Money) public readonly income: Money = Money.empty;
     @Packable(Money) public readonly expense: Money = Money.empty;
+    @Packable(String) public readonly categoriesBlockId: string = 'default';
     @Packable(monthBriefPacker) public readonly head: IMonthBrief | null = null;
     @Packable([monthBriefPacker]) public readonly months: ReadonlyArray<Readonly<IMonthBrief>> = [];
     public readonly fullMonths: Map<UUID, Month> = Map();
@@ -48,7 +50,7 @@ export class Account implements IAccount, ISummary {
         return Packer.get(Account).encode(this);
     }
 
-    public forceSetHead_unsafe(head: Month, months: Month[]): Account {
+    public UNSAFE_forceSetHead(head: Month, months: Month[]): Account {
         const {chain, completed} = findChain(head, months);
 
         if (!completed) {
@@ -89,6 +91,16 @@ export class Account implements IAccount, ISummary {
             balance,
             income,
             expense,
+        });
+    }
+
+    public UNSAFE_updateCategoriesBlock(block: CategoriesBlock): Account { // FIXME
+        if (block.account !== this.id)
+            throw new Error('CategoriesBlock.id must be equal to Account.id');
+
+        return new Account({
+            ...this,
+            categoriesBlockId: block.id,
         });
     }
 

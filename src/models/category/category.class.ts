@@ -47,7 +47,7 @@ export class Category implements ICategory {
         return category.toJSON();
     }
 
-    private constructor(data: Partial<ICategory>) {
+    protected constructor(data: Partial<ICategory>) {
         if (!data.name) throw new Error('Name must be set');
         Object.assign(this, data);
     }
@@ -98,5 +98,14 @@ export class Category implements ICategory {
             ...this,
             parent: parent.id,
         });
+    }
+}
+
+export class RootCategory extends Category {
+    public readonly children: Category[] = [];
+
+    constructor(parent: Category, children: ReadonlyArray<Category>) {
+        super(parent);
+        this.children = children.filter(item => item.parent === this.id);
     }
 }

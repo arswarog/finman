@@ -1,16 +1,17 @@
 import sha1 from 'crypto-js/sha1';
-import { ICategory, ICategoryTree } from './category.types';
+import { IInitialCategoryTree } from './category.types';
 import { SyncStatus, UUID } from '../common/common.types';
 import { Category } from './category.class';
 import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';
+import { ICategoriesBlock } from './categoryBlock.types';
 
 /**
  * ID является хешем от данных, при любом изменении создается новый экземпляр с новым ID
  * Класс гарантирует совпадение данных при совпадении ID
  */
-@PackableClass(data => new CategoryBlock(data))
-export class CategoryBlock {
+@PackableClass(data => new CategoriesBlock(data))
+export class CategoriesBlock implements ICategoriesBlock {
     @Packable(String) public readonly id: UUID = '';
     @Packable(String) public readonly account: UUID = '';
     @Packable(Number) public readonly version: number = 1;
@@ -28,7 +29,7 @@ export class CategoryBlock {
      * @param initialsCategories
      * @param timestamp
      */
-    public static createInitialBlock(account: UUID, initialsCategories: ICategoryTree, timestamp: number): CategoryBlock {
+    public static createInitialBlock(account: UUID, initialsCategories: IInitialCategoryTree, timestamp: number): CategoriesBlock {
         const list: Category [] = initialsCategories.flatMap(
             parent => [
                 Category.createInitial(
@@ -50,7 +51,7 @@ export class CategoryBlock {
             ],
         );
 
-        return new CategoryBlock({
+        return new CategoriesBlock({
             account,
             syncStatus: SyncStatus.Prepared,
             timestamp,
@@ -70,12 +71,12 @@ export class CategoryBlock {
         return sha1(JSON.stringify(data)).toString();
     }
 
-    public static generateID(block: CategoryBlock, dataHash?: string): string {
+    public static generateID(block: CategoriesBlock, dataHash?: string): string {
         if (block.version !== 1)
             throw new Error(`Version ${block.version} not supported`);
 
         if (!dataHash)
-            dataHash = CategoryBlock.getDataHash(block);
+            dataHash = CategoriesBlock.getDataHash(block);
         if (dataHash === '0000000000000000000000000000000000000000')
             return '00000000-0000-0000-0000-000000000000';
 
@@ -111,27 +112,27 @@ export class CategoryBlock {
      *
      * @param blocks Предыдущие блоки цепочки
      */
-    public static merge(blocks: CategoryBlock[]): CategoryBlock {
+    public static merge(blocks: CategoriesBlock[]): CategoriesBlock {
         throw new Error('Not implemented');
     }
 
-    public static fromJSON(value: any): CategoryBlock {
-        return Packer.get(CategoryBlock).decode(value);
+    public static fromJSON(value: any): CategoriesBlock {
+        return Packer.get(CategoriesBlock).decode(value);
     }
 
-    public static toJSON(category: CategoryBlock): any {
+    public static toJSON(category: CategoriesBlock): any {
         return category.toJSON();
     }
 
-    protected constructor(value: Partial<CategoryBlock>) { // FIXME use all fields of Month
+    protected constructor(value: Partial<CategoriesBlock>) { // FIXME use all fields of Month
         Object.assign(this, value);
-        this.dataHash = CategoryBlock.getDataHash(this);
-        this.id = CategoryBlock.generateID(this, this.dataHash);
+        this.dataHash = CategoriesBlock.getDataHash(this);
+        this.id = CategoriesBlock.generateID(this, this.dataHash);
         this.updatedAt = new Date(this.timestamp);
     }
 
     public toJSON(): any {
-        return Packer.get(CategoryBlock).encode(this);
+        return Packer.get(CategoriesBlock).encode(this);
     }
 
     public get(id: UUID): Category {
@@ -145,22 +146,22 @@ export class CategoryBlock {
             return this.list.filter(item => item.parent === parent);
     }
 
-    public changeSyncStatus(syncStatus: SyncStatus): CategoryBlock {
+    public changeSyncStatus(syncStatus: SyncStatus): CategoriesBlock {
         if (syncStatus === this.syncStatus)
             return this;
 
         switch (this.syncStatus) {
             case SyncStatus.NoSynced:
                 if (syncStatus === SyncStatus.Prepared)
-                    return new CategoryBlock({...this, syncStatus});
+                    return new CategoriesBlock({...this, syncStatus});
                 break;
             case SyncStatus.Prepared:
                 if (syncStatus === SyncStatus.Syncing)
-                    return new CategoryBlock({...this, syncStatus});
+                    return new CategoriesBlock({...this, syncStatus});
                 break;
             case SyncStatus.Syncing:
                 if (syncStatus === SyncStatus.FullySynced)
-                    return new CategoryBlock({...this, syncStatus});
+                    return new CategoriesBlock({...this, syncStatus});
                 break;
             case SyncStatus.FullySynced:
         }
@@ -168,7 +169,7 @@ export class CategoryBlock {
         throw new Error(`Can not change sync status from "${SyncStatus[this.syncStatus]}" to "${SyncStatus[syncStatus]}"`);
     }
 
-    public addCategory(category: Category): CategoryBlock {
+    public addCategory(category: Category): CategoriesBlock {
         let exists = this.list.find(item => item.id === category.id);
         if (exists)
             throw new CategoryConflictError(`Category with this ID already exists`, this, category);
@@ -176,14 +177,14 @@ export class CategoryBlock {
         if (exists)
             throw new CategoryConflictError(`Category with this Name already exists`, this, category);
 
-        return new CategoryBlock({
+        return new CategoriesBlock({
             ...this,
             syncStatus: SyncStatus.NoSynced,
             list: [...this.list, category],
         });
     }
 
-    public updateCategory(category: Category): CategoryBlock {
+    public updateCategory(category: Category): CategoriesBlock {
         if (this.list.find(
             item =>
                 item.name.toLowerCase() === category.name.toLowerCase()
@@ -196,7 +197,7 @@ export class CategoryBlock {
         if (!toUpdate)
             throw new Error(`Category "${category.name}" (${category.id}) not found`);
 
-        return new CategoryBlock({
+        return new CategoriesBlock({
             ...this,
             syncStatus: SyncStatus.NoSynced,
             list: this.list.map(
@@ -207,13 +208,13 @@ export class CategoryBlock {
         });
     }
 
-    public removeCategory(id: UUID): CategoryBlock {
+    public removeCategory(id: UUID): CategoriesBlock {
         const toRemove = this.list.find(item => item.id === id);
 
         if (!toRemove)
             throw new Error(`Category ${id} not found`);
 
-        return new CategoryBlock({
+        return new CategoriesBlock({
             ...this,
             syncStatus: SyncStatus.NoSynced,
             list: this.list.filter(item => item !== toRemove),
@@ -223,7 +224,7 @@ export class CategoryBlock {
 
 export class CategoryConflictError extends Error {
     constructor(message: string,
-                public readonly block?: CategoryBlock,
+                public readonly block?: CategoriesBlock,
                 public readonly category?: Category) {
         super(message);
     }

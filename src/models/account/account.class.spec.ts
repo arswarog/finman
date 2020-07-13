@@ -12,7 +12,7 @@ describe('Account class', () => {
             // arrange
             const prepareAccount = Account.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id);
-            const baseAccount = prepareAccount.forceSetHead_unsafe(baseMonth, []);
+            const baseAccount = prepareAccount.UNSAFE_forceSetHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
                 baseMonth.getBrief(),
             ]);
@@ -22,7 +22,7 @@ describe('Account class', () => {
 
             // act
             const month = makeTestMonth2(prepareAccount.id);
-            const account = baseAccount.forceSetHead_unsafe(month, []);
+            const account = baseAccount.UNSAFE_forceSetHead(month, []);
 
             // assert
             expect(account.months).toEqual([
@@ -36,7 +36,7 @@ describe('Account class', () => {
             // arrange
             const prepareAccount = Account.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id);
-            const baseAccount = prepareAccount.forceSetHead_unsafe(baseMonth, []);
+            const baseAccount = prepareAccount.UNSAFE_forceSetHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
                 baseMonth.getBrief(),
             ]);
@@ -47,7 +47,7 @@ describe('Account class', () => {
             // act
             const month = makeTestMonth2(prepareAccount.id);
             const nextMonth = month.createNextBlock('2020-03', 1591879518572);
-            expect(() => baseAccount.forceSetHead_unsafe(nextMonth, []))
+            expect(() => baseAccount.UNSAFE_forceSetHead(nextMonth, []))
                 .toThrow(`Required months: ${month.id}`);
         });
     });

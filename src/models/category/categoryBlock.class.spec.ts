@@ -1,12 +1,12 @@
-import { ICategoryTree } from './category.types';
+import { IInitialCategoryTree } from './category.types';
 import { TransactionType } from '../transaction/transaction.types';
 import { Category } from './category.class';
-import { CategoryBlock } from './categoryBlock.class';
+import { CategoriesBlock } from './categoryBlock.class';
 import { IExtendSummary, SyncStatus } from '../common/common.types';
 
 describe('CategoryBlock class', () => {
     const accountId = '0000-0001';
-    const baseInitialsCategories: ICategoryTree = [
+    const baseInitialsCategories: IInitialCategoryTree = [
         {
             id: '01-00',
             name: 'Home',
@@ -55,7 +55,7 @@ describe('CategoryBlock class', () => {
             it('empty', () => {
                 const list = [];
 
-                const hash = CategoryBlock.getDataHash({list});
+                const hash = CategoriesBlock.getDataHash({list});
 
                 expect(hash).toBe('0000000000000000000000000000000000000000');
             });
@@ -70,7 +70,7 @@ describe('CategoryBlock class', () => {
                     ),
                 );
 
-                const hash = CategoryBlock.getDataHash({list});
+                const hash = CategoriesBlock.getDataHash({list});
 
                 expect(hash).toBe('31a19bb718d6594cc1e475de151e1939731cc4b8');
             });
@@ -86,7 +86,7 @@ describe('CategoryBlock class', () => {
                     timestamp: 1594156526682,
                 };
 
-                const id = CategoryBlock.generateID(block as any, dataHash);
+                const id = CategoriesBlock.generateID(block as any, dataHash);
 
                 expect(id.length).toBe(36);
                 expect(id).toBe('00000000-0000-0000-0000-000000000000');
@@ -101,7 +101,7 @@ describe('CategoryBlock class', () => {
                     timestamp: 1594156526682,
                 };
 
-                const id = CategoryBlock.generateID(block as any, dataHash);
+                const id = CategoriesBlock.generateID(block as any, dataHash);
 
                 expect(id.length).toBe(36);
                 expect(id).toBe('5bc54e20-0828-1d05-deb5-a5f0c93b94a1');
@@ -115,7 +115,7 @@ describe('CategoryBlock class', () => {
                     list: [],
                 };
 
-                const id = CategoryBlock.generateID(block as any);
+                const id = CategoriesBlock.generateID(block as any);
 
                 expect(id).toBe('00000000-0000-0000-0000-000000000000');
             });
@@ -124,7 +124,7 @@ describe('CategoryBlock class', () => {
     describe('createInitialBlock', () => {
         it('empty block', () => {
             const timestamp = 1588291200000;
-            const block = CategoryBlock.createInitialBlock(
+            const block = CategoriesBlock.createInitialBlock(
                 accountId,
                 [],
                 timestamp,
@@ -164,7 +164,7 @@ describe('CategoryBlock class', () => {
         });
         it('base', () => {
             const timestamp = 1588291200000;
-            const block = CategoryBlock.createInitialBlock(
+            const block = CategoriesBlock.createInitialBlock(
                 accountId,
                 baseInitialsCategories,
                 timestamp,
@@ -213,7 +213,7 @@ describe('CategoryBlock class', () => {
         );
 
         describe('change', () => {
-            function checkForFailingToChangeStatus(block: CategoryBlock, baseStatus: SyncStatus, statuses: SyncStatus[]) {
+            function checkForFailingToChangeStatus(block: CategoriesBlock, baseStatus: SyncStatus, statuses: SyncStatus[]) {
                 it(`to ${SyncStatus[baseStatus]} (not changed)`, () => {
                     expect(block.syncStatus).toEqual(baseStatus);
 
@@ -234,7 +234,7 @@ describe('CategoryBlock class', () => {
             }
 
             describe('from NotSynced', () => {
-                const base = CategoryBlock
+                const base = CategoriesBlock
                     .createInitialBlock(accountId, baseInitialsCategories, 123151213235)
                     .addCategory(someCategory);
 
@@ -257,9 +257,9 @@ describe('CategoryBlock class', () => {
                 });
             });
             describe('from Prepared', () => {
-                const base = CategoryBlock.createInitialBlock(accountId, baseInitialsCategories, 123151213235)
-                                          .addCategory(someCategory)
-                                          .changeSyncStatus(SyncStatus.Prepared);
+                const base = CategoriesBlock.createInitialBlock(accountId, baseInitialsCategories, 123151213235)
+                                            .addCategory(someCategory)
+                                            .changeSyncStatus(SyncStatus.Prepared);
 
                 checkForFailingToChangeStatus(
                     base,
@@ -280,10 +280,10 @@ describe('CategoryBlock class', () => {
                 });
             });
             describe('from Syncing', () => {
-                const base = CategoryBlock.createInitialBlock(accountId, baseInitialsCategories, 123151213235)
-                                          .addCategory(someCategory)
-                                          .changeSyncStatus(SyncStatus.Prepared)
-                                          .changeSyncStatus(SyncStatus.Syncing);
+                const base = CategoriesBlock.createInitialBlock(accountId, baseInitialsCategories, 123151213235)
+                                            .addCategory(someCategory)
+                                            .changeSyncStatus(SyncStatus.Prepared)
+                                            .changeSyncStatus(SyncStatus.Syncing);
 
                 checkForFailingToChangeStatus(
                     base,
@@ -304,11 +304,11 @@ describe('CategoryBlock class', () => {
                 });
             });
             describe('from FullySynced', () => {
-                const base = CategoryBlock.createInitialBlock(accountId, baseInitialsCategories, 123151213235)
-                                          .addCategory(someCategory)
-                                          .changeSyncStatus(SyncStatus.Prepared)
-                                          .changeSyncStatus(SyncStatus.Syncing)
-                                          .changeSyncStatus(SyncStatus.FullySynced);
+                const base = CategoriesBlock.createInitialBlock(accountId, baseInitialsCategories, 123151213235)
+                                            .addCategory(someCategory)
+                                            .changeSyncStatus(SyncStatus.Prepared)
+                                            .changeSyncStatus(SyncStatus.Syncing)
+                                            .changeSyncStatus(SyncStatus.FullySynced);
 
                 checkForFailingToChangeStatus(
                     base,
@@ -325,7 +325,7 @@ describe('CategoryBlock class', () => {
     });
     describe('categories', () => {
         const timestamp = 1588291200000;
-        const baseBlock = CategoryBlock.createInitialBlock(
+        const baseBlock = CategoriesBlock.createInitialBlock(
             accountId,
             baseInitialsCategories,
             timestamp,
@@ -481,7 +481,7 @@ describe('CategoryBlock class', () => {
     describe('encoding/decoding', () => {
         it('base', () => {
             const timestamp = 1588291200000;
-            const baseBlock = CategoryBlock.createInitialBlock(
+            const baseBlock = CategoriesBlock.createInitialBlock(
                 accountId,
                 baseInitialsCategories,
                 timestamp,
@@ -496,9 +496,9 @@ describe('CategoryBlock class', () => {
 
             const block = baseBlock.addCategory(someCategory);
 
-            const json = CategoryBlock.toJSON(block);
+            const json = CategoriesBlock.toJSON(block);
             expect(json.list.length).toEqual(7);
-            const restored = CategoryBlock.fromJSON(json);
+            const restored = CategoriesBlock.fromJSON(json);
             expect(restored).toStrictEqual(block);
         });
         it('restore unsupported version', () => {
@@ -513,7 +513,7 @@ describe('CategoryBlock class', () => {
                 'version': 2,
             };
 
-            expect(() => CategoryBlock.fromJSON(json))
+            expect(() => CategoriesBlock.fromJSON(json))
                 .toThrow(`Version 2 not supported`);
         });
     });
