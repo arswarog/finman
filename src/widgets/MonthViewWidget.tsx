@@ -1,10 +1,8 @@
 import { MonthsMap } from '../atoms/months/months.types';
 import { IMonthBrief } from '../models/month/month.types';
 import React from 'react';
-import { Swipeable } from 'react-swipeable';
 import { MoneyView } from '../components/MoneyView';
 import { MonthTxList } from './MonthTxList';
-import { Account } from '../models/account/account.class';
 import styles from './MonthViewWidget.module.scss';
 import format from 'date-fns/format';
 
@@ -17,21 +15,9 @@ interface IProps {
     moveToNext?: () => void;
 }
 
-export const MonthViewHeadWidget = ({months, brief, prev, next, moveToPrev, moveToNext}: IProps) => {
-    // moveToPrev = moveToPrev || (() => null);
-    // moveToNext = moveToNext || (() => null);
-
+export const MonthViewHeadWidget = ({brief}: IProps) => {
     if (!brief)
         return <div>No month</div>;
-
-    // if (!months.has(brief.id)) {
-    //     return <div>Loading month</div>;
-    // }
-
-    // const month = months.get(brief.id);
-    //
-    // if (!month)
-    //     return <div>Loading month</div>;
 
     const circumference = 452;
     const totalSum = brief.summary.income.subunits + brief.summary.expense.subunits;
@@ -89,12 +75,6 @@ export const MonthViewWidget = ({months, brief, prev, next, moveToPrev, moveToNe
 
     return (
         <>
-            {/*<Swipeable*/}
-            {/*    trackMouse*/}
-            {/*    preventDefaultTouchmoveEvent*/}
-            {/*    onSwipedRight={moveToPrev}*/}
-            {/*    onSwipedLeft={moveToNext}*/}
-            {/*>*/}
             <div className={styles.head}>
                 <h3 className={styles.title}>{format(new Date(month.month), 'MMMM yyyy')}</h3>
                 <div className={styles.info}>
@@ -137,7 +117,6 @@ export const MonthViewWidget = ({months, brief, prev, next, moveToPrev, moveToNe
                     </div>
                 </div>
             </div>
-            {/*</Swipeable>*/}
             <MonthTxList month={month}/>
         </>
     );

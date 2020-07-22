@@ -3,8 +3,7 @@ import styles from './App.module.scss';
 import { Redirect, Route, Switch } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { NavBar } from './widgets/NavBar';
-import { useAction, useAtom } from '@reatom/react';
-import { Client } from './atoms/client/client.atom';
+import { useAction } from '@reatom/react';
 import { startListenOnlineStatus } from './atoms/client/client.service';
 import { store } from './store/store';
 import { initIndexedDB, useDBReady } from './db';
@@ -14,7 +13,6 @@ import { paths, routes } from './routes';
 import { refresh } from './atoms/client/client.actions';
 
 export const App = () => {
-    const client = useAtom(Client);
     const refreshAllHandler = useAction(() => {
         console.log('*** refreshAllHandler');
 

@@ -3,7 +3,6 @@ import { ITransaction } from '../transaction/transaction.types';
 import { calculateSummary } from '../transaction/transactions.utils';
 import { DayDate } from '../common/date.types';
 import { parseDayDate } from '../common/date.utils';
-import { Money } from '../money/money.class';
 import { Transaction } from '../transaction/transaction.class';
 import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';

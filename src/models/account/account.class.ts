@@ -7,7 +7,6 @@ import { Month } from '../month/month.class';
 import { Map } from 'immutable';
 import { findChain, RequiredMonthsError, updateMonthChain } from './chain.utils';
 import { addSummary, EMPTY_SUMMARY } from '../transaction/transactions.utils';
-import { MonthBrief } from '../month/month.brief';
 import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';
 import { CategoriesBlock } from '../category/categoryBlock.class';

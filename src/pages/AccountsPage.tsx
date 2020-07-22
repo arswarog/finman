@@ -1,9 +1,9 @@
-import React, { Reducer, useContext, useEffect, useReducer, useState } from 'react';
-import { context, useAction } from '@reatom/react';
+import React from 'react';
+import { useAction } from '@reatom/react';
 import { MoneyView } from '../components/MoneyView';
 import styles from './AccountsPage.module.scss';
 import { Accounts } from '../atoms/accounts/accounts.atom';
-import { useHistory, useRouteMatch } from 'react-router';
+import { useHistory } from 'react-router';
 import { paths } from '../routes';
 import { Header } from '../widgets/Header';
 import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
@@ -11,8 +11,6 @@ import { Account } from '../models/account/account.class';
 import { chooseAccount } from '../atoms/accounts/accounts.actions';
 import { useAtom } from '../store/reatom';
 import { DetailsMain } from '../components/DetailsMainButton';
-import { Money } from '../models/money/money.class';
-import format from 'date-fns/format';
 import { getMonthName } from '../models/dates';
 
 interface IParams {
@@ -20,7 +18,6 @@ interface IParams {
 }
 
 export const AccountsPage = () => {
-    const history = useHistory();
     const current = useAtom(Accounts, state => state.current, []);
     const accounts = useAtom(Accounts, state => state.accounts, []);
     const chooseAccountHandler = useAction(id => id === 'create' ? null : chooseAccount(id));

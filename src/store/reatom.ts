@@ -42,7 +42,7 @@ export function useAtom<TI, TO = TI>(
             console.log('new value', state, selector(state));
             forceUpdate();
         });
-    }, deps);
+    }, [...deps, store, atom, forceUpdate, selector]);
 
     return value;
 }

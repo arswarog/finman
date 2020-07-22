@@ -24,7 +24,7 @@ export const SwipeWidget = ({showButtons, children, onChange, current}: IProps) 
 
     console.log('!!!', current, currentIndex);
     console.log(items);
-    useEffect(() => swipeEl.slide(currentIndex, 0), [currentIndex]);
+    useEffect(() => swipeEl.slide(currentIndex, 0), [currentIndex, swipeEl]);
 
     const callback = (index) => {
         console.log('current', index);

@@ -1,12 +1,12 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useAction, useAtom } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
-import { match, useHistory, useParams, useRouteMatch, withRouter } from 'react-router';
+import { useHistory, useRouteMatch } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
 import { Months } from '../atoms/months/months.atom';
 import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
-import { MonthViewHeadWidget, MonthViewWidget } from '../widgets/MonthViewWidget';
+import { MonthViewHeadWidget } from '../widgets/MonthViewWidget';
 import { Header } from '../widgets/Header';
 import { paths } from '../routes';
 import styles from './AccountMonthsPage.module.scss';
@@ -32,7 +32,7 @@ export const AccountMonthsPage = () => {
     // create handlers
     const changeMonth = useCallback((newMonthNum) => {
         history.replace(paths.account.months(account.id, newMonthNum));
-    }, [account]);
+    }, [account, history]);
 
     const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);
 
