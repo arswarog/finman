@@ -37,6 +37,9 @@
     "uuid": "^8.1.0"
   },
   "devDependencies": {
+    "@commitlint/cli": "^9.1.1",
+    "@commitlint/config-conventional": "^9.1.1",
+    "generate-changelog": "^1.8.0",
     "gh-pages": "^2.2.0",
     "serve": "^11.3.2",
     "ts-loader": "^7.0.5",
@@ -44,6 +47,9 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "install": "echo \"#!/bin/sh\n/npm run commitlint\" > .git/hooks/commit-msg",
+    "postinstall": "chmod 755 .git/hooks/commit-msg",
+    "commitlint": "commitlint -e .git/COMMIT_EDITMSG",
     "prebuild": "npm run sw:clear",
     "build": "react-scripts build",
     "postbuild": "npm run sw:build",
