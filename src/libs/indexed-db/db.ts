@@ -73,6 +73,11 @@ export class IndexedDB {
         this.setStatus(DBStatus.Initializing);
         return new Promise(((resolve, reject) => {
             const openRequest = window.indexedDB.open(dbName, version);
+
+            let isUpgrade = false;
+            let oldVersion = version;
+            let newVersion = version;
+
             eventLogger(
                 openRequest,
                 'openRequest',
@@ -83,10 +88,12 @@ export class IndexedDB {
                     'success',
                 ],
             );
+
             openRequest.addEventListener('upgradeneeded', (event: any) => {
                 this.setStatus(DBStatus.Upgrading);
-                const oldVersion: number = event.oldVersion;
-                const newVersion: number = event.newVersion;
+                isUpgrade = true;
+                oldVersion = event.oldVersion;
+                newVersion = event.newVersion;
                 if (oldVersion)
                     console.log(`Upgrade DB from version ${oldVersion}`);
                 else
@@ -112,25 +119,26 @@ export class IndexedDB {
                         scheme.upgrade(objectStore!, oldVersion, newVersion);
                     }
                 });
+            });
 
-                openRequest.addEventListener('success', async (event: any) => {
+            openRequest.addEventListener('success', async (event: any) => {
+                this.db = event.target.result;
+
+                if (isUpgrade) {
                     this.setStatus(DBStatus.Migrating);
-
-                    this.db = event.target.result;
 
                     if (!oldVersion)
                         await this.onInstall(this);
                     else if (this.onUpgrade)
                         await this.onUpgrade(this, oldVersion, newVersion);
-
-                    this.setStatus(DBStatus.Ready);
-                    resolve();
-                });
-                openRequest.addEventListener('error', (event: any) => {
-                    console.log(event);
-                    this.setStatus(DBStatus.Failed);
-                    reject(event);
-                });
+                }
+                this.setStatus(DBStatus.Ready);
+                resolve();
+            });
+            openRequest.addEventListener('error', (event: any) => {
+                console.log(event);
+                this.setStatus(DBStatus.Failed);
+                reject(event);
             });
         }));
     }
