@@ -13,7 +13,7 @@ export const currencies: { [key: string]: ICurrency } = {
     RUB: {code: 'RUB', symbol: '₽', precision: 2},
 };
 
-@SelfPackableClass(target =>  new Packer(target.fromJSON, target.toJSON))
+@SelfPackableClass(target => new Packer(target.fromJSON, target.toJSON))
 export class Money {
     public readonly amount: string = '';
 
@@ -140,8 +140,16 @@ export class Money {
         return this.currency.symbol;
     }
 
-    public negative(): Money {
+    public negative(): Money {// TODO rename
         return new Money(-this.subunits, this.currency);
+    }
+
+    public isPositive() {
+        return this.subunits > 0;
+    }
+
+    public isNegative() {
+        return this.subunits < 0;
     }
 }
 

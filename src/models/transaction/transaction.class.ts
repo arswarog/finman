@@ -103,7 +103,7 @@ export class Transaction implements ITransaction {
         });
     }
 
-    public setCategory(category: UUID | ''): Transaction {
+    public setCategory(category: UUID | null): Transaction {
         return new Transaction({
             ...this,
             category,

@@ -1,13 +1,13 @@
 import { DayDate, MonthDate } from '../common/date.types';
-import { IExtendSummary, UUID } from '../common/common.types';
-import { ITag } from '../tag/tag.types';
+import { IExtendSummary, ISummary, UUID } from '../common/common.types';
+import { ITag, TagName } from '../tag/tag.types';
 import { ICategory } from '../category/category.types';
 import { Money } from '../money/money.class';
 import { ITransaction, TransactionType } from '../transaction/transaction.types';
 import { IAccount } from '../account/account.types';
+import { Set, Map } from 'immutable';
 
 export interface ITransactionGrip {
-    id: UUID;
     date: DayDate;
     /**
      * Изменение баланса в рамках набора данных
@@ -28,32 +28,36 @@ export interface ITransactionGrip {
     sourceTxs: ITransaction[];
     account: IAccount;
     category: ICategory;
-    tags: Set<ITag>;
+    tags: Set<TagName>;
     title: string | '';
     createdAt?: Date;
     updatedAt?: Date;
 }
 
 export interface IDayGrip extends IExtendSummary {
-    day: DayDate;
+    date: DayDate;
     transactions: ITransactionGrip[];
     categories: Map<UUID, ICategory>;
-    tags: Map<string, ITag>;
+    tags: Map<TagName, ITag>;
 }
 
-export interface IMonthGrip extends IExtendSummary {
+export interface IMonthGripBrief extends IExtendSummary {
     month: MonthDate;
+    categories?: Map<UUID, ICategory>; // TODO Make it required
+    tags?: Map<TagName, ITag>; // TODO Make it required
+}
+
+export interface IMonthGrip extends IMonthGripBrief {
     categories: Map<UUID, ICategory>;
-    tags: Map<string, ITag>;
+    tags: Map<TagName, ITag>;
     days: IDayGrip[];
 }
 
-export interface IGrip {
+export interface IGrip extends ISummary {
     firstMonthDate: MonthDate;
     lastMonthDate: MonthDate;
     months: IMonthGrip[];
 
-    accounts: Map<UUID, IAccount>;
     categories: Map<UUID, ICategory>;
-    tags: Map<string, ITag>;
+    tags: Map<TagName, ITag>;
 }
