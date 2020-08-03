@@ -16,6 +16,7 @@ import { AccountMonthGrip } from '../account-grip/month-grip.class';
  * TODO: Grip must know about categories and tags in months from IMonthBrief
  */
 export abstract class AbstractGrip implements IGrip {
+    id: UUID;
     categories: Map<UUID, ICategory> = Map();
     firstMonthDate: MonthDate = null;
     lastMonthDate: MonthDate = null;

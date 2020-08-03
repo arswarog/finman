@@ -1,4 +1,4 @@
-import { Set } from 'immutable';
+import { Map, Set } from 'immutable';
 import { AbstractDayGrip } from '../abstract-grip/day-grip.class';
 import { UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';

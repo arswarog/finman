@@ -8,6 +8,7 @@ import { ITag, TagName } from '../tag/tag.types';
 import { AbstractDayGrip } from './day-grip.class';
 
 export abstract class AbstractMonthGrip implements IMonthGrip {
+    readonly id: UUID;
     readonly balance: Money;
     readonly balanceOnEnd: Money;
     readonly balanceOnStart: Money;

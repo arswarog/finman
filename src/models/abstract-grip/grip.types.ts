@@ -48,12 +48,14 @@ export interface IMonthGripBrief extends IExtendSummary {
 }
 
 export interface IMonthGrip extends IMonthGripBrief {
+    id: UUID;
     categories: Map<UUID, ICategory>;
     tags: Map<TagName, ITag>;
     days: IDayGrip[];
 }
 
 export interface IGrip extends ISummary {
+    id: UUID;
     firstMonthDate: MonthDate;
     lastMonthDate: MonthDate;
     months: IMonthGrip[];
