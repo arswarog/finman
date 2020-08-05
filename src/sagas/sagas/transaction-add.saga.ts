@@ -6,6 +6,8 @@ import { Action } from '@reatom/core';
 import { AccountUtils } from '../utils/account.saga';
 import { MonthUtils } from '../utils/month.saga';
 import { Transaction } from '../../models/transaction/transaction.class';
+import { put } from 'redux-saga/effects';
+import { updateAccountGrip } from '../../atoms/account-grips/account-grips.actions';
 
 sagaLauncher.onAction(addTransaction, addTransactionSaga);
 
@@ -17,11 +19,14 @@ export function* addTransactionSaga(action: Action<IAddTransactionForm>) {
 
     console.log('addTransactionSaga', month.id, month.prevVersions);
 
-    const tx = Transaction.create(
+    let tx = Transaction.create(
         payload.type,
         payload.amount,
         'RUB',
     );
+
+    if (payload.title) tx = tx.setTitle(payload.title);
+    if (payload.category) tx = tx.setCategory(payload.category);
 
     const day = month.getDay(payload.date)
                      .addTransaction(tx);
@@ -32,5 +37,6 @@ export function* addTransactionSaga(action: Action<IAddTransactionForm>) {
 
     const value = yield* AccountUtils.update(account, updatedMonth);
     console.log('*** addTransactionSaga complete');
+    yield put(updateAccountGrip(value));
     return value;
 }

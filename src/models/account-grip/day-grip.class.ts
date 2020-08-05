@@ -16,7 +16,7 @@ export class AccountDayGrip extends AbstractDayGrip {
         const transactions: ITransactionGrip[] = day.transactions.map(tx => {
             const category = categories.get(tx.category || 'default');
             if (!category)
-                throw new Error(`Category "${tx.category}" not found`);
+                throw new Error(`Category "${tx.category || 'default'}" not found`);
 
             const grip = {
                 account,

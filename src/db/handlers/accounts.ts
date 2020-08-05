@@ -28,12 +28,6 @@ addActionHandler(loadAccounts, (_, store) => {
                 current: localStorage.getItem(CURRENT_ACCOUNT_KEY),
                 accounts,
             }));
-
-            const ids = new Set(accounts.map(item => item.categoriesBlockId));
-            ids.forEach(categoriesBlockId => {
-                if (categoriesBlockId)
-                    store.dispatch(loadCategories(categoriesBlockId));
-            });
         },
         error => store.dispatch(loadAccountsFailed(error)),
     );

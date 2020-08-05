@@ -8,9 +8,12 @@ import { saveAccount, saveAccountSuccess, saveAccountFailed } from '../../atoms/
 import { MonthUtils } from './month.saga';
 import { isVersionOfMonth, RequiredMonthsError } from '../../models/account/chain.utils';
 import { SagaUtils } from '../helpers/helpers';
+import { AccountGrips, IAccountGripsState } from '../../atoms/account-grips/account-grips.atom';
+import { AccountGrip } from '../../models/account-grip/grip.class';
 
 export const AccountUtils = {
     select: SagaPacker.call(selectAccountSaga),
+    getGrip: SagaPacker.call(getAccountGripSaga),
     update: SagaPacker.call(updateAccountSaga),
     save: SagaPacker.call(saveAccountSaga),
 };
@@ -25,6 +28,20 @@ function* selectAccountSaga(id: UUID) {
 
     if (!account)
         throw new Error(`Account "${id}" not found`);
+
+    return account;
+}
+
+/**
+ * Get account grip from Store
+ * @param id
+ */
+function* getAccountGripSaga(id: UUID) {
+    const accounts: IAccountGripsState = yield select(getState => getState(AccountGrips));
+    const account: AccountGrip = accounts.accounts.get(id);
+
+    if (!account)
+        throw new Error(`AccountGrip "${id}" not found`);
 
     return account;
 }
@@ -50,7 +67,6 @@ function* updateAccountSaga(account: Account, month: Month) {
         yield* AccountUtils.save(accountToUpdate);
         return accountToUpdate;
     }
-
 
     let toIndex = currentMonthIndex === -1
         ? prevMonthIndex
@@ -126,10 +142,7 @@ function* updateAccountSaga(account: Account, month: Month) {
         return accountToUpdate;
     }
 
-
     throw new Error('may be first');
-
-
 }
 
 export function* saveAccountSaga(account: Account) {

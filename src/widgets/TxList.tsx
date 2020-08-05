@@ -5,14 +5,15 @@ import styles from './TxList.module.scss';
 import { makeTxList } from './TxList.utils';
 import { MoneyView } from '../components/MoneyView';
 import { DayDate } from '../models/common/date.types';
+import { TransactionGrip } from '../models/abstract-grip/transaction-grip.class';
 
 interface IProps {
-    list: ITransaction[];
+    list: TransactionGrip[];
     dayDate: DayDate;
 }
 
 export const TxList = React.memo(({list, dayDate}: IProps) => {
-    const txList = makeTxList(list, dayDate);
+    const txList = makeTxList(list);
 
     return (
         <ul className={styles.txList}>

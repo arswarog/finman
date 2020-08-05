@@ -1,9 +1,7 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useEffect } from 'react';
 import { useAction, useAtom } from '@reatom/react';
-import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useHistory, useRouteMatch } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
-import { Months } from '../atoms/months/months.atom';
 import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
 import { MonthViewHeadWidget } from '../widgets/MonthViewWidget';
@@ -12,6 +10,11 @@ import { paths } from '../routes';
 import styles from './AccountMonthsPage.module.scss';
 import { MonthTxList } from '../widgets/MonthTxList';
 import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
+import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
+import { MonthGrips } from '../atoms/month-grips/month-grips.atom';
+import { IMonthGripBrief } from '../models/abstract-grip/grip.types';
+import { IAccount } from '../models/account/account.types';
+import { AccountGrip } from '../models/account-grip/grip.class';
 
 interface IParams {
     account: string;
@@ -21,8 +24,8 @@ interface IParams {
 export const AccountMonthsPage = () => {
     // prepare
     const {params} = useRouteMatch<IParams>();
-    const account = useAtom(Accounts, ({accounts}) => accounts.get(params.account), [params.account]);
-    const months = useAtom(Months);
+    const account = useAtom(AccountGrips, ({accounts}) => accounts.get(params.account), [params.account]);
+    const months = useAtom(MonthGrips);
     const history = useHistory();
 
     // create months list
@@ -47,22 +50,48 @@ export const AccountMonthsPage = () => {
             <div>No months in this account</div>
         );
 
+    return <AccountMonthsPageDisplay account={account}
+                                     month={params.month || account.lastMonthDate}/>;
+};
+
+interface IPropsDisplay {
+    account: AccountGrip;
+    month: MonthDate;
+}
+
+export const AccountMonthsPageDisplay = ({account, month}: IPropsDisplay) => {
+    // prepare
+    const months = useAtom(MonthGrips);
+    const history = useHistory();
+
+    // create months list
+    const monthsList = [...account ? account.months : []];
+    monthsList.reverse();
+
+    // create handlers
+    const changeMonth = useCallback((newMonthNum) => {
+        history.replace(paths.account.months(account.id, newMonthNum));
+    }, [account, history]);
+
+    const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);
+
     // get months
-    let monthIndex = account.months.findIndex(item => item.month === params.month);
+    let monthIndex = account.months.findIndex(item => item.month === month);
     if (monthIndex === -1)
         monthIndex = 0;
-    const monthBrief: IMonthBrief = account.months[monthIndex];
+    const monthBrief: IMonthGripBrief = account.months[monthIndex];
     const prevMonth = account.months[monthIndex + 1];
     const nextMonth = account.months[monthIndex - 1];
 
     // load months
-    if (monthBrief && !months.has(monthBrief.id))
-        loadMonth(monthBrief.id);
-    if (prevMonth && !months.has(prevMonth.id))
-        loadMonth(prevMonth.id);
-    if (nextMonth && !months.has(nextMonth.id))
-        loadMonth(nextMonth.id);
-
+    useEffect(() => {
+        if (monthBrief && !months.has(monthBrief.id))
+            loadMonth(monthBrief.id);
+        if (prevMonth && !months.has(prevMonth.id))
+            loadMonth(prevMonth.id);
+        if (nextMonth && !months.has(nextMonth.id))
+            loadMonth(nextMonth.id);
+    }, [prevMonth, nextMonth, monthBrief]);
     const currentMonth = months.get(monthBrief?.id);
 
     // render

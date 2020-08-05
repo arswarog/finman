@@ -10,6 +10,7 @@ export const TransactionAddPage = () => {
 
     const [amount, setAmount] = useState('123');
     const [date, setDate] = useState('2020-06-12');
+    const [category, setCategory] = useState('default');
     const [type, setType] = useState(TransactionType.Expense);
     const [account, setAccount] = useState(params.get('account') || '');
 
@@ -19,7 +20,7 @@ export const TransactionAddPage = () => {
             account,
             amount,
             date,
-            category: '',
+            category,
             title: '',
             type,
         };
@@ -41,6 +42,10 @@ export const TransactionAddPage = () => {
 
     const accountChangeHandler = (event) => {
         setAccount(event.target.value);
+    };
+
+    const categoryChangeHandler = (event) => {
+        setCategory(event.target.value);
     };
 
     return (
@@ -76,6 +81,11 @@ export const TransactionAddPage = () => {
                                onChange={typeChangeHandler}
                                name="type" value={TransactionType.Expense}/>
                         <label htmlFor="type-expense">Expense</label>
+                    </div>
+
+                    <div>
+                        Category:
+                        <input type="text" value={category} onChange={categoryChangeHandler}/>
                     </div>
 
                     <div>

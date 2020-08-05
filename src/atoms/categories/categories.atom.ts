@@ -18,7 +18,8 @@ export const Categories = declareAtom<ICategoriesState>(
 
                 const map = Map(list.map(category => [category.id, category]));
 
-                return collection.set(block.account, {tree, list, map});
+                collection = collection.set(block.id, {block, tree, list, map}); // FIXME need create CategoriesBlocksAtom
+                return collection.set(block.account, {block, tree, list, map});
             }),
         ],
         save: [

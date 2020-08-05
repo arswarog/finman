@@ -1,7 +1,7 @@
 import { IAccount } from '../account/account.types';
 import { UUID } from '../common/common.types';
 import { CategoriesBlock } from '../category/categoryBlock.class';
-import { IGrip } from './grip.types';
+import { IGrip, IMonthGripBrief } from './grip.types';
 import { ICategory } from '../category/category.types';
 import { MonthDate } from '../common/date.types';
 import { ITag, TagName } from '../tag/tag.types';
@@ -17,10 +17,11 @@ import { AccountMonthGrip } from '../account-grip/month-grip.class';
  */
 export abstract class AbstractGrip implements IGrip {
     id: UUID;
+    name: string;
     categories: Map<UUID, ICategory> = Map();
     firstMonthDate: MonthDate = null;
     lastMonthDate: MonthDate = null;
-    months: AbstractMonthGrip[] = [];
+    months: IMonthGripBrief[] = [];
     tags: Map<TagName, ITag> = Map();
 
     balance: Money = Money.empty;

@@ -3,10 +3,10 @@ import { Map } from 'immutable';
 import { IMonthGripsState } from './month-grips.types';
 import {
     updateMonthGripSuccess,
-    updateMonthsGripSuccess,
+    updateMonthGripsSuccess,
 } from './month-grips.actions';
 
-export const Months = declareAtom<IMonthGripsState>(
+export const MonthGrips = declareAtom<IMonthGripsState>(
     ['grips/month'],
     Map(),
     on => ({
@@ -14,7 +14,7 @@ export const Months = declareAtom<IMonthGripsState>(
             on(updateMonthGripSuccess, (state, month) => {
                 return state.set(month.id, month);
             }),
-            on(updateMonthsGripSuccess, (state, months) => {
+            on(updateMonthGripsSuccess, (state, months) => {
                 return months.reduce(
                     (acc, month) => acc.set(month.id, month),
                     state,

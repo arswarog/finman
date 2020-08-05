@@ -42,13 +42,13 @@ export interface IDayGrip extends IExtendSummary {
 }
 
 export interface IMonthGripBrief extends IExtendSummary {
+    id: UUID;
     month: MonthDate;
     categories?: Map<UUID, ICategory>; // TODO Make it required
     tags?: Map<TagName, ITag>; // TODO Make it required
 }
 
 export interface IMonthGrip extends IMonthGripBrief {
-    id: UUID;
     categories: Map<UUID, ICategory>;
     tags: Map<TagName, ITag>;
     days: IDayGrip[];
@@ -56,9 +56,10 @@ export interface IMonthGrip extends IMonthGripBrief {
 
 export interface IGrip extends ISummary {
     id: UUID;
+    name: string;
     firstMonthDate: MonthDate;
     lastMonthDate: MonthDate;
-    months: IMonthGrip[];
+    months: IMonthGripBrief[];
 
     categories: Map<UUID, ICategory>;
     tags: Map<TagName, ITag>;

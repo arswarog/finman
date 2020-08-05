@@ -5,12 +5,14 @@ import { MoneyView } from '../components/MoneyView';
 import { MonthTxList } from './MonthTxList';
 import styles from './MonthViewWidget.module.scss';
 import format from 'date-fns/format';
+import { IMonthGripBrief } from '../models/abstract-grip/grip.types';
+import { MonthGripsMap } from '../atoms/month-grips/month-grips.types';
 
 interface IProps {
-    months: MonthsMap;
-    brief?: IMonthBrief;
-    prev?: IMonthBrief;
-    next?: IMonthBrief;
+    months: MonthGripsMap;
+    brief?: IMonthGripBrief;
+    prev?: IMonthGripBrief;
+    next?: IMonthGripBrief;
     moveToPrev?: () => void;
     moveToNext?: () => void;
 }
@@ -20,9 +22,9 @@ export const MonthViewHeadWidget = ({brief}: IProps) => {
         return <div>No month</div>;
 
     const circumference = 452;
-    const totalSum = brief.summary.income.subunits + brief.summary.expense.subunits;
-    const incomePercent = brief.summary.income.subunits / totalSum * circumference;
-    const expensePercent = brief.summary.expense.subunits / totalSum * circumference;
+    const totalSum = brief.income.subunits + brief.expense.subunits;
+    const incomePercent = brief.income.subunits / totalSum * circumference;
+    const expensePercent = brief.expense.subunits / totalSum * circumference;
 
     return (
         <div className={styles.head}>
@@ -42,9 +44,9 @@ export const MonthViewHeadWidget = ({brief}: IProps) => {
                                 r="72" cx="-80" cy="80"
                                 strokeDasharray={[0, incomePercent, expensePercent, circumference].join(' ')}/>
                     </svg>
-                    <h4 className={styles.balance}><MoneyView money={brief.summary.balance}/></h4>
-                    <div>+<MoneyView money={brief.summary.income}/></div>
-                    <div>-<MoneyView money={brief.summary.expense}/></div>
+                    <h4 className={styles.balance}><MoneyView money={brief.balance}/></h4>
+                    <div>+<MoneyView money={brief.income}/></div>
+                    <div>-<MoneyView money={brief.expense}/></div>
                 </div>
             </div>
         </div>
@@ -69,9 +71,9 @@ export const MonthViewWidget = ({months, brief, prev, next, moveToPrev, moveToNe
         return <div>Loading month</div>;
 
     const circumference = 452;
-    const totalSum = month.summary.income.subunits + month.summary.expense.subunits;
-    const incomePercent = month.summary.income.subunits / totalSum * circumference;
-    const expensePercent = month.summary.expense.subunits / totalSum * circumference;
+    const totalSum = month.income.subunits + month.expense.subunits;
+    const incomePercent = month.income.subunits / totalSum * circumference;
+    const expensePercent = month.expense.subunits / totalSum * circumference;
 
     return (
         <>
@@ -111,9 +113,9 @@ export const MonthViewWidget = ({months, brief, prev, next, moveToPrev, moveToNe
                                     strokeDashoffset={incomePercent}
                                     strokeDasharray={[expensePercent, circumference].join(' ')}/>
                         </svg>
-                        <h4 className={styles.balance}><MoneyView money={month.summary.balance}/></h4>
-                        <div>+<MoneyView money={month.summary.income}/></div>
-                        <div>-<MoneyView money={month.summary.expense}/></div>
+                        <h4 className={styles.balance}><MoneyView money={month.balance}/></h4>
+                        <div>+<MoneyView money={month.income}/></div>
+                        <div>-<MoneyView money={month.expense}/></div>
                     </div>
                 </div>
             </div>

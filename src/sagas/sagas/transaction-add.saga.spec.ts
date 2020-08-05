@@ -74,7 +74,7 @@ describe('addTransactionSaga', () => {
             account: 'test',
             amount: '123',
             date: '2020-06-12',
-            category: '',
+            category: '0000-111',
             title: '',
             type: TransactionType.Income,
         }));

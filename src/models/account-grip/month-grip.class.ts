@@ -31,6 +31,7 @@ export class AccountMonthGrip extends AbstractMonthGrip {
             });
 
         super(month.month, balanceOnStart, days);
+        this.id = month.id;
 
         if (!this.balanceOnEnd.equal(balanceOnEnd))
             throw new Error(`Wrong balance on end: expected ${balanceOnEnd} but received ${this.balanceOnEnd}`);

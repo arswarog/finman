@@ -2,7 +2,7 @@ import { declareAtom } from '@reatom/core';
 import { Map } from 'immutable';
 import { UUID } from '../../models/common/common.types';
 import { AccountGrip } from '../../models/account-grip/grip.class';
-import { chooseAccountGrip, updateAccountGripSuccess } from './account-grips.actions';
+import { chooseAccountGrip, updateAccountGripsSuccess, updateAccountGripSuccess } from './account-grips.actions';
 
 export interface IAccountGripsState {
     current: AccountGrip | null;
@@ -33,6 +33,15 @@ export const AccountGrips = declareAtom<IAccountGripsState>(
                 return {
                     ...state,
                     accounts: state.accounts.set(grip.id, grip),
+                };
+            }),
+            on(updateAccountGripsSuccess, (state, grips) => {
+                return {
+                    ...state,
+                    accounts: grips.reduce(
+                        (acc, grip) => acc.set(grip.id, grip),
+                        state.accounts,
+                    ),
                 };
             }),
         ],

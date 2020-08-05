@@ -5,9 +5,10 @@ import { Month } from '../models/month/month.class';
 import { TxList } from './TxList';
 import { DayDate } from '../models/common/date.types';
 import format from 'date-fns/format';
+import { AbstractMonthGrip } from '../models/abstract-grip/month-grip.class';
 
 interface IProps {
-    month: Month;
+    month: AbstractMonthGrip;
 }
 
 export const MonthTxList = React.memo(({month}: IProps) => {
