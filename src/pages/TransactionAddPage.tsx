@@ -4,9 +4,18 @@ import { store } from '../store/store';
 import { addTransaction } from '../models/transaction/transaction.actions';
 import { useLocation } from 'react-router';
 import { Header } from '../widgets/Header';
+import { TransactionForm } from '../widgets/TransactionForm';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
+
+    const [data, setData] = useState({
+        type: TransactionType.Income + '' as any,
+        amount: '100000',
+        date: '2020-06-01',
+        account: params.get('account') || '',
+    } as IAddTransactionForm);
+
 
     const [amount, setAmount] = useState('123');
     const [date, setDate] = useState('2020-06-12');
@@ -28,78 +37,26 @@ export const TransactionAddPage = () => {
         store.dispatch(addTransaction(formData));
     };
 
-    const amountChangeHandler = (event) => {
-        setAmount(event.target.value);
-    };
-
-    const dateChangeHandler = (event) => {
-        setDate(event.target.value);
-    };
-
-    const typeChangeHandler = (event) => {
-        setType(+event.target.value);
-    };
-
-    const accountChangeHandler = (event) => {
-        setAccount(event.target.value);
-    };
-
-    const categoryChangeHandler = (event) => {
-        setCategory(event.target.value);
-    };
+    function validate(data: IAddTransactionForm) {
+        const errors: Partial<{ [key in keyof IAddTransactionForm]: string }> = {};
+        if (!data.account)
+            errors.account = 'Required';
+        return errors;
+    }
 
     return (
         <>
             <Header title="Add transaction"/>
             <main>
-                <form onSubmit={submitHandler}>
-                    <div>
-                        Amount:
-                        <input type="number" value={amount} onChange={amountChangeHandler}/>
-                    </div>
-
-                    <div>
-                        Date:
-                        <input type="date" value={date} onChange={dateChangeHandler}
-                               list="datalist"/>
-                        <datalist id="datalist">
-                            <option value="2020-06-12" label="Today"/>
-                            <option value="2020-06-11" label="Yesterday"/>
-                        </datalist>
-                    </div>
-
-                    <div>
-                        Type:
-                        <input type="radio" id="type-income"
-                               onChange={typeChangeHandler}
-                               checked={type === TransactionType.Income}
-                               name="type" value={TransactionType.Income}/>
-                        <label htmlFor="type-income">Income</label>
-
-                        <input type="radio" id="type-expense"
-                               checked={type === TransactionType.Expense}
-                               onChange={typeChangeHandler}
-                               name="type" value={TransactionType.Expense}/>
-                        <label htmlFor="type-expense">Expense</label>
-                    </div>
-
-                    <div>
-                        Category:
-                        <input type="text" value={category} onChange={categoryChangeHandler}/>
-                    </div>
-
-                    <div>
-                        Account:
-                        <input type="text" value={account} onChange={accountChangeHandler}/>
-                    </div>
-
-                    <div>
-                        <button type="submit">Add</button>
-                    </div>
-                </form>
-                <pre>amount: {amount}</pre>
-                <pre>date: {date}</pre>
-                <pre>type: {type}</pre>
+                <TransactionForm value={data}
+                                 onSubmit={data => {
+                                     data.type = +data.type;
+                                     console.log(data);
+                                     setData(data);
+                                     store.dispatch(addTransaction(data));
+                                 }}
+                                 validate={validate}
+                />
             </main>
         </>
     );
