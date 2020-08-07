@@ -3,10 +3,11 @@ import { IAddTransactionForm, TransactionType } from '../models/transaction/tran
 import { store } from '../store/store';
 import { addTransaction } from '../models/transaction/transaction.actions';
 import { useLocation } from 'react-router';
-import { Header } from '../widgets/Header';
+import { Header } from '../components/Header';
 import { TransactionForm } from '../widgets/TransactionForm';
 import { Section } from '../components/Section';
 import { Card } from '../components/Card';
+import { Main } from '../components/Main';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
@@ -34,7 +35,7 @@ export const TransactionAddPage = () => {
     return (
         <>
             <Header title="Add transaction"/>
-            <main>
+            <Main>
                 <Section title="Add transaction">
                     <Card>
                         <TransactionForm value={data}
@@ -43,7 +44,7 @@ export const TransactionAddPage = () => {
                         />
                     </Card>
                 </Section>
-            </main>
+            </Main>
         </>
     );
 };

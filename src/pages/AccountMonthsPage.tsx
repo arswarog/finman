@@ -5,7 +5,7 @@ import { MonthDate } from '../models/common/date.types';
 import { loadMonths } from '../atoms/months/months.actions';
 import { IMonthBrief } from '../models/month/month.types';
 import { MonthViewHeadWidget } from '../widgets/MonthViewWidget';
-import { Header } from '../widgets/Header';
+import { Header } from '../components/Header';
 import { paths } from '../routes';
 import styles from './AccountMonthsPage.module.scss';
 import { MonthTxList } from '../widgets/MonthTxList';

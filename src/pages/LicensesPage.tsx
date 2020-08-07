@@ -1,6 +1,6 @@
 import React from 'react';
 import styles from './LicensesPage.module.scss';
-import { Header } from '../widgets/Header';
+import { Header } from '../components/Header';
 
 export const LicensesPage = () => {
     return (

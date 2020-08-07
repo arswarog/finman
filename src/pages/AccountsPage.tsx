@@ -5,7 +5,7 @@ import styles from './AccountsPage.module.scss';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { useHistory } from 'react-router';
 import { paths } from '../routes';
-import { Header } from '../widgets/Header';
+import { Header } from '../components/Header';
 import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
 import { Account } from '../models/account/account.class';
 import { chooseAccount } from '../atoms/accounts/accounts.actions';

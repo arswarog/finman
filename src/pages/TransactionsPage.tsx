@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './TransactionsPage.module.scss';
-import { Header } from '../widgets/Header';
+import { Header } from '../components/Header';
 import { TxList } from '../widgets/TxList';
 import { TransactionGrip } from '../models/abstract-grip/transaction-grip.class';
 
