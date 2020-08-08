@@ -3,6 +3,7 @@ import { accountsRoutes } from './accounts';
 import { transactionRoutes } from './transactions';
 import { paths } from './index';
 import { LicensesPage } from '../pages/LicensesPage';
+import { MainMenu } from '../pages/MainMenu';
 
 export const routes: RouteProps[] = [
     // {
@@ -12,6 +13,10 @@ export const routes: RouteProps[] = [
     // },
     ...accountsRoutes,
     ...transactionRoutes,
+    {
+        path: paths.menu(),
+        component: MainMenu,
+    },
     {
         path: paths.licenses(),
         component: LicensesPage,

@@ -7,4 +7,5 @@ export const paths = {
     transactions,
     home: () => `${baseUrl}/accounts`,
     licenses: () => `${baseUrl}/licenses`,
+    menu: () => `${baseUrl}/menu`,
 };

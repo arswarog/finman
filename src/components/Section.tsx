@@ -3,7 +3,7 @@ import styled from 'styled-components';
 
 interface IProps {
     full?: boolean;
-    title: string;
+    title?: string;
     children: ReactNode;
 }
 
@@ -16,7 +16,7 @@ const SectionContainer = styled.section`
     : '0 16px'};
 `;
 
-const SectionTitle = styled.h3`
+export const SectionTitle = styled.h3`
   text-align: left;
   font-size: 15px;
   padding: ${props => props.full

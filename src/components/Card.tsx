@@ -6,7 +6,7 @@ interface IProps {
 }
 
 export const Card = ({full, children}: IProps) => (
-    <div className={['card', full ? 'full' : ''].join(' ')}>
+    <div className={['card', 'mt-1', full ? 'full' : ''].join(' ')}>
         <div className="card-body">
             {children}
         </div>
