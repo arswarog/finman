@@ -5,6 +5,7 @@ import { IAddTransactionForm, TransactionType } from '../models/transaction/tran
 import { TxTypeField } from '../components/inputs/TxTypeField';
 import { BaseInput } from '../components/inputs/BaseInput';
 import { TextField } from '../components/inputs/TextField';
+import { DayDateField } from '../components/inputs/DayDateField';
 
 interface IProps {
     value: IAddTransactionForm;
@@ -38,7 +39,7 @@ export const TransactionForm = ({onSubmit, value, validate}: IProps) => {
                     <TextField name="title"
                                label="Title"
                     />
-                    <BaseInput name="date"
+                    <DayDateField name="date"
                                label="Date"
                                component="input"/>
                     <TextField name="account"

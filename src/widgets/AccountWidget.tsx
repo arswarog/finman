@@ -3,10 +3,14 @@ import { useHistory } from 'react-router';
 import { paths } from '../routes';
 import { Icon, Icons } from '../ui-kit/Icon';
 import { MoneyView } from '../components/MoneyView';
-import { Account } from '../models/account/account.class';
 import styles from './AccountWidget.module.scss';
+import { AccountGrip } from '../models/account-grip/grip.class';
 
-export const AccountWidget = ({account}: { account: Account }) => {
+interface IProps {
+    account: AccountGrip;
+}
+
+export const AccountWidget = ({account}: IProps) => {
     const history = useHistory();
 
     function addTx() {
@@ -54,14 +58,11 @@ export const AccountWidget = ({account}: { account: Account }) => {
                     {/*</div>*/}
                     <div className="bottom">
                         <div className="card-expiry">
-                            <span className="label">Expiry</span>
-                            12 / 25
+                            <span className="label">Statistics for</span>
+                            Last month
                         </div>
                     </div>
                 </div>
-                <button className={styles.addTx}
-                        onClick={addTx}>+
-                </button>
             </div>
         </div>
     );

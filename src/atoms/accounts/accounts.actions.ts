@@ -3,6 +3,9 @@ import { UUID } from '../../models/common/common.types';
 import { Account } from '../../models/account/account.class';
 
 const NS = 'accounts';
+/**
+ * @deprecated
+ */
 export const chooseAccount = declareAction<UUID>(NS + ':chooseAccount');
 
 export const loadAccounts = declareAction(NS + ':loadAccounts');

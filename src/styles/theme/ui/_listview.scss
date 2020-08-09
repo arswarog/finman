@@ -15,6 +15,10 @@
   border-bottom: 1px solid $colorLine;
   line-height: 1.3em;
   text-align: left;
+  .text {
+    font-size: $fontSizeSub;
+    color: $colorHeading !important;
+  }
   .text-muted {
     font-size: $fontSizeSub;
     color: $colorLight !important;

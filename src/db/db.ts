@@ -7,7 +7,7 @@ import { initialCategories } from './data/initialCategories';
 import { CategoriesScheme } from './schemes/categories.scheme';
 
 export const db = new IndexedDB(
-    'test',
+    'finman',
     [
         CategoriesScheme,
         AccountScheme,

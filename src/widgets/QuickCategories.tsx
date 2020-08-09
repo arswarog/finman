@@ -4,7 +4,7 @@ import React from 'react';
 import { ICategory } from '../models/category/category.types';
 import { TransactionType } from '../models/transaction/transaction.types';
 import { Link, paths } from '../routes';
-import { IAccount } from '../models/account/account.types';
+import { AccountGrip } from '../models/account-grip/grip.class';
 
 const QuickCategoriesBox = styled.div`
   display: flex;
@@ -18,10 +18,17 @@ const QuickCategoriesBox = styled.div`
 `;
 
 interface IProps {
-    account: IAccount;
+    grip: AccountGrip;
 }
 
-export const QuickCategories = ({account}: IProps) => {
+export const QuickCategories = ({grip}: IProps) => {
+    if (!grip)
+        return (
+            <div className="alert alert-outline-dark mt-2" role="alert">
+                No data
+            </div>
+        )
+
     const categories: ICategory[] = [
         {
             id: '0000-111',
@@ -98,7 +105,7 @@ export const QuickCategories = ({account}: IProps) => {
         <QuickCategoriesBox>
             {categories.map(category =>
                 <Link to={paths.transactions.add({
-                    account: account.id,
+                    account: grip.id,
                     category: category.id,
                 })}>
                     <CategoryIcon category={category} size={'large'}/>

@@ -3,31 +3,31 @@ import { useAction } from '@reatom/react';
 import { Accounts } from '../atoms/accounts/accounts.atom';
 import { Header } from '../components/Header';
 import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
-import { chooseAccount } from '../atoms/accounts/accounts.actions';
 import { useAtom } from '../store/reatom';
 import { Main } from '../ui-kit/Main';
 import { GripQuickDetails } from '../widgets/GripQuickDetails';
-import { CategoriesList } from '../widgets/CategoriesList';
 import { QuickCategories } from '../widgets/QuickCategories';
 import { AccountWidget } from '../widgets/AccountWidget';
+import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
+import { chooseAccountGrip } from '../atoms/account-grips/account-grips.actions';
+import { LastMonthsList } from '../widgets/LastMonthsList';
 
 export const AccountsPage = () => {
-    const current = useAtom(Accounts, state => state.current, []);
-    const accounts = useAtom(Accounts, state => state.accounts, []);
-    const chooseAccountHandler = useAction(id => id === 'create' ? null : chooseAccount(id));
+    const {current, accounts} = useAtom(AccountGrips);
+    const chooseAccountHandler = useAction(id => id === 'create' ? null : chooseAccountGrip(id));
     const list = Array.from(accounts.values());
 
     if (!accounts.size)
         return (
             <>
-                <Header title={`Accounts`}/>
+                <Header title={`Wallets`}/>
                 Loading...
             </>
         );
 
     return (
         <>
-            <Header title={`Accounts`}/>
+            <Header title={`Wallets`}/>
             <Main>
                 <SwipeWidget current={current?.id || ''}
                              showButtons
@@ -41,9 +41,9 @@ export const AccountsPage = () => {
                     {/*    <CreateAccountWidget/>*/}
                     {/*</SwipeItemWidget>*/}
                 </SwipeWidget>
-                <GripQuickDetails/>
-                <QuickCategories account={current}/>
-                <CategoriesList/>
+                <GripQuickDetails grip={current}/>
+                <QuickCategories grip={current}/>
+                <LastMonthsList grip={current}/>
             </Main>
         </>
     );

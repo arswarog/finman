@@ -1,12 +1,16 @@
 import React from 'react';
-import { Icon, Icons } from '../ui-kit/Icon';
 import { CategoryIcon } from '../components/CategoryIcon';
 import { ICategory } from '../models/category/category.types';
 import { TransactionType } from '../models/transaction/transaction.types';
 import { Money } from '../models/money/money.class';
 import { MoneyView } from '../components/MoneyView';
+import { AccountGrip } from '../models/account-grip/grip.class';
 
-export const CategoriesList = () => {
+interface IProps {
+    account: AccountGrip;
+}
+
+export const CategoriesList = ({account}: IProps) => {
     const categories: (ICategory & { amount: Money })[] = [
         {
             id: '0000-111',

@@ -8,6 +8,7 @@ import {
 import { AccountScheme } from '../schemes';
 import { Account } from '../../models/account/account.class';
 import { loadCategories } from '../../atoms/categories/categories.actions';
+import { chooseAccountGrip } from '../../atoms/account-grips/account-grips.actions';
 
 const CURRENT_ACCOUNT_KEY = 'currentAccount';
 
@@ -24,10 +25,13 @@ addActionHandler(loadAccounts, (_, store) => {
 
             const accounts = result.map(Account.fromJSON);
 
+            const currentID = localStorage.getItem(CURRENT_ACCOUNT_KEY);
+
             store.dispatch(loadAccountsSuccess({
-                current: localStorage.getItem(CURRENT_ACCOUNT_KEY),
                 accounts,
             }));
+
+            store.dispatch(chooseAccountGrip(currentID));
         },
         error => store.dispatch(loadAccountsFailed(error)),
     );

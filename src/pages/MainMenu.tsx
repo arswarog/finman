@@ -1,13 +1,12 @@
 import React from 'react';
 import { Header } from '../components/Header';
 import { Main } from '../ui-kit/Main';
-import { Icon, Icons } from '../ui-kit/Icon';
-import { SectionTitle } from '../ui-kit/Section';
+import { paths } from '../routes';
 
 export const MainMenu = () => {
     return (
         <>
-            <Header title="Menu"/>
+            <Header title="Menu" back/>
             <Main>
                 <div className="listview-title mt-1">Storage</div>
                 <ul className="listview image-listview text inset"

@@ -34,7 +34,7 @@ export const AccountMonthsPage = () => {
 
     // create handlers
     const changeMonth = useCallback((newMonthNum) => {
-        history.replace(paths.account.months(account.id, newMonthNum));
+        history.replace(paths.account.month(account.id, newMonthNum));
     }, [account, history]);
 
     const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);
@@ -70,7 +70,7 @@ export const AccountMonthsPageDisplay = ({account, month}: IPropsDisplay) => {
 
     // create handlers
     const changeMonth = useCallback((newMonthNum) => {
-        history.replace(paths.account.months(account.id, newMonthNum));
+        history.replace(paths.account.month(account.id, newMonthNum));
     }, [account, history]);
 
     const loadMonth = useAction(id => id ? loadMonths([id]) : null, []);

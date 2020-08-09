@@ -2,12 +2,13 @@ import { RouteProps } from 'react-router';
 import { AccountsPage } from '../pages/AccountsPage';
 import { AccountMonthsPage } from '../pages/AccountMonthsPage';
 import { baseUrl } from './config';
+import { MonthDate } from '../models/common/date.types';
 
 export const account = {
     list: () => `${baseUrl}/accounts`,
     view: (account = ':account') => `${baseUrl}/accounts/${account}`,
     monthsList: (account = ':account') => `${baseUrl}/accounts/${account}/months`,
-    months: (account = ':account', month = ':month') => `${baseUrl}/accounts/${account}/months/${month}`,
+    month: (account = ':account', month: MonthDate = ':month') => `${baseUrl}/accounts/${account}/months/${month}`,
 };
 
 export const accountsRoutes: RouteProps[] = [
@@ -22,7 +23,7 @@ export const accountsRoutes: RouteProps[] = [
         component: AccountsPage,
     },
     {
-        path: account.months(),
+        path: account.month(),
         component: AccountMonthsPage,
     },
     {
