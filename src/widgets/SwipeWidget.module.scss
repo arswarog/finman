@@ -1,5 +1,6 @@
 .swipeWidget {
   position: relative;
+  margin-top: 12px;
 
   .prev, .next {
     display: block;
@@ -45,6 +46,8 @@
   top: 0;
   float: left;
   width: 100%;
+  box-sizing: border-box;
+  padding: 0;
   position: relative;
   overflow: hidden;
 }

@@ -1,21 +1,15 @@
 import React from 'react';
 import { useAction } from '@reatom/react';
-import { MoneyView } from '../components/MoneyView';
-import styles from './AccountsPage.module.scss';
 import { Accounts } from '../atoms/accounts/accounts.atom';
-import { useHistory } from 'react-router';
-import { paths } from '../routes';
 import { Header } from '../components/Header';
 import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
-import { Account } from '../models/account/account.class';
 import { chooseAccount } from '../atoms/accounts/accounts.actions';
 import { useAtom } from '../store/reatom';
-import { DetailsMain } from '../components/DetailsMainButton';
-import { getMonthName } from '../models/dates';
-
-interface IParams {
-    account?: string;
-}
+import { Main } from '../ui-kit/Main';
+import { GripQuickDetails } from '../widgets/GripQuickDetails';
+import { CategoriesList } from '../widgets/CategoriesList';
+import { QuickCategories } from '../widgets/QuickCategories';
+import { AccountWidget } from '../widgets/AccountWidget';
 
 export const AccountsPage = () => {
     const current = useAtom(Accounts, state => state.current, []);
@@ -34,7 +28,7 @@ export const AccountsPage = () => {
     return (
         <>
             <Header title={`Accounts`}/>
-            <main className={styles.accountPage + ' noselect'}>
+            <Main>
                 <SwipeWidget current={current?.id || ''}
                              showButtons
                              onChange={chooseAccountHandler as ((key: any) => void)}>
@@ -43,41 +37,14 @@ export const AccountsPage = () => {
                             <AccountWidget account={account}/>
                         </SwipeItemWidget>
                     ))}
-                    {/*<SwipeItemWidget key="create"> FIXME*/}
-                    {/*    Create account*/}
+                    {/*<SwipeItemWidget key="create">*/}
+                    {/*    <CreateAccountWidget/>*/}
                     {/*</SwipeItemWidget>*/}
                 </SwipeWidget>
-                <DetailsMain.List cover>
-                    <DetailsMain.Button title={`Expenses in ${getMonthName(current.head?.month)}`}
-                                        link={paths.account.monthsList(current.id)}
-                                        amount={current.head?.summary.expense}/>
-                    <DetailsMain.Button title={`Incomes in ${getMonthName(current.head?.month)}`}
-                                        link={paths.account.monthsList(current.id)}
-                                        amount={current.head?.summary.income}/>
-                </DetailsMain.List>
-            </main>
+                <GripQuickDetails/>
+                <QuickCategories account={current}/>
+                <CategoriesList/>
+            </Main>
         </>
-    );
-};
-
-
-export const AccountWidget = ({account}: { account: Account }) => {
-    const history = useHistory();
-
-    function addTx() {
-        history.push(paths.transactions.add({account: account.id}));
-    }
-
-    return (
-        <div className={styles.accountWidget + ' ' + styles.accountStyle_blue}>
-            <div className={styles.name}>{account.name}</div>
-            <div className={styles.balance}>
-                <h5>Balance:</h5>
-                <MoneyView money={account.balance}/>
-            </div>
-            <button className={styles.addTx}
-                    onClick={addTx}>+
-            </button>
-        </div>
     );
 };

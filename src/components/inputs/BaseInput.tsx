@@ -1,4 +1,4 @@
-import { Icon } from '../Icon';
+import { Icon } from '../../ui-kit/Icon';
 import React, { MutableRefObject, ReactHTMLElement, useCallback, useEffect, useRef, useState } from 'react';
 import { Field, RenderableProps, useField, UseFieldConfig } from 'react-final-form';
 

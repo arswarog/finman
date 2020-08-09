@@ -5,9 +5,9 @@ import { addTransaction } from '../models/transaction/transaction.actions';
 import { useLocation } from 'react-router';
 import { Header } from '../components/Header';
 import { TransactionForm } from '../widgets/TransactionForm';
-import { Section } from '../components/Section';
-import { Card } from '../components/Card';
-import { Main } from '../components/Main';
+import { Section } from '../ui-kit/Section';
+import { Card } from '../ui-kit/Card';
+import { Main } from '../ui-kit/Main';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
@@ -36,7 +36,7 @@ export const TransactionAddPage = () => {
         <>
             <Header title="Add transaction"/>
             <Main>
-                <Section title="Add transaction">
+                <Section full title="Add transaction">
                     <Card>
                         <TransactionForm value={data}
                                          onSubmit={submitHandler}

@@ -1,9 +1,9 @@
 import React from 'react';
 import styles from './LicensesPage.module.scss';
 import { Header } from '../components/Header';
-import { Main } from '../components/Main';
-import { Section } from '../components/Section';
-import { Card } from '../components/Card';
+import { Main } from '../ui-kit/Main';
+import { Section } from '../ui-kit/Section';
+import { Card } from '../ui-kit/Card';
 
 interface IProps {
     link: string;

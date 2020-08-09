@@ -3,11 +3,10 @@ import { TransactionAddPage } from '../pages/TransactionAddPage';
 import { TransactionsPage } from '../pages/TransactionsPage';
 import { addQueryString, baseUrl } from './config';
 import { UUID } from '../models/common/common.types';
+import { IAddTransactionForm } from '../models/transaction/transaction.types';
 
 export const transactions = {
-    add: (params?: {
-        account?: UUID;
-    }) => `${baseUrl}/transaction/add` + addQueryString(params),
+    add: (params?: Partial<IAddTransactionForm>) => `${baseUrl}/transaction/add` + addQueryString(params),
     list: () => `${baseUrl}/transactions`,
 };
 

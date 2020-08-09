@@ -56,21 +56,21 @@ export const SwipeWidget = ({showButtons, children, onChange, current}: IProps) 
             </Swipe>
             {prev && <div className={styles.prev}
                           onClick={moveToPrev}>
-                <svg width="24" height="24"
-                     xmlns="http://www.w3.org/2000/svg"
-                     fillRule="evenodd"
-                     clipRule="evenodd">
-                    <path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/>
-                </svg>
+                {/*<svg width="24" height="24"*/}
+                {/*     xmlns="http://www.w3.org/2000/svg"*/}
+                {/*     fillRule="evenodd"*/}
+                {/*     clipRule="evenodd">*/}
+                {/*    <path d="M20 .755l-14.374 11.245 14.374 11.219-.619.781-15.381-12 15.391-12 .609.755z"/>*/}
+                {/*</svg>*/}
             </div>}
             {next && <div className={styles.next}
                           onClick={moveToNext}>
-                <svg width="24" height="24"
-                     xmlns="http://www.w3.org/2000/svg"
-                     fillRule="evenodd"
-                     clipRule="evenodd">
-                    <path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/>
-                </svg>
+                {/*<svg width="24" height="24"*/}
+                {/*     xmlns="http://www.w3.org/2000/svg"*/}
+                {/*     fillRule="evenodd"*/}
+                {/*     clipRule="evenodd">*/}
+                {/*    <path d="M4 .755l14.374 11.245-14.374 11.219.619.781 15.381-12-15.391-12-.609.755z"/>*/}
+                {/*</svg>*/}
             </div>}
         </div>
     );

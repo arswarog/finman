@@ -437,12 +437,15 @@
     text-transform: uppercase;
     display: block;
     font-weight: $medium;
+    text-align: left;
   }
   .in{
     .card-number{
       font-size: $fontSizeHeading;
       letter-spacing: 3px;
       font-weight: $medium;
+      text-align: left;
+      text-transform: uppercase;
     }
     .card-expiry{
       font-size: 14px;

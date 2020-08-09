@@ -1,0 +1,62 @@
+
+.accountWidget {
+  height: 200px;
+  position: relative;
+
+  background-color: var(--light-gray);
+
+  padding: 10px 40px;
+
+  h5 {
+    text-align: left;
+    font-size: 0.3em;
+
+    margin-block-start: 0.5em;
+    margin-block-end: 0;
+  }
+
+  .name {
+    text-align: left;
+    margin: 20px 0 27px;
+  }
+
+  .balance {
+    text-align: left;
+    font-size: 2em;
+  }
+
+  .addTx {
+    position: absolute;
+    top: 80px;
+    right: 50px;
+
+    width: 50px;
+    height: 50px;
+
+    border-radius: 50%;
+    border: 2px solid var(--gray);
+
+    outline: 0 !important;
+  }
+}
+
+
+.accountStyle {
+  &_blue {
+    background: hsla(229, 61%, 87%, 1);
+    background: linear-gradient(90deg,
+            hsla(229, 100%, 55%, 0.5) 0%,
+            hsla(229, 86%, 66%, 0.5) 35%,
+            hsla(229, 61%, 87%, 0.5) 100%
+    );
+  }
+
+  &_green {
+    background: hsla(47, 61%, 87%, 1);
+    background: linear-gradient(90deg,
+            hsla(47, 100%, 55%, 0.5) 0%,
+            hsla(47, 86%, 66%, 0.5) 35%,
+            hsla(47, 61%, 87%, 0.5) 100%
+    );
+  }
+}

@@ -27,9 +27,11 @@ export const SectionTitle = styled.h3`
   margin: 0;
 `;
 
-export const Section = ({full, title, children}: IProps) => (
-    <SectionContainer full={full}>
-        <SectionTitle full={full}>{title}</SectionTitle>
-        {children}
-    </SectionContainer>
-);
+export const Section = ({full, title, children}: IProps) => {
+    return (
+        <SectionContainer full={full}>
+            <SectionTitle full={full}>{title}</SectionTitle>
+            {children}
+        </SectionContainer>
+    );
+};

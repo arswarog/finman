@@ -1,7 +1,7 @@
 import React from 'react';
 import { paths, NavLink } from '../routes';
 import styles from './NavBar.module.scss';
-import { Icon, Icons } from '../components/Icon';
+import { Icon, Icons } from '../ui-kit/Icon';
 
 export const NavBar = () => {
     return (

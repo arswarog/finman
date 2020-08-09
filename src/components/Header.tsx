@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './Header.module.scss';
-import { Icon } from './Icon';
+import { Icon } from '../ui-kit/Icon';
 
 interface IParams {
     title: string;

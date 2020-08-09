@@ -1,8 +1,8 @@
 import React from 'react';
 import { Header } from '../components/Header';
-import { Main } from '../components/Main';
-import { Icon, Icons } from '../components/Icon';
-import { SectionTitle } from '../components/Section';
+import { Main } from '../ui-kit/Main';
+import { Icon, Icons } from '../ui-kit/Icon';
+import { SectionTitle } from '../ui-kit/Section';
 
 export const MainMenu = () => {
     return (
@@ -10,7 +10,8 @@ export const MainMenu = () => {
             <Header title="Menu"/>
             <Main>
                 <div className="listview-title mt-1">Storage</div>
-                <ul className="listview image-listview text inset">
+                <ul className="listview image-listview text inset"
+                    style={{marginLeft: '0', marginRight: '0'}}>
                     <li>
                         <div className="item">
                             <div className="in">

@@ -7,7 +7,7 @@ export interface ICategory {
     id: UUID;
     name: string;
     defaultTxType: DefaultTransactionType;
-    image: string;
+    image: string; // todo rename to icon
     parent: UUID | null;
     isInitial?: boolean;
 }

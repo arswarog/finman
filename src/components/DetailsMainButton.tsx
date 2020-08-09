@@ -78,14 +78,14 @@ const Button = (props: IDetailsMainButton) => {
 };
 
 interface IListProps {
-    children: ReactNode[];
+    children: ReactNode;
     cover?: boolean;
 }
 
 const List = ({children, cover}: IListProps) => {
-    const items = children.flat() as ReactElement[];
+    // const items = children.flat() as ReactElement[];
     return <div className={[styles.list, cover && styles.list_cover].join(' ')}>
-        {items}
+        {children}
     </div>;
 };
 

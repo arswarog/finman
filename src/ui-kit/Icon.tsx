@@ -18,14 +18,15 @@ IonIcons.addIcons(IconRegistry);
 interface IProps {
     name: string;
     className?: string;
+    size?: string;
 }
 
-export const Icon = ({icon, name, className}: IProps & any) => {
+export const Icon = ({icon, name, className, size}: IProps & any) => {
     className = className || 'icon';
     if (!icon && name) {
         if (!IconRegistry[name])
             throw new Error(`Icon "${name}" not loaded`);
         icon = IconRegistry[name];
     }
-    return <IonIcon mode="ios" icon={icon} className={className}/>;
+    return <IonIcon mode="ios" icon={icon} className={className} size={size}/>;
 };
