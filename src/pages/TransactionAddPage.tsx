@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { IAddTransactionForm, TransactionType } from '../models/transaction/transaction.types';
 import { store } from '../store/store';
 import { addTransaction } from '../models/transaction/transaction.actions';
-import { useLocation } from 'react-router';
+import { useHistory, useLocation } from 'react-router';
 import { Header } from '../components/Header';
 import { TransactionForm } from '../widgets/TransactionForm';
 import { Section } from '../ui-kit/Section';
@@ -10,12 +10,15 @@ import { Card } from '../ui-kit/Card';
 import { Main } from '../ui-kit/Main';
 import { useAtom } from '../store/reatom';
 import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
-import { paths } from '../routes';
+import { Accounts } from '../atoms/accounts/accounts.atom';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
+    const history = useHistory();
 
     const {current: currentAccount} = useAtom(AccountGrips);
+    const {accounts} = useAtom(Accounts);
+    const categories = currentAccount ? Array.from(currentAccount.categories.values()) : [];
 
     const [data, setData] = useState({
         type: params.get('type')
@@ -33,6 +36,7 @@ export const TransactionAddPage = () => {
         console.log(data);
         setData(data);
         store.dispatch(addTransaction(data));
+        history.goBack();
     };
 
     function validate(data: IAddTransactionForm) {
@@ -52,6 +56,8 @@ export const TransactionAddPage = () => {
                         <TransactionForm value={data}
                                          onSubmit={submitHandler}
                                          validate={validate}
+                                         accounts={Array.from(accounts.values())}
+                                         categories={categories}
                         />
                     </Card>
                 </Section>
