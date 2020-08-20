@@ -8,6 +8,7 @@ import { IAccount } from '../account/account.types';
 import { Set, Map } from 'immutable';
 
 export interface ITransactionGrip {
+    id: UUID;
     date: DayDate;
     /**
      * Изменение баланса в рамках набора данных

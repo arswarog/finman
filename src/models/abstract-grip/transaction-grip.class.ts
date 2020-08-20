@@ -6,8 +6,10 @@ import { IAccount } from '../account/account.types';
 import { ICategory } from '../category/category.types';
 import { Money } from '../money/money.class';
 import { TagName } from '../tag/tag.types';
+import { UUID } from '../common/common.types';
 
 export class TransactionGrip implements ITransactionGrip {
+    id: UUID;
     account: IAccount;
     amount: Money;
     category: ICategory;

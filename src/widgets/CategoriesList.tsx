@@ -7,10 +7,10 @@ import { MoneyView } from '../components/MoneyView';
 import { AccountGrip } from '../models/account-grip/grip.class';
 
 interface IProps {
-    account: AccountGrip;
+    grip: AccountGrip;
 }
 
-export const CategoriesList = ({account}: IProps) => {
+export const CategoriesList = ({grip}: IProps) => {
     const categories: (ICategory & { amount: Money })[] = [
         {
             id: '0000-111',

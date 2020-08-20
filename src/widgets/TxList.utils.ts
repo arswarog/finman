@@ -3,6 +3,7 @@ import { format } from 'date-fns';
 import { Money } from '../models/money/money.class';
 import { DayDate } from '../models/common/date.types';
 import { ITransactionGrip } from '../models/abstract-grip/grip.types';
+import { UUID } from '../models/common/common.types';
 
 export interface IDisplayedTransaction extends ITransactionGrip {
     first: string;

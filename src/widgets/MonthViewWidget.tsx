@@ -27,28 +27,42 @@ export const MonthViewHeadWidget = ({brief}: IProps) => {
     const expensePercent = brief.expense.subunits / totalSum * circumference;
 
     return (
-        <div className={styles.head}>
-            <h3 className={styles.title}>{format(new Date(brief.month), 'MMMM yyyy')}</h3>
-            <div className={styles.info}>
-                <div className={styles.circle}>
-                    <svg width="160" height="160">
-                        <circle transform="rotate(-90)"
-                                r="72" cx="-80" cy="80"/>
-                        <circle className="income"
-                                transform="rotate(-90)"
-                                r="72" cx="-80" cy="80"
-                                stroke="30bae7"
-                                strokeDasharray={[incomePercent, circumference].join(' ')}/>
-                        <circle className="expense"
-                                transform="rotate(-90)"
-                                r="72" cx="-80" cy="80"
-                                strokeDasharray={[0, incomePercent, expensePercent, circumference].join(' ')}/>
-                    </svg>
-                    <h4 className={styles.balance}><MoneyView money={brief.balance}/></h4>
-                    <div>+<MoneyView money={brief.income}/></div>
-                    <div>-<MoneyView money={brief.expense}/></div>
+        <div className="section">
+            <div className="card">
+                <div className="card-header">
+                    {format(new Date(brief.month), 'MMMM yyyy')}
+                </div>
+                <div className="card-body">
+                    <div className={styles.head}>
+                        <div className={styles.info}>
+                            <div className={styles.circle}>
+                                <svg width="160" height="160">
+                                    <circle transform="rotate(-90)"
+                                            r="72" cx="-80" cy="80"/>
+                                    <circle className="income"
+                                            transform="rotate(-90)"
+                                            r="72" cx="-80" cy="80"
+                                            stroke="30bae7"
+                                            strokeDasharray={[incomePercent, circumference].join(' ')}/>
+                                    <circle className="expense"
+                                            transform="rotate(-90)"
+                                            r="72" cx="-80" cy="80"
+                                            strokeDasharray={[0, incomePercent, expensePercent, circumference].join(' ')}/>
+                                </svg>
+                                <h4 className={styles.balance}><MoneyView money={brief.balance}/></h4>
+                                <div>+<MoneyView money={brief.income}/></div>
+                                <div>-<MoneyView money={brief.expense}/></div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
+        </div>
+    );
+
+    return (
+        <div className={styles.head}>
+            {/*<h3 className={styles.title}>{format(new Date(brief.month), 'MMMM yyyy')}</h3>*/}
         </div>
     );
 };

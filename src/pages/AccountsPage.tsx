@@ -11,6 +11,7 @@ import { AccountWidget } from '../widgets/AccountWidget';
 import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
 import { chooseAccountGrip } from '../atoms/account-grips/account-grips.actions';
 import { LastMonthsList } from '../widgets/LastMonthsList';
+import { CategoriesList } from '../widgets/CategoriesList';
 
 export const AccountsPage = () => {
     const {current, accounts} = useAtom(AccountGrips);

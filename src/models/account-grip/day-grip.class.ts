@@ -19,6 +19,7 @@ export class AccountDayGrip extends AbstractDayGrip {
                 throw new Error(`Category "${tx.category || 'default'}" not found`);
 
             const grip = {
+                id: tx.id,
                 account,
                 amount: tx.amount,
                 changeAmount: tx.amount,

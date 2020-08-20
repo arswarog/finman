@@ -12,18 +12,24 @@
     position: relative;
 
     .circle {
+      box-sizing: border-box;
       margin: 20px auto;
       padding: 20px;
 
-      width: 120px;
-      height: 120px;
+      width: 160px;
+      height: 160px;
 
       border-radius: 50%;
       background-color: #f0f0f0;
+      text-align: center;
 
       .balance {
         margin: 18px 0;
         font-size: 1.4em;
+      }
+
+      > div {
+        padding-right: 6px;
       }
 
       svg {

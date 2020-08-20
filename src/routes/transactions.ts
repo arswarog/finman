@@ -6,8 +6,9 @@ import { UUID } from '../models/common/common.types';
 import { IAddTransactionForm } from '../models/transaction/transaction.types';
 
 export const transactions = {
-    add: (params?: Partial<IAddTransactionForm>) => `${baseUrl}/transaction/add` + addQueryString(params),
     list: () => `${baseUrl}/transactions`,
+    add: (params?: Partial<IAddTransactionForm>) => `${baseUrl}/transaction/add` + addQueryString(params),
+    view: (txId: UUID) => `${baseUrl}`,
 };
 
 export const transactionRoutes: RouteProps[] = [

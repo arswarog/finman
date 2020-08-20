@@ -15,6 +15,7 @@ import { MonthGrips } from '../atoms/month-grips/month-grips.atom';
 import { IMonthGripBrief } from '../models/abstract-grip/grip.types';
 import { IAccount } from '../models/account/account.types';
 import { AccountGrip } from '../models/account-grip/grip.class';
+import { Main } from '../ui-kit/Main';
 
 interface IParams {
     account: string;
@@ -97,8 +98,8 @@ export const AccountMonthsPageDisplay = ({account, month}: IPropsDisplay) => {
     // render
     return (
         <>
-            <Header title={`Account ${account.name}`}/>
-            <main className={styles.main + ' noselect'}>
+            <Header back title={`Account ${account.name}`}/>
+            <Main className={styles.main + ' noselect'}>
                 <SwipeWidget onChange={changeMonth}
                              current={monthBrief.month}
                              showButtons>
@@ -111,7 +112,7 @@ export const AccountMonthsPageDisplay = ({account, month}: IPropsDisplay) => {
                     ))}
                 </SwipeWidget>
                 <MonthTxList month={currentMonth}/>
-            </main>
+            </Main>
         </>
     );
 };

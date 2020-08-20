@@ -2,6 +2,7 @@ import React from 'react';
 import { MoneyView } from '../components/MoneyView';
 import { IGrip } from '../models/abstract-grip/grip.types';
 import { Link, paths } from '../routes';
+import format from "date-fns/format";
 
 interface IProps {
     grip: IGrip;
@@ -15,7 +16,7 @@ export const LastMonthsList = ({grip}: IProps) => {
             </div>
         )
 
-    const months = grip.months.slice(1, 4);
+    const months = grip.months.slice(0, 4);
 
     if (!months.length)
         return null;
@@ -32,7 +33,7 @@ export const LastMonthsList = ({grip}: IProps) => {
             {months.map(month => (
                 <li>
                     <Link to={paths.account.month(grip.id, month.month)} className="item">
-                        Balance on {month.month}
+                        Balance on {format(new Date(month.month), 'MMMM yyyy')}
                         <span className="text"><MoneyView money={month.balanceOnEnd}/></span>
                     </Link>
                 </li>
