@@ -8,6 +8,7 @@ import { DayDate } from '../models/common/date.types';
 import { TransactionGrip } from '../models/abstract-grip/transaction-grip.class';
 import { CategoryIcon } from '../components/CategoryIcon';
 import { Link, paths } from '../routes';
+import { dayDateToMonth } from '../models/common/date.utils';
 
 interface IProps {
     list: TransactionGrip[];
@@ -21,7 +22,7 @@ export const TxList = React.memo(({list, dayDate}: IProps) => {
         <ul className="listview image-listview inset">
             {txList.map((tx, index) => (
                 <li>
-                    <Link to={paths.transactions.view(tx.id)} className="item">
+                    <Link to={paths.transactions.view(tx.account.id, tx.date, tx.id)} className="item">
                         <div className="icon-box">
                             <CategoryIcon category={tx.category}/>
                         </div>

@@ -10,6 +10,7 @@ import { Money } from '../money/money.class';
 
 describe('AccountMonthGrip class', () => {
     const account = Account.create('test', 'acc1');
+    const accountGrip = Account.create('test', 'acc1');
 
     const catDefault: ICategory = {
         id: 'default',
