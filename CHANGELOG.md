@@ -1,3 +1,10 @@
+## 0.3.0 (2020-08-22)
+
+* fix(header): remove unused code 36d5deb
+* feat(tx view page): create transaction view page 4ea8592
+
+
+
 ## <small>0.2.1 (2020-08-22)</small>
 
 * fix(month view): use new design to month view page 1e2d330, closes #10
