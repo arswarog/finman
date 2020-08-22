@@ -1,3 +1,10 @@
+## <small>0.2.1 (2020-08-22)</small>
+
+* fix(month view): use new design to month view page 1e2d330, closes #10
+* fix(tx add form): make working interface e9bcbd4, closes #12
+
+
+
 ## 0.2.0 (2020-08-18)
 
 * fix: enable service worker, fix account months page loader, use hash history 6a0cae4
