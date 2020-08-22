@@ -1,16 +1,15 @@
-import React, { useCallback } from 'react';
+import React, { ReactNode, useCallback } from 'react';
 
-import styles from './Header.module.scss';
 import { Icon } from '../ui-kit/Icon';
-import { Link } from '../routes';
 import { useHistory } from 'react-router';
 
 interface IParams {
     title: string;
     back?: string | boolean;
+    children?: ReactNode;
 }
 
-export const Header = ({title, back}: IParams) => {
+export const Header = ({title, back, children}: IParams) => {
     const history = useHistory();
 
     const onClick = useCallback(() => {
@@ -33,15 +32,8 @@ export const Header = ({title, back}: IParams) => {
             }
             <div className="pageTitle">{title}</div>
             <div className="right">
+                {children}
             </div>
         </div>
-    );
-};
-
-export const HeaderOld = ({title}: IParams) => {
-    return (
-        <header className={styles.header}>
-            <h1 className={styles.title}>{title}</h1>
-        </header>
     );
 };
