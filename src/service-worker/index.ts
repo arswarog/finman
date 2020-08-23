@@ -1,3 +1,9 @@
+/**
+ * Service Worker
+ * @packageDocumentation
+ * @module service-worker
+ */
+
 // export * from './application';
 export * from './serviceWorker';
 

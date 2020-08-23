@@ -1,0 +1,25 @@
+{
+  "mode": "modules",
+  "out": "generated-docs",
+  "theme": "pages-plugin",
+  "name": "4 wallet app",
+  "includeVersion": true,
+  "pages": {
+    "output": "docs",
+    "groups": [
+      {
+        "title": "Documentation",
+        "pages": [
+          {
+            "title": "Files",
+            "source": "./docs/files.md"
+          },
+          {
+            "title": "Categories",
+            "source": "./docs/categories.md"
+          }
+        ]
+      }
+    ]
+  }
+}

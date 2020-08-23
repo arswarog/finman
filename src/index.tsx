@@ -1,10 +1,18 @@
+/**
+ * This comment will be used as the summary for the "thing2" module.
+ *
+ * @packageDocumentation
+ * @module app-root
+ * @preferred
+ */
+
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { context } from '@reatom/react';
 import './styles/index.scss';
 import { App } from './App';
 import * as serviceWorker from './serviceWorker';
-import { store } from './store/store';
+import { store } from './store';
 
 ReactDOM.render(
     <React.StrictMode>

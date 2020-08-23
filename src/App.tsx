@@ -1,3 +1,8 @@
+/**
+ * @packageDocumentation
+ * @module app-root
+ */
+
 import React from 'react';
 import styles from './App.module.scss';
 import { Redirect, Route, Switch } from 'react-router';
@@ -5,7 +10,7 @@ import { HashRouter } from 'react-router-dom';
 import { NavBar } from './widgets/NavBar';
 import { useAction } from '@reatom/react';
 import { startListenOnlineStatus } from './atoms/client/client.service';
-import { store } from './store/store';
+import { store } from './store';
 import { initIndexedDB, useDBReady } from './db';
 import './sagas';
 import { sagaLauncher } from './sagas';
