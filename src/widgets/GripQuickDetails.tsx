@@ -32,7 +32,7 @@ export const GripQuickDetails = ({grip}: IProps) => {
             />,
         ],
         [
-            <StatBox title="Plane"
+            <StatBox title="Plan"
                      icon={Icons.calendarOutline}
                      {...planed}
             />,

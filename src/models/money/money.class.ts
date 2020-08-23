@@ -126,8 +126,11 @@ export class Money {
         return this.subunits === money.subunits;
     }
 
-    public getEntire(): string {
-        return Math.floor(this.subunits / 10 ** this.currency.precision).toString();
+    public getEntire(withSign: boolean = false): string {
+        const str = Math.floor(this.subunits / 10 ** this.currency.precision).toString();
+        return withSign && this.subunits > 0
+            ? '+' + str
+            : str;
     }
 
     public getFractional(): string {

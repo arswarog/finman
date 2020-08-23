@@ -33,8 +33,10 @@ export const LastMonthsList = ({grip}: IProps) => {
             {months.map(month => (
                 <li>
                     <Link to={paths.account.month(grip.id, month.month)} className="item">
-                        Balance on {format(new Date(month.month), 'MMMM yyyy')}
-                        <span className="text"><MoneyView money={month.balanceOnEnd}/></span>
+                        {format(new Date(month.month), 'MMMM yyyy')}
+                        <span className="text">
+                            <MoneyView money={month.balance} sign/>
+                        </span>
                     </Link>
                 </li>
             ))}
