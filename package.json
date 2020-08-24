@@ -71,8 +71,10 @@
     "sw:serve": "webpack --config ./webpack.sw.dev.config.js --progress --colors",
     "sw:build": "webpack --config ./webpack.sw.prod.config.js --progress --colors",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build",
-    "docs": "typedoc"
+    "deploy": "s3cmd --storage-class STANDARD put build/* s3://www.4wallet.app -r",
+    "docs": "typedoc",
+    "predocs:deploy": "npm run docs",
+    "docs:deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -89,5 +91,5 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://arswarog.ru/finman/"
+  "homepage": "https://4wallet.app/"
 }
