@@ -5,7 +5,7 @@ import { useHistory } from 'react-router';
 
 interface IParams {
     title: string;
-    back?: string | boolean;
+    back?: string | boolean | number;
     children?: ReactNode;
 }
 
@@ -17,6 +17,8 @@ export const Header = ({title, back, children}: IParams) => {
             return;
         if (back === true)
             return history.goBack();
+        if (typeof back === 'number')
+            return history.go(-back);
         history.replace(back);
     }, [history, back]);
 

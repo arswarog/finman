@@ -24,3 +24,12 @@ export type IInitialCategoryTree = Array<{
         image: string;
     }>
 }>
+
+export interface ICategoryForm {
+    id?: UUID;
+    accountId: UUID;
+    name: string;
+    defaultTxType: DefaultTransactionType;
+    image: string; // todo rename to icon
+    parent: UUID | null;
+}

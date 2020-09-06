@@ -34,12 +34,12 @@ export function useAtom<TI, TO = TI>(
     deps: any[] = [],
 ): TO {
     const store = useContext(context);
-    console.log('by forceUpdate', atom);
+    // console.log('by forceUpdate', atom);
     const forceUpdate = useForceUpdate();
     const value = selector(store.getState(atom));
     useEffect(() => {
         return store.subscribe(atom, state => {
-            console.log('new value', state, selector(state));
+            // console.log('new value', state, selector(state));
             forceUpdate();
         });
     }, [...deps, store, atom, forceUpdate, selector]);

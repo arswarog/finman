@@ -92,6 +92,7 @@ export const TxTypeField = ({types, ...props}: IProps) => {
     return (
         <BaseInput {...props} clearable={false}>
             {({input}) => types.map(type => <TxTypeCheckbox
+                key={type}
                 type={type}
                 value={input.value}
                 onChange={input.onChange}

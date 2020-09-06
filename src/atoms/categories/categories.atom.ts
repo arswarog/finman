@@ -23,8 +23,17 @@ export const Categories = declareAtom<ICategoriesState>(
             }),
         ],
         save: [
-            on(saveCategories, (state, months) => {
-                throw new Error('Not implemented');
+            on(saveCategories, (collection, block) => {
+                const tree = block.list
+                                  .filter(category => !category.parent)
+                                  .map(category => new RootCategory(category, block.list));
+
+                const list = tree.flatMap(parent => [parent, ...parent.children]);
+
+                const map = Map(list.map(category => [category.id, category]));
+
+                collection = collection.set(block.id, {block, tree, list, map}); // FIXME need create CategoriesBlocksAtom
+                return collection.set(block.account, {block, tree, list, map});
             }),
         ],
     }),

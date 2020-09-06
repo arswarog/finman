@@ -30,7 +30,7 @@ export const SectionTitle = styled.h3`
 export const Section = ({full, title, children}: IProps) => {
     return (
         <SectionContainer full={full}>
-            <SectionTitle full={full}>{title}</SectionTitle>
+            {title && <SectionTitle full={full}>{title}</SectionTitle>}
             {children}
         </SectionContainer>
     );

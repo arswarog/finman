@@ -28,10 +28,15 @@ const links: INavLink[] = [
         label: 'New item',
     },
     {
-        path: paths.menu(),
-        icon: Icons.ellipsisHorizontalOutline,
-        label: 'Menu',
+        path: paths.categories.list(),
+        icon: Icons.listOutline,
+        label: 'Categories',
     },
+    // {
+    //     path: paths.menu(),
+    //     icon: Icons.ellipsisHorizontalOutline,
+    //     label: 'Menu',
+    // },
 ];
 
 export const NavBar = () => {
