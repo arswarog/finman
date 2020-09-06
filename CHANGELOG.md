@@ -1,3 +1,15 @@
+## 0.4.0 (2020-09-06)
+
+* fix(account page): small fix money on main page c434f26
+* fix(categories): add parent to name and sort categories fe59799
+* fix(categories): set initial category list 859b0a0
+* fix(transactions/add): by default set today date 0f18dcc
+* feat(categories): creating and updating categories in current account 43d8584
+* ci: configure uploading to cloud storage 222d442
+* docs(typedoc): install and configure typedoc 9aaba31
+
+
+
 ## 0.3.0 (2020-08-22)
 
 * fix(header): remove unused code 36d5deb
