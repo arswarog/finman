@@ -11,6 +11,7 @@ import { Main } from '../ui-kit/Main';
 import { useAtom } from '../store/reatom';
 import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
 import { Accounts } from '../atoms/accounts/accounts.atom';
+import { getDayDate } from '../models/dates';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
@@ -27,7 +28,7 @@ export const TransactionAddPage = () => {
                 : TransactionType.Expense
             : TransactionType.Expense,
         amount: params.get('amount') || '', // todo use Money
-        date: params.get('date') || '2020-06-01', // todo use today
+        date: params.get('date') || getDayDate(),
         account: params.get('account') || currentAccount?.id || '',
         category: params.get('category') || 'default',
     } as IAddTransactionForm);
@@ -35,14 +36,19 @@ export const TransactionAddPage = () => {
     const submitHandler = (data: IAddTransactionForm) => {
         console.log(data);
         setData(data);
-        store.dispatch(addTransaction(data));
+        store.dispatch(addTransaction({
+            ...data,
+            account: currentAccount.id,
+        }));
         history.goBack();
     };
 
     function validate(data: IAddTransactionForm) {
         const errors: Partial<{ [key in keyof IAddTransactionForm]: string }> = {};
-        if (!data.account)
-            errors.account = 'Required';
+        // if (!data.account)
+        //     errors.account = 'Required';
+        console.log(data);
+        console.log(errors);
         return errors;
     }
 
