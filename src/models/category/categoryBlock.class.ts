@@ -5,6 +5,7 @@ import { Category } from './category.class';
 import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';
 import { ICategoriesBlock } from './categoryBlock.types';
+import { initialCategoriesToCategoryList } from './category.helper';
 
 /**
  * ID является хешем от данных, при любом изменении создается новый экземпляр с новым ID
@@ -30,26 +31,7 @@ export class CategoriesBlock implements ICategoriesBlock {
      * @param timestamp
      */
     public static createInitialBlock(account: UUID, initialsCategories: IInitialCategoryTree, timestamp: number): CategoriesBlock {
-        const list: Category [] = initialsCategories.flatMap(
-            parent => [
-                Category.createInitial(
-                    parent.name,
-                    parent.defaultType,
-                    null,
-                    parent.image,
-                    parent.id,
-                ),
-                ...parent.children.map(
-                    child => Category.createInitial(
-                        child.name,
-                        child.defaultType,
-                        parent.id,
-                        child.image,
-                        child.id,
-                    ),
-                ),
-            ],
-        );
+        const list: Category [] = initialCategoriesToCategoryList(initialsCategories);
 
         return new CategoriesBlock({
             account,
