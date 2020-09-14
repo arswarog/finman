@@ -1,12 +1,12 @@
 import { declareAtom } from '@reatom/core';
-import { Account } from '../../models/account/account.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
 import { Map } from 'immutable';
 import { UUID } from '../../models/common/common.types';
 import { chooseAccount, loadAccountsSuccess, saveAccount } from './accounts.actions';
 
 export interface IAccountsState {
-    current: Account | null;
-    accounts: Map<UUID, Account>;
+    current: AccountDTO | null;
+    accounts: Map<UUID, AccountDTO>;
 }
 
 export const Accounts = declareAtom<IAccountsState>(
@@ -30,7 +30,7 @@ export const Accounts = declareAtom<IAccountsState>(
         ],
         load: [
             on(loadAccountsSuccess, (state, {current, accounts}) => {
-                const list: Array<[string, Account]> = accounts.map(account => [account.id, account]);
+                const list: Array<[string, AccountDTO]> = accounts.map(account => [account.id, account]);
                 const map = Map(list);
                 return {
                     ...state,

@@ -1,4 +1,4 @@
-import { Month } from '../month/month-legacy.class';
+import { MonthLegacy } from '../month/month-legacy.class';
 import { isVersionOfMonth, updateMonthChain } from './chain.utils';
 import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';
@@ -10,7 +10,7 @@ describe('chain utils', () => {
     describe('updateChain', () => {
         describe('create new chain', () => {
             it('from 1 block', () => {
-                const first = Month.createFirstBlock(account, '2020-01', 1590915748404);
+                const first = MonthLegacy.createFirstBlock(account, '2020-01', 1590915748404);
 
                 const chain = updateMonthChain(first, [], []);
 
@@ -18,7 +18,7 @@ describe('chain utils', () => {
                 expect(chain[0].id).toBe(first.id);
             });
             it('from head and some blocks', () => {
-                const first = Month.createFirstBlock(account, '2020-01', 1590915748404);
+                const first = MonthLegacy.createFirstBlock(account, '2020-01', 1590915748404);
                 const second = first.createNextBlock('2020-02', 1590916683981);
                 const third = second.createNextBlock('2020-03', 1590916753742);
 
@@ -30,7 +30,7 @@ describe('chain utils', () => {
                 expect(chain[2].id).toBe(first.id);
             });
             it('from head and some need and not needs blocks', () => {
-                const first = Month.createFirstBlock(account, '2020-01', 1590915748404);
+                const first = MonthLegacy.createFirstBlock(account, '2020-01', 1590915748404);
                 const second = first.createNextBlock('2020-02', 1590916683981);
                 const third = second.createNextBlock('2020-03', 1590916753742);
 
@@ -41,17 +41,17 @@ describe('chain utils', () => {
                 expect(chain[1].id).toBe(first.id);
             });
             it('from head and without needed blocks, negative', () => {
-                const first = Month.createFirstBlock(account, '2020-01', 1590915748404);
+                const first = MonthLegacy.createFirstBlock(account, '2020-01', 1590915748404);
                 const second = first.createNextBlock('2020-02', 1590916683981);
                 const third = second.createNextBlock('2020-03', 1590916753742);
-                const another = Month.createFirstBlock(account, '2010-01', 1590916905020);
+                const another = MonthLegacy.createFirstBlock(account, '2010-01', 1590916905020);
 
                 expect(() => updateMonthChain(third, [second, another], []))
                     .toThrow(`Required months: ${first.id}`);
             });
         });
         describe('update', () => {
-            const oldFirst = Month.createFirstBlock(account, '2020-01', 1590915748404);
+            const oldFirst = MonthLegacy.createFirstBlock(account, '2020-01', 1590915748404);
             const oldSecond = oldFirst.createNextBlock('2020-02', 1590916683981);
             const oldThird = oldSecond.createNextBlock('2020-03', 1590916753742)
                                       .updateDay(Day.create('2020-03-01')
@@ -118,13 +118,13 @@ describe('chain utils', () => {
                     prevVersions: [oldThird.id],
                 }); // TODO
                 Object.assign(head, {
-                    id: Month.generateID(head, oldThird.dataHash),
+                    id: MonthLegacy.generateID(head, oldThird.dataHash),
                 });
 
-                const another = Month.createFirstBlock(account, '2010-01', 1590916905020);
+                const another = MonthLegacy.createFirstBlock(account, '2010-01', 1590916905020);
 
                 const chain = updateMonthChain(
-                    Month.getBrief(head),
+                    MonthLegacy.getBrief(head),
                     [
                         second, // needs
                         another, // no needs
@@ -133,8 +133,8 @@ describe('chain utils', () => {
                 );
 
                 expect(chain).toEqual([
-                    Month.getBrief(head),
-                    Month.getBrief(second),
+                    MonthLegacy.getBrief(head),
+                    MonthLegacy.getBrief(second),
                     oldFirst.getBrief(),
                 ]);
             });
@@ -148,13 +148,13 @@ describe('chain utils', () => {
                     prevVersions: [oldThird.id],
                 }); // TODO
                 Object.assign(head, {
-                    id: Month.generateID(head, oldThird.dataHash),
+                    id: MonthLegacy.generateID(head, oldThird.dataHash),
                 });
 
-                const another = Month.createFirstBlock(account, '2010-01', 1590916905020);
+                const another = MonthLegacy.createFirstBlock(account, '2010-01', 1590916905020);
 
                 const chain = updateMonthChain(
-                    Month.getBrief(head),
+                    MonthLegacy.getBrief(head),
                     [
                         second, // needs
                         oldFirst, // exists
@@ -164,8 +164,8 @@ describe('chain utils', () => {
                 );
 
                 expect(chain).toEqual([
-                    Month.getBrief(head),
-                    Month.getBrief(second),
+                    MonthLegacy.getBrief(head),
+                    MonthLegacy.getBrief(second),
                     oldFirst.getBrief(),
                 ]);
             });
@@ -177,7 +177,7 @@ describe('chain utils', () => {
                 const head = Object.assign({}, oldThird, {prevMonths: [second.id]}); // TODO
 
                 expect(() => updateMonthChain(
-                    Month.getBrief(head),
+                    MonthLegacy.getBrief(head),
                     [
                         oldFirst, // exists
                     ],
@@ -186,13 +186,13 @@ describe('chain utils', () => {
                     .toThrow(`Required months: ${second.id}`);
             });
             it('full update chain (1 item), negative', () => {
-                const head = Month.createFirstBlock(account, '2020-10', 1590930663592);
+                const head = MonthLegacy.createFirstBlock(account, '2020-10', 1590930663592);
 
                 expect(() => updateMonthChain(head, [], oldChain))
                     .toThrow('Can not fast forward');
             });
             it('full update chain (2 items), negative', () => {
-                const first = Month.createFirstBlock(account, '2020-10', 1590930663592);
+                const first = MonthLegacy.createFirstBlock(account, '2020-10', 1590930663592);
                 const head = first.createNextBlock('2020-11', 1591000537099);
 
                 expect(() => updateMonthChain(head, [], oldChain))
@@ -202,7 +202,7 @@ describe('chain utils', () => {
     });
     describe('isVersionOfMonth', () => {
         describe('positive (synced blocks)', () => {
-            const v1 = Month.createFirstBlock(account, '2020-01', 1590993021517);
+            const v1 = MonthLegacy.createFirstBlock(account, '2020-01', 1590993021517);
             const v2day = v1.createDay(5)
                             .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
@@ -211,7 +211,7 @@ describe('chain utils', () => {
                             .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v3 = v2.updateDay(v3day).changeSyncStatus(SyncStatus.Prepared);
 
-            const another = Month.createFirstBlock(account, '2020-02', 1590993200351);
+            const another = MonthLegacy.createFirstBlock(account, '2020-02', 1590993200351);
 
             it('prepare check', () => {
                 expect(v1.prevVersions).toEqual([]);
@@ -244,7 +244,7 @@ describe('chain utils', () => {
             });
         });
         describe('update not synced block', () => {
-            const v1 = Month.createFirstBlock(account, '2020-01', 1590993021517);
+            const v1 = MonthLegacy.createFirstBlock(account, '2020-01', 1590993021517);
             const v2day = v1.createDay(5)
                             .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
@@ -253,7 +253,7 @@ describe('chain utils', () => {
                             .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v3 = v2.updateDay(v3day);
 
-            const another = Month.createFirstBlock(account, '2020-02', 1590993200351);
+            const another = MonthLegacy.createFirstBlock(account, '2020-02', 1590993200351);
 
             it('prepare check', () => {
                 expect(v1.prevVersions).toEqual([]);

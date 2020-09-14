@@ -1,5 +1,5 @@
 import { AbstractGrip } from '../abstract-grip/grip.class';
-import { IAccount } from '../account/account.types';
+import { IAccount } from '../account-dto/account.types';
 import { CategoriesBlock } from '../category/categoryBlock.class';
 import { IMonth, IMonthBrief } from '../month/month-legacy.types';
 import { AccountMonthGrip } from './month-grip.class';

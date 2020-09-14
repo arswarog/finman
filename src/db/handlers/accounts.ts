@@ -6,7 +6,7 @@ import {
     loadAccountsSuccess, saveAccount, saveAccountFailed, saveAccountSuccess,
 } from '../../atoms/accounts/accounts.actions';
 import { AccountScheme } from '../schemes';
-import { Account } from '../../models/account/account.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
 import { loadCategories } from '../../atoms/categories/categories.actions';
 import { chooseAccountGrip } from '../../atoms/account-grips/account-grips.actions';
 
@@ -23,7 +23,7 @@ addActionHandler(loadAccounts, (_, store) => {
             if (!result.length)
                 return console.warn('No accounts exists');
 
-            const accounts = result.map(Account.fromJSON);
+            const accounts = result.map(AccountDTO.fromJSON);
 
             const currentID = localStorage.getItem(CURRENT_ACCOUNT_KEY);
 

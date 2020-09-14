@@ -1,7 +1,7 @@
 import React from 'react';
 import { BaseInput, IBaseInputProps } from './BaseInput';
 import { SelectField } from './SelectField';
-import { IAccount } from '../../models/account/account.types';
+import { IAccount } from '../../models/account-dto/account.types';
 import { ICategory } from '../../models/category/category.types';
 
 interface ICategoryFieldProps extends IBaseInputProps {

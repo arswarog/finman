@@ -1,5 +1,5 @@
 import { IScheme } from '../../libs/indexed-db';
-import { IAccount } from '../../models/account/account.types';
+import { IAccount } from '../../models/account-dto/account.types';
 
 export const AccountScheme: IScheme<IAccount> = {
     collection: 'accounts',

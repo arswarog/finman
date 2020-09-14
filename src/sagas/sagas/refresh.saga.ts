@@ -5,7 +5,7 @@ import { IAddTransactionForm } from '../../models/transaction/transaction.types'
 import { refresh } from '../../atoms/client/client.actions';
 import { loadAccounts, loadAccountsFailed, loadAccountsSuccess } from '../../atoms/accounts/accounts.actions';
 import { updateAccountGrips } from '../../atoms/account-grips/account-grips.actions';
-import { Account } from '../../models/account/account.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
 
 sagaLauncher.onAction(refresh, refreshSaga);
 
@@ -17,6 +17,6 @@ export function* refreshSaga(action: Action<null>) {
     if (resultAction.type === loadAccountsFailed.getType())
         return;
 
-    const accounts: Account[] = (resultAction as any).payload.accounts;
+    const accounts: AccountDTO[] = (resultAction as any).payload.accounts;
     yield put(updateAccountGrips(accounts));
 }

@@ -1,6 +1,6 @@
 import { Map, Set } from 'immutable';
 import { IDayGrip, ITransactionGrip } from './grip.types';
-import { IAccount } from '../account/account.types';
+import { IAccount } from '../account-dto/account.types';
 import { UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';
 import { ICategory } from '../category/category.types';

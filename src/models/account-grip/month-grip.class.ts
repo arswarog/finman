@@ -1,7 +1,7 @@
 import { Map, Set } from 'immutable';
 import { AbstractMonthGrip } from '../abstract-grip/month-grip.class';
 import { IMonth } from '../month/month-legacy.types';
-import { IAccount } from '../account/account.types';
+import { IAccount } from '../account-dto/account.types';
 import { ICategory } from '../category/category.types';
 import { UUID } from '../common/common.types';
 import { Money } from '../money/money.class';

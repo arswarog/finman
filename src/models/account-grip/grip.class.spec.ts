@@ -1,17 +1,17 @@
-import { Account } from '../account/account.class';
+import { AccountDTO } from '../account-dto/account.class';
 import { ICategory } from '../category/category.types';
 import { TransactionType } from '../transaction/transaction.types';
 import { Map } from 'immutable';
 import { Transaction } from '../transaction/transaction.class';
 import { Day } from '../day/day.class';
-import { Month } from '../month/month-legacy.class';
+import { MonthLegacy } from '../month/month-legacy.class';
 import { AccountMonthGrip } from './month-grip.class';
 import { Money } from '../money/money.class';
 import { AccountGrip } from './grip.class';
 import { CategoriesBlock } from '../category/categoryBlock.class';
 
 describe('AccountGrip class', () => {
-    const baseAccount = Account.create('test', 'acc1');
+    const baseAccount = AccountDTO.create('test', 'acc1');
 
     const categoriesBlock = CategoriesBlock.createInitialBlock(baseAccount.id, [
         {
@@ -57,9 +57,9 @@ describe('AccountGrip class', () => {
                     .addTransaction(tx3)
                     .addTransaction(tx4);
 
-    const month = Month.createFirstBlock(baseAccount.id, '2020-01', 12312312)
-                       .updateDay(day2)
-                       .updateDay(day1);
+    const month = MonthLegacy.createFirstBlock(baseAccount.id, '2020-01', 12312312)
+                             .updateDay(day2)
+                             .updateDay(day1);
 
     it('constructor', () => {
         const account = baseAccount.updateHead(month);

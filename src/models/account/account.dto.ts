@@ -3,7 +3,7 @@ import { Money } from '../money/money.class';
 import { IMonthDTO } from '../month/month.dto';
 import { ICategoryCollectionDTO } from '../category/categoryCollection.dto';
 
-export interface IDepositDTO {
+export interface IAccountDTO {
     months: Map<MonthDate, IMonthDTO>;
     balance: Money;
     dataHash: string;

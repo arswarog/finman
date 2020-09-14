@@ -9,13 +9,13 @@ import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';
 import { CategoriesBlock } from '../category/categoryBlock.class';
 import { IMonthBrief, monthBriefPacker } from '../month/month-legacy.types';
-import { Month } from '../month/month-legacy.class';
+import { MonthLegacy } from '../month/month-legacy.class';
 
 /**
  * Contains information about Account
  */
-@PackableClass(data => new Account(data))
-export class Account implements IAccount, ISummary {
+@PackableClass(data => new AccountDTO(data))
+export class AccountDTO implements IAccount, ISummary {
     @Packable(String) public readonly id: UUID = '';
     @Packable(String) public readonly name: string = '';
     @Packable(Money) public readonly balance: Money = Money.empty;
@@ -24,32 +24,32 @@ export class Account implements IAccount, ISummary {
     @Packable(String) public readonly categoriesBlockId: string = 'default';
     @Packable(monthBriefPacker) public readonly head: IMonthBrief | null = null;
     @Packable([monthBriefPacker]) public readonly months: ReadonlyArray<Readonly<IMonthBrief>> = [];
-    public readonly fullMonths: Map<UUID, Month> = Map();
+    public readonly fullMonths: Map<UUID, MonthLegacy> = Map();
 
-    public static create(name: string, id?: UUID): Account {
-        return new Account({
+    public static create(name: string, id?: UUID): AccountDTO {
+        return new AccountDTO({
             id: id || uuidGenerator(),
             name,
         });
     }
 
-    public static fromJSON(data: any): Account {
-        return Packer.get(Account).decode(data);
+    public static fromJSON(data: any): AccountDTO {
+        return Packer.get(AccountDTO).decode(data);
     }
 
-    public static toJSON(account: Account): any {
+    public static toJSON(account: AccountDTO): any {
         return account.toJSON();
     }
 
-    private constructor(account: Partial<Account>) {
+    private constructor(account: Partial<AccountDTO>) {
         return Object.assign(this, account);
     }
 
     public toJSON(): any {
-        return Packer.get(Account).encode(this);
+        return Packer.get(AccountDTO).encode(this);
     }
 
-    public UNSAFE_forceSetHead(head: Month, months: Month[]): Account {
+    public UNSAFE_forceSetHead(head: MonthLegacy, months: MonthLegacy[]): AccountDTO {
         const {chain, completed} = findChain(head, months);
 
         if (!completed) {
@@ -66,10 +66,10 @@ export class Account implements IAccount, ISummary {
 
         const {income, expense, balance} = chain.reduce((acc, item) => addSummary(acc, item.summary), EMPTY_SUMMARY);
 
-        return new Account({
+        return new AccountDTO({
             ...this,
             head,
-            months: chain.map(Month.getBrief),
+            months: chain.map(MonthLegacy.getBrief),
             balance,
             income,
             expense,
@@ -78,26 +78,26 @@ export class Account implements IAccount, ISummary {
         // throw new RequiredMonthsError(['123123123']);
     }
 
-    public updateHead(head: Month, additions: Month[] = []): Account {
+    public updateHead(head: MonthLegacy, additions: MonthLegacy[] = []): AccountDTO {
         const chain = updateMonthChain(head, additions, this.months);
 
         const {income, expense, balance} = chain.reduce((acc, item) => addSummary(acc, item.summary), EMPTY_SUMMARY);
 
-        return new Account({
+        return new AccountDTO({
             ...this,
-            head: Month.getBrief(head),
-            months: chain.map(Month.getBrief),
+            head: MonthLegacy.getBrief(head),
+            months: chain.map(MonthLegacy.getBrief),
             balance,
             income,
             expense,
         });
     }
 
-    public UNSAFE_updateCategoriesBlock(block: CategoriesBlock): Account { // FIXME
+    public UNSAFE_updateCategoriesBlock(block: CategoriesBlock): AccountDTO { // FIXME
         if (block.account !== this.id)
-            throw new Error('CategoriesBlock.id must be equal to Account.id');
+            throw new Error('CategoriesBlock.id must be equal to AccountDTO.id');
 
-        return new Account({
+        return new AccountDTO({
             ...this,
             categoriesBlockId: block.id,
         });

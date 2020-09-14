@@ -2,7 +2,7 @@ import { Day } from '../day/day.class';
 import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';
 import { AccountDayGrip } from './day-grip.class';
-import { Account } from '../account/account.class';
+import { AccountDTO } from '../account-dto/account.class';
 import { ICategory } from '../category/category.types';
 import { Map, Set } from 'immutable';
 import { Money } from '../money/money.class';
@@ -10,7 +10,7 @@ import { UUID } from '../common/common.types';
 
 describe('AccountDayGrip class', () => {
     it('TransactionTypes: Income and Expense', () => {
-        const account = Account.create('test', 'acc1');
+        const account = AccountDTO.create('test', 'acc1');
 
         const catDefault: ICategory = {
             id: 'default',

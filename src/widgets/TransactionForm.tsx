@@ -7,7 +7,7 @@ import { BaseInput } from '../components/inputs/BaseInput';
 import { TextField } from '../components/inputs/TextField';
 import { DayDateField } from '../components/inputs/DayDateField';
 import { AccountField } from '../components/inputs/AccountField';
-import { IAccount } from '../models/account/account.types';
+import { IAccount } from '../models/account-dto/account.types';
 import { CategoryField } from '../components/inputs/CategoryField';
 import { ICategory } from '../models/category/category.types';
 

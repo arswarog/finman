@@ -1,8 +1,8 @@
 import { put, take } from 'redux-saga/effects';
 import { Action } from '@reatom/core';
 import { MonthDate } from '../../models/common/date.types';
-import { Account } from '../../models/account/account.class';
-import { Month } from '../../models/month/month-legacy.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
 import { getTimestamp, SagaUtils, selectAtom } from '../helpers/helpers';
 import { SagaPacker } from '../saga-launcher';
 import {
@@ -18,7 +18,7 @@ import { Months } from '../../atoms/months/months.atom';
 
 export const MonthUtils = {
     /**
-     * Get or create Month of Account's chain
+     * Get or create MonthLegacy of Account's chain
      */
     get: SagaPacker.call(getMonthSaga),
     /**
@@ -31,8 +31,8 @@ export const MonthUtils = {
     save: SagaPacker.call(saveMonthsSaga),
 };
 
-function* getMonthsByIdsSaga(ids: UUID[]): Generator<any, Month[], any> {
-    const months: Map<UUID, Month> = yield selectAtom(Months);
+function* getMonthsByIdsSaga(ids: UUID[]): Generator<any, MonthLegacy[], any> {
+    const months: Map<UUID, MonthLegacy> = yield selectAtom(Months);
 
     console.log(months);
     const notExists = ids.filter(id => !months.has(id));
@@ -56,16 +56,16 @@ function* getMonthsByIdsSaga(ids: UUID[]): Generator<any, Month[], any> {
     } while (true);
 }
 
-function* getMonthSaga(account: Account, monthDate: MonthDate) {
+function* getMonthSaga(account: AccountDTO, monthDate: MonthDate) {
     if (!account.head) {
         const timestamp: number = yield getTimestamp();
         console.log('timestamp', timestamp);
-        return Month.createFirstBlock(account.id, monthDate, timestamp);
+        return MonthLegacy.createFirstBlock(account.id, monthDate, timestamp);
     }
 
     // create next block
     if (monthDate > account.head.month) {
-        const [head]: Month[] = yield* MonthUtils.getByIds([account.head.id]);
+        const [head]: MonthLegacy[] = yield* MonthUtils.getByIds([account.head.id]);
         const timestamp: number = yield getTimestamp();
         return head.createNextBlock(monthDate, timestamp);
     }
@@ -96,7 +96,7 @@ function* getMonthSaga(account: Account, monthDate: MonthDate) {
         }
 
         const months = yield* MonthUtils.getByIds(monthsIds);
-        const monthsToSave: Month[] = [];
+        const monthsToSave: MonthLegacy[] = [];
 
         const timestamp = yield* SagaUtils.getTimestamp();
 
@@ -117,7 +117,7 @@ function* getMonthSaga(account: Account, monthDate: MonthDate) {
     }
 }
 
-function* saveMonthsSaga(months: Month[]) {
+function* saveMonthsSaga(months: MonthLegacy[]) {
     yield put(saveMonths(months));
     for (; ;) {
         const action = yield take([saveMonthsSuccess.getType(), saveMonthsFailed.getType()]);

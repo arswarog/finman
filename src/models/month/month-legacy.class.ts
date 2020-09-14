@@ -21,8 +21,8 @@ import { Packer } from '../../libs/packable/packable';
  * ID является хешем от данных, при любом изменении создается новый экземпляр с новым ID
  * Класс гарантирует совпадение данных при совпадении ID
  */
-@PackableClass(data => new Month(data))
-export class Month implements IMonth {
+@PackableClass(data => new MonthLegacy(data))
+export class MonthLegacy implements IMonth {
     @Packable(String) public readonly id: UUID = '';
     @Packable(Number) public readonly version: number = 1;
     @Packable(String) public readonly account: UUID = '';
@@ -42,10 +42,10 @@ export class Month implements IMonth {
      * @param month
      * @param timestamp
      */
-    public static createFirstBlock(account: UUID, month: MonthDate, timestamp: number): Month {
+    public static createFirstBlock(account: UUID, month: MonthDate, timestamp: number): MonthLegacy {
         const daysInMonth = getDaysInMonth(parseMonthDate(month));
 
-        return new Month({
+        return new MonthLegacy({
             timestamp,
             account,
             month,
@@ -55,7 +55,7 @@ export class Month implements IMonth {
         });
     }
 
-    public static generateID(month: Month, dataHash?: string): string {
+    public static generateID(month: MonthLegacy, dataHash?: string): string {
         if (month.version !== 1)
             throw new Error(`Version ${month.version} not supported`);
 
@@ -96,7 +96,7 @@ export class Month implements IMonth {
      * @param blocks Предыдущие блоки цепочки
      * @param revisions Предыдущие версии блока
      */
-    public static merge(blocks: Month[], revisions: Month[]): Month {
+    public static merge(blocks: MonthLegacy[], revisions: MonthLegacy[]): MonthLegacy {
         // отсортировать по алфавиту
         // проверить sync статус
 
@@ -114,22 +114,22 @@ export class Month implements IMonth {
         };
     }
 
-    public static fromJSON(value: any): Month {
-        return Packer.get(Month).decode(value);
+    public static fromJSON(value: any): MonthLegacy {
+        return Packer.get(MonthLegacy).decode(value);
     }
 
     public toJSON(): any {
-        return Packer.get(Month).encode(this);
+        return Packer.get(MonthLegacy).encode(this);
     }
 
-    protected constructor(value: Partial<Month>) { // FIXME use all fields of Month
+    protected constructor(value: Partial<MonthLegacy>) { // FIXME use all fields of MonthLegacy
         Object.assign(this, value);
         this.dataHash = this.getDataHash();
-        this.id = Month.generateID(this, this.dataHash);
+        this.id = MonthLegacy.generateID(this, this.dataHash);
     }
 
     public getBrief(): IMonthBrief {
-        return Month.getBrief(this);
+        return MonthLegacy.getBrief(this);
     }
 
     public getDataHash(): string {
@@ -142,22 +142,22 @@ export class Month implements IMonth {
         return sha1(JSON.stringify(data)).toString();
     }
 
-    public changeSyncStatus(syncStatus: SyncStatus): Month {
+    public changeSyncStatus(syncStatus: SyncStatus): MonthLegacy {
         if (syncStatus === this.syncStatus)
             return this;
 
         switch (this.syncStatus) {
             case SyncStatus.NoSynced:
                 if (syncStatus === SyncStatus.Prepared)
-                    return new Month({...this, syncStatus});
+                    return new MonthLegacy({...this, syncStatus});
                 break;
             case SyncStatus.Prepared:
                 if (syncStatus === SyncStatus.Syncing)
-                    return new Month({...this, syncStatus});
+                    return new MonthLegacy({...this, syncStatus});
                 break;
             case SyncStatus.Syncing:
                 if (syncStatus === SyncStatus.FullySynced)
-                    return new Month({...this, syncStatus});
+                    return new MonthLegacy({...this, syncStatus});
                 break;
             case SyncStatus.FullySynced:
         }
@@ -178,7 +178,7 @@ export class Month implements IMonth {
         return this.month + '-' + day.toString().padStart(2, '0');
     }
 
-    public createNextBlock(month: MonthDate, timestamp: number): Month {
+    public createNextBlock(month: MonthDate, timestamp: number): MonthLegacy {
         const daysInMonth = getDaysInMonth(parseMonthDate(month));
 
         const summary: IPeriodSummary = {
@@ -189,7 +189,7 @@ export class Month implements IMonth {
             balance: Money.empty,
         };
 
-        return new Month({
+        return new MonthLegacy({
             account: this.account,
             month,
             prevMonths: [this.id],
@@ -207,14 +207,14 @@ export class Month implements IMonth {
         return date.substr(0, 7) === this.month;
     }
 
-    public recalculateWithNewStartBalance(startBalance: Money): Month {
-        return new Month({
+    public recalculateWithNewStartBalance(startBalance: Money): MonthLegacy {
+        return new MonthLegacy({
             ...this,
             summary: calculateSummaryFromStartBalance(startBalance, this.days),
         });
     }
 
-    public updatePrevMonths(prevMonths: IMonthBrief[], timestamp: number): Month {
+    public updatePrevMonths(prevMonths: IMonthBrief[], timestamp: number): MonthLegacy {
         if (prevMonths.length !== 1)
             throw new Error(`Sorry, can not process not one prevMonths`);
 
@@ -225,7 +225,7 @@ export class Month implements IMonth {
             && prevMonths.every((item, index) => this.prevMonths[index] === item.id))
             return this;
 
-        return new Month({
+        return new MonthLegacy({
             ...this,
             timestamp,
             prevMonths: prevMonths.map(item => item.id),
@@ -243,7 +243,7 @@ export class Month implements IMonth {
         return day || this.createDay(dayDate);
     }
 
-    public updateDay(newDay: Day): Month {
+    public updateDay(newDay: Day): MonthLegacy {
         if (!(newDay instanceof Day))
             throw new Error(`Cannot update month, newDay must be instance of Day`);
 
@@ -261,7 +261,7 @@ export class Month implements IMonth {
 
         const summary = calculateSummaryFromStartBalance(this.summary.balanceOnStart, days);
 
-        return new Month({
+        return new MonthLegacy({
             ...this,
             syncStatus: SyncStatus.NoSynced,
             days,

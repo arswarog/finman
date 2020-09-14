@@ -1,7 +1,7 @@
 import { IndexedDB } from '../libs/indexed-db';
 import { PayloadActionCreator, Store } from '@reatom/core';
 import { AccountScheme, MonthScheme } from './schemes';
-import { Account } from '../models/account/account.class';
+import { AccountDTO } from '../models/account-dto/account.class';
 import { CategoriesBlock } from '../models/category/categoryBlock.class';
 import { initialCategories } from './data/initialCategories';
 import { CategoriesScheme } from './schemes/categories.scheme';
@@ -14,7 +14,7 @@ export const db = new IndexedDB(
         MonthScheme,
     ],
     async (db) => {
-        let defaultAccount = Account.create('Default');
+        let defaultAccount = AccountDTO.create('Default');
         const categoriesBlock = CategoriesBlock.createInitialBlock(
             defaultAccount.id,
             initialCategories,

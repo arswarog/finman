@@ -1,16 +1,16 @@
-import { Account } from './account.class';
+import { AccountDTO } from './account.class';
 import { Money } from '../money/money.class';
-import { Month } from '../month/month-legacy.class';
+import { MonthLegacy } from '../month/month-legacy.class';
 import { makeTestMonth1, makeTestMonth2 } from '../month/month-legacy.class.spec';
 import { Day } from '../day/day.class';
 import { TransactionType } from '../transaction/transaction.types';
 import { SyncStatus } from '../common/common.types';
 
-describe('Account class', () => {
+describe('AccountDTO class', () => {
     describe('forceSetHead', () => {
         it('base', () => {
             // arrange
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id);
             const baseAccount = prepareAccount.UNSAFE_forceSetHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
@@ -34,7 +34,7 @@ describe('Account class', () => {
         });
         it('incomplete chain', () => {
             // arrange
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id);
             const baseAccount = prepareAccount.UNSAFE_forceSetHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
@@ -54,7 +54,7 @@ describe('Account class', () => {
     describe('updateHead', () => {
         it('set any first month', () => {
             // arrange
-            const baseAccount = Account.create('test');
+            const baseAccount = AccountDTO.create('test');
             const month = makeTestMonth1(baseAccount.id);
 
             // act
@@ -77,7 +77,7 @@ describe('Account class', () => {
         });
         it('update first month (month is prepared)', () => {
             // arrange: create first chain
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id).changeSyncStatus(SyncStatus.Prepared);
             const baseAccount = prepareAccount.updateHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
@@ -115,7 +115,7 @@ describe('Account class', () => {
         });
         it('update first month (month is not synced)', () => {
             // arrange: create first chain
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id);
             const baseAccount = prepareAccount.updateHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
@@ -154,7 +154,7 @@ describe('Account class', () => {
         });
         it('update chain in the middle', () => {
             // arrange: create first chain
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id).changeSyncStatus(SyncStatus.Prepared);
             const baseAccount = prepareAccount.updateHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
@@ -200,7 +200,7 @@ describe('Account class', () => {
         });
         it('deny to force set header', () => {
             // arrange
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id);
             const baseAccount = prepareAccount.updateHead(baseMonth, []);
             expect(baseAccount.months).toEqual([
@@ -216,15 +216,15 @@ describe('Account class', () => {
     describe('checkChain', () => {
         it('no months', () => {
             // arrange
-            const account = Account.create('test');
+            const account = AccountDTO.create('test');
 
             // act
             expect(account.checkChain()).toBeTruthy();
         });
         it('1 month', () => {
             // arrange
-            const baseAccount = Account.create('test');
-            const month = Month.createFirstBlock(baseAccount.id, '2020-05', 1415124234);
+            const baseAccount = AccountDTO.create('test');
+            const month = MonthLegacy.createFirstBlock(baseAccount.id, '2020-05', 1415124234);
             const account = baseAccount.updateHead(month);
             expect(account.months.length).toBe(1);
 
@@ -233,8 +233,8 @@ describe('Account class', () => {
         });
         it('invalid chain', () => {
             // arrange
-            const baseAccount = Account.create('test');
-            const month = Month.createFirstBlock(baseAccount.id, '2020-01', 1415124234);
+            const baseAccount = AccountDTO.create('test');
+            const month = MonthLegacy.createFirstBlock(baseAccount.id, '2020-01', 1415124234);
             const nextMonth = month.createNextBlock('2020-02', 1591891143948);
             const account = baseAccount.updateHead(nextMonth, [month]);
 
@@ -247,12 +247,12 @@ describe('Account class', () => {
     });
     describe('packable', () => {
         it('base', () => {
-            const prepareAccount = Account.create('test');
+            const prepareAccount = AccountDTO.create('test');
             const baseMonth = makeTestMonth1(prepareAccount.id).changeSyncStatus(SyncStatus.Prepared);
             const account = prepareAccount.updateHead(baseMonth, []);
 
-            const json = Account.toJSON(account);
-            const restored = Account.fromJSON(json);
+            const json = AccountDTO.toJSON(account);
+            const restored = AccountDTO.fromJSON(json);
             expect(restored).toStrictEqual(account);
         });
     });

@@ -1,5 +1,5 @@
 import { IMonthBrief } from '../month/month-legacy.types';
-import { Month } from '../month/month-legacy.class';
+import { MonthLegacy } from '../month/month-legacy.class';
 import { UUID } from '../common/common.types';
 
 /**
@@ -8,14 +8,14 @@ import { UUID } from '../common/common.types';
  * @param additions Обновленные звенья
  * @param old Старая цепочка
  */
-export function updateMonthChain(head: IMonthBrief | Month,
-                                 additions: ReadonlyArray<IMonthBrief | Month>,
+export function updateMonthChain(head: IMonthBrief | MonthLegacy,
+                                 additions: ReadonlyArray<IMonthBrief | MonthLegacy>,
                                  old: ReadonlyArray<IMonthBrief>): ReadonlyArray<IMonthBrief> {
-    head = Month.getBrief(head);
+    head = MonthLegacy.getBrief(head);
 
-    additions = additions.map(Month.getBrief);
+    additions = additions.map(MonthLegacy.getBrief);
 
-    old = old.map(Month.getBrief);
+    old = old.map(MonthLegacy.getBrief);
 
     const {chain, completed} = findChain(head, additions);
 

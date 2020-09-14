@@ -1,12 +1,12 @@
-import { Month } from '../../models/month/month-legacy.class';
-import { Account } from '../../models/account/account.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
 import { UUID } from '../../models/common/common.types';
 import { SagaPacker } from '../saga-launcher';
 import { Accounts, IAccountsState } from '../../atoms/accounts/accounts.atom';
 import { select, put, take } from 'redux-saga/effects';
 import { saveAccount, saveAccountSuccess, saveAccountFailed } from '../../atoms/accounts/accounts.actions';
 import { MonthUtils } from './month.saga';
-import { isVersionOfMonth, RequiredMonthsError } from '../../models/account/chain.utils';
+import { isVersionOfMonth, RequiredMonthsError } from '../../models/account-dto/chain.utils';
 import { SagaUtils } from '../helpers/helpers';
 import { AccountGrips, IAccountGripsState } from '../../atoms/account-grips/account-grips.atom';
 import { AccountGrip } from '../../models/account-grip/grip.class';
@@ -24,7 +24,7 @@ export const AccountUtils = {
  */
 function* selectAccountSaga(id: UUID) {
     const accounts: IAccountsState = yield select(getState => getState(Accounts));
-    const account: Account = accounts.accounts.get(id);
+    const account: AccountDTO = accounts.accounts.get(id);
 
     if (!account)
         throw new Error(`Account "${id}" not found`);
@@ -54,7 +54,7 @@ function* getAccountGripSaga(id: UUID) {
  * @param account
  * @param month
  */
-function* updateAccountSaga(account: Account, month: Month) {
+function* updateAccountSaga(account: AccountDTO, month: MonthLegacy) {
     console.log('*** updateAccountSaga');
     console.log(account.months.map(item => item.month));
     console.log(month.month, month.id);
@@ -76,7 +76,7 @@ function* updateAccountSaga(account: Account, month: Month) {
                                      .slice(0, toIndex + 1)
                                      .map(item => item.id);
 
-    const additionalMonths: Month[] = [month];
+    const additionalMonths: MonthLegacy[] = [month];
 
     console.log(monthsIds);
 
@@ -120,7 +120,7 @@ function* updateAccountSaga(account: Account, month: Month) {
 
     console.log('currentMonthIndex', currentMonthIndex, account.months[currentMonthIndex]?.month);
     if (currentMonthIndex !== -1) {
-        let previousMonth: Month = month;
+        let previousMonth: MonthLegacy = month;
 
         for (let index = currentMonthIndex - 1; index >= 0; index--) {
             console.log('index', index, account.months[index].month);
@@ -145,7 +145,7 @@ function* updateAccountSaga(account: Account, month: Month) {
     throw new Error('may be first');
 }
 
-export function* saveAccountSaga(account: Account) {
+export function* saveAccountSaga(account: AccountDTO) {
     yield put(saveAccount(account));
     for (; ;) {
         const action = yield take([saveAccountSuccess, saveAccountFailed]);

@@ -7,7 +7,7 @@ import {
     saveMonthsSuccess,
 } from '../../atoms/months/months.actions';
 import { MonthScheme } from '../schemes';
-import { Month } from '../../models/month/month-legacy.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
 
 addActionHandler(loadMonths, (ids, store) => {
     db.transaction(MonthScheme)
@@ -15,7 +15,7 @@ addActionHandler(loadMonths, (ids, store) => {
         result => {
             console.log(ids);
             console.log(result);
-            const months = result.map(Month.fromJSON);
+            const months = result.map(MonthLegacy.fromJSON);
             store.dispatch(loadMonthsSuccess(months));
         },
         error => store.dispatch(loadMonthsFailed({ids, error})),

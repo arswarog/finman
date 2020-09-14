@@ -3,7 +3,7 @@ import {
     getTimestamp,
 } from './helpers';
 import { UUID } from '../../models/common/common.types';
-import { Month } from '../../models/month/month-legacy.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
 import {
     loadMonths,
     loadMonthsFailed,

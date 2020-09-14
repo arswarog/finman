@@ -2,8 +2,8 @@ import { createStore, Store } from '@reatom/core';
 import { stdChannel } from 'redux-saga';
 import { CallEffect } from 'redux-saga/effects';
 import { MonthUtils } from './month.saga';
-import { Account } from '../../models/account/account.class';
-import { Month } from '../../models/month/month-legacy.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
 import { Months } from '../../atoms/months/months.atom';
 import { getTimestampFn, delay } from '../helpers/helpers';
 import { expectCallEffect } from '../helpers/helpers.spec';
@@ -24,7 +24,7 @@ describe('MonthUtils', () => {
         beforeEach(() => {
             testBed = new SagaTestBed();
         });
-        const month1 = Month.createFirstBlock('test', '2020-01', 1592392083192);
+        const month1 = MonthLegacy.createFirstBlock('test', '2020-01', 1592392083192);
         const month2 = month1.createNextBlock('2020-02', 1592392113315);
 
         beforeEach(() => {
@@ -43,7 +43,7 @@ describe('MonthUtils', () => {
 
             // result
             testBed.run(test, [month1.id, month2.id]).then(
-                (months: Map<UUID, Month>) => {
+                (months: Map<UUID, MonthLegacy>) => {
                     expect(months.has(month1.id)).toBeTruthy();
                     expect(months.has(month2.id)).toBeTruthy();
                 },
@@ -63,7 +63,7 @@ describe('MonthUtils', () => {
             const ids = [month2.id, month3.id];
             // result
             testBed.run(test, ids).then(
-                (months: Map<UUID, Month>) => {
+                (months: Map<UUID, MonthLegacy>) => {
                     expect(months[0].id).toBe(month2.id);
                     expect(months[1].id).toBe(month3.id);
                 },
@@ -128,7 +128,7 @@ describe('MonthUtils', () => {
             testBed = new SagaTestBed();
         });
         it('base', async () => {
-            const month = Month.createFirstBlock('test', '2020-01', 1592929735957);
+            const month = MonthLegacy.createFirstBlock('test', '2020-01', 1592929735957);
 
             function* test(ids: UUID[]) {
                 return yield* MonthUtils.save([month]);
@@ -160,8 +160,8 @@ describe('MonthUtils', () => {
     });
     describe('getMonthSaga', () => {
         let store: Store;
-        const baseAccount = Account.create('test');
-        const month01 = Month.createFirstBlock(baseAccount.id, '2020-01', 1592247158848);
+        const baseAccount = AccountDTO.create('test');
+        const month01 = MonthLegacy.createFirstBlock(baseAccount.id, '2020-01', 1592247158848);
         const month02 = month01.createNextBlock('2020-02', 1592247187258);
         const month04 = month02.createNextBlock('2020-04', 1592247202511);
         const account = baseAccount.updateHead(month04, [month01, month02]);
@@ -188,7 +188,7 @@ describe('MonthUtils', () => {
             expect(r1.type).toBe('CALL');
 
             // result
-            const r2 = saga.next(1592057707159).value as Month;
+            const r2 = saga.next(1592057707159).value as MonthLegacy;
 
             expect(r2.account).toEqual(baseAccount.id);
             expect(r2.timestamp).toEqual(1592057707159);
@@ -205,7 +205,7 @@ describe('MonthUtils', () => {
             expect(r1.payload.args).toEqual([[month04.id, month02.id]]);
 
             // load month 02 and 04
-            const r2 = saga.next([month04, month02]).value as Month;
+            const r2 = saga.next([month04, month02]).value as MonthLegacy;
             expect(r2);
 
             console.log(r2);
@@ -222,7 +222,7 @@ describe('MonthUtils', () => {
             expect(r1.payload.args).toEqual([[month04.id, month02.id]]);
 
             // load month 02 and 04
-            const r2 = saga.next([month04, month02]).value as Month;
+            const r2 = saga.next([month04, month02]).value as MonthLegacy;
             expect(r2);
 
             console.log(r2);
@@ -245,7 +245,7 @@ describe('MonthUtils', () => {
             expect(r2.payload.fn).toBe(getTimestampFn);
 
             // load month 02 and 04
-            const r3 = saga.next(1592057707159).value as Month;
+            const r3 = saga.next(1592057707159).value as MonthLegacy;
             expect(r3);
 
             console.log(r3);
@@ -274,7 +274,7 @@ describe('MonthUtils', () => {
                 expect(value.payload.fn).toBe(getTimestampFn);
             }
 
-            let newMonth: Month;
+            let newMonth: MonthLegacy;
             // save months
             {
                 const value = saga.next(1593229910887).value as CallEffect<number>;
@@ -290,7 +290,7 @@ describe('MonthUtils', () => {
             // load month 02 and 04
             {
                 const next = saga.next();
-                const value = next.value as Month;
+                const value = next.value as MonthLegacy;
                 expect(value).toStrictEqual(newMonth);
                 expect(value.account).toEqual(account.id);
                 expect(value.timestamp).toEqual(1593229910887);

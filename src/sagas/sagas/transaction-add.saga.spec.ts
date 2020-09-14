@@ -1,18 +1,18 @@
 import { addTransactionSaga } from './transaction-add.saga';
 import { addTransaction } from '../../models/transaction/transaction.actions';
 import { TransactionType } from '../../models/transaction/transaction.types';
-import { Account } from '../../models/account/account.class';
-import { Month } from '../../models/month/month-legacy.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
 import { AccountUtils } from '../utils/account.saga';
 import { expectCallEffect } from '../helpers/helpers.spec';
 import { MonthUtils } from '../utils/month.saga';
 import { Money } from '../../models/money/money.class';
 import { Day } from '../../models/day/day.class';
 import { Transaction } from '../../models/transaction/transaction.class';
-import { isVersionOfMonth } from '../../models/account/chain.utils';
+import { isVersionOfMonth } from '../../models/account-dto/chain.utils';
 
 describe('addTransactionSaga', () => {
-    const baseAccount = Account.create('test');
+    const baseAccount = AccountDTO.create('test');
 
     it('add first tx', () => {
         const gen = addTransactionSaga(addTransaction({
@@ -36,7 +36,7 @@ describe('addTransactionSaga', () => {
         expectCallEffect(r2.value, MonthUtils.get);
         expect(r2.value.payload.args).toEqual([baseAccount, '2020-06']);
 
-        const month = Month.createFirstBlock(baseAccount.id, '2020-06', 1592933974065);
+        const month = MonthLegacy.createFirstBlock(baseAccount.id, '2020-06', 1592933974065);
 
         // step 3: update account and month
         const r3 = gen.next(month);
@@ -54,7 +54,7 @@ describe('addTransactionSaga', () => {
     });
     it('add tx to exists month', () => {
         // arrange
-        const baseMonth = Month.createFirstBlock(baseAccount.id, '2020-06', 1593035174796);
+        const baseMonth = MonthLegacy.createFirstBlock(baseAccount.id, '2020-06', 1593035174796);
         const existsMonth = baseMonth.updateDay(
             Day.create('2020-06-10')
                .addTransaction(

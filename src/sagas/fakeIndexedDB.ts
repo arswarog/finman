@@ -2,9 +2,9 @@ import { Store } from '@reatom/core';
 import { loadMonths, loadMonthsSuccess, saveMonths, saveMonthsSuccess } from '../atoms/months/months.actions';
 import { Months } from '../atoms/months/months.atom';
 import { UUID } from '../models/common/common.types';
-import { Month } from '../models/month/month-legacy.class';
+import { MonthLegacy } from '../models/month/month-legacy.class';
 import { loadAccounts, loadAccountsSuccess, saveAccount, saveAccountSuccess } from '../atoms/accounts/accounts.actions';
-import { Account } from '../models/account/account.class';
+import { AccountDTO } from '../models/account-dto/account.class';
 
 export function initFakeIndexedDB(store: Store) {
     store.subscribe(action => {
@@ -13,15 +13,15 @@ export function initFakeIndexedDB(store: Store) {
                 setTimeout(() => {
                     store.dispatch(loadAccountsSuccess({
                         accounts: [
-                            Account.create('test', '123123123'),
-                            Account.create('test 2', '567567567567'),
+                            AccountDTO.create('test', '123123123'),
+                            AccountDTO.create('test 2', '567567567567'),
                         ],
                     }));
                 }, 500);
                 break;
             }
             case saveAccount.getType(): {
-                const account = action.payload as Account;
+                const account = action.payload as AccountDTO;
                 store.dispatch(saveAccountSuccess(account.id));
                 break;
             }
@@ -32,7 +32,7 @@ export function initFakeIndexedDB(store: Store) {
                 break;
             }
             case saveMonths.getType(): {
-                const months = action.payload as Month[];
+                const months = action.payload as MonthLegacy[];
                 store.dispatch(saveMonthsSuccess(months.map(item => item.id)));
                 break;
             }

@@ -106,7 +106,7 @@ export class CategoriesBlock implements ICategoriesBlock {
         return category.toJSON();
     }
 
-    protected constructor(value: Partial<CategoriesBlock>) { // FIXME use all fields of Month
+    protected constructor(value: Partial<CategoriesBlock>) { // FIXME use all fields of MonthLegacy
         Object.assign(this, value);
         this.dataHash = CategoriesBlock.getDataHash(this);
         this.id = CategoriesBlock.generateID(this, this.dataHash);

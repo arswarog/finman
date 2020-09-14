@@ -1,4 +1,4 @@
-import { IAccount } from '../account/account.types';
+import { IAccount } from '../account-dto/account.types';
 import { UUID } from '../common/common.types';
 import { CategoriesBlock } from '../category/categoryBlock.class';
 import { IGrip, IMonthGripBrief } from './grip.types';

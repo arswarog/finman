@@ -3,13 +3,13 @@ import { Day } from '../day/day.class';
 import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';
 import { ICategory } from '../category/category.types';
-import { Account } from '../account/account.class';
-import { Month } from '../month/month-legacy.class';
+import { AccountDTO } from '../account-dto/account.class';
+import { MonthLegacy } from '../month/month-legacy.class';
 import { AccountMonthGrip } from './month-grip.class';
 import { Money } from '../money/money.class';
 
 describe('AccountMonthGrip class', () => {
-    const account = Account.create('test', 'acc1');
+    const account = AccountDTO.create('test', 'acc1');
 
     const catDefault: ICategory = {
         id: 'default',
@@ -56,9 +56,9 @@ describe('AccountMonthGrip class', () => {
                         .addTransaction(tx3)
                         .addTransaction(tx4);
 
-        const month = Month.createFirstBlock(account.id, '2020-01', 1596426439966)
-                           .updateDay(day2)
-                           .updateDay(day1);
+        const month = MonthLegacy.createFirstBlock(account.id, '2020-01', 1596426439966)
+                                 .updateDay(day2)
+                                 .updateDay(day1);
 
         const grip = new AccountMonthGrip(
             Money.create(200, 'RUB'),

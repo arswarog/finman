@@ -13,7 +13,7 @@ import { SwipeItemWidget, SwipeWidget } from '../widgets/SwipeWidget';
 import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
 import { MonthGrips } from '../atoms/month-grips/month-grips.atom';
 import { IMonthGripBrief } from '../models/abstract-grip/grip.types';
-import { IAccount } from '../models/account/account.types';
+import { IAccount } from '../models/account-dto/account.types';
 import { AccountGrip } from '../models/account-grip/grip.class';
 import { Main } from '../ui-kit/Main';
 

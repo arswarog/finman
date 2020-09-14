@@ -2,7 +2,7 @@ import { Map, Set } from 'immutable';
 import { AbstractDayGrip } from '../abstract-grip/day-grip.class';
 import { UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';
-import { IAccount } from '../account/account.types';
+import { IAccount } from '../account-dto/account.types';
 import { ICategory } from '../category/category.types';
 import { Money } from '../money/money.class';
 import { ITransactionGrip } from '../abstract-grip/grip.types';

@@ -4,7 +4,7 @@ import { ITag, TagName } from '../tag/tag.types';
 import { ICategory } from '../category/category.types';
 import { Money } from '../money/money.class';
 import { ITransaction, TransactionType } from '../transaction/transaction.types';
-import { IAccount } from '../account/account.types';
+import { IAccount } from '../account-dto/account.types';
 import { Set, Map } from 'immutable';
 
 export interface ITransactionGrip {

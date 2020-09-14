@@ -1,5 +1,5 @@
-import { Month } from '../../models/month/month-legacy.class';
-import { Account } from '../../models/account/account.class';
+import { MonthLegacy } from '../../models/month/month-legacy.class';
+import { AccountDTO } from '../../models/account-dto/account.class';
 import { AccountUtils } from './account.saga';
 import { CallEffect } from 'redux-saga/effects';
 import { Transaction } from '../../models/transaction/transaction.class';
@@ -16,11 +16,11 @@ import { expectCallEffect } from '../helpers/helpers.spec';
 import { MonthUtils } from './month.saga';
 import { delay, SagaUtils } from '../helpers/helpers';
 import { Money } from '../../models/money/money.class';
-import { checkChain } from '../../models/account/chain.utils';
+import { checkChain } from '../../models/account-dto/chain.utils';
 import { Day } from '../../models/day/day.class';
 
 describe('AccountUtils', () => {
-    describe('select account saga', () => {
+    describe('select account-dto saga', () => {
         let testBed: SagaTestBed;
 
         beforeEach(() => {
@@ -29,8 +29,8 @@ describe('AccountUtils', () => {
             testBed.subscribe(Accounts);
             testBed.dispatch(loadAccountsSuccess({
                 accounts: [
-                    Account.create('test', 'test'),
-                    Account.create('test 2', '123'),
+                    AccountDTO.create('test', 'test'),
+                    AccountDTO.create('test 2', '123'),
                 ],
             }));
 
@@ -41,7 +41,7 @@ describe('AccountUtils', () => {
 
         it('base', async () => {
             testBed.run(AccountUtils.select.originalSaga, 'test').then(
-                (account: Account) => {
+                (account: AccountDTO) => {
                     expect(account.id).toBe('test');
                 },
                 error => {
@@ -62,9 +62,9 @@ describe('AccountUtils', () => {
             await testBed.run(test);
         });
     });
-    describe('update account saga', () => {
-        const baseAccount = Account.create('test');
-        const month01 = Month.createFirstBlock(baseAccount.id, '2020-01', 1592247158848);
+    describe('update account-dto saga', () => {
+        const baseAccount = AccountDTO.create('test');
+        const month01 = MonthLegacy.createFirstBlock(baseAccount.id, '2020-01', 1592247158848);
         const month02 = month01.createNextBlock('2020-02', 1592247187258);
         const month04 = month02.createNextBlock('2020-04', 1592247202511);
         const startAccount = baseAccount.updateHead(month02, [month01, month02]);
@@ -96,8 +96,8 @@ describe('AccountUtils', () => {
                 const r2effect = r2.value as CallEffect;
                 expect(r2.done).toBeFalsy();
                 expectCallEffect(r2effect, AccountUtils.save);
-                const acc: Account = r2effect.payload.args[0];
-                expect(acc).toBeInstanceOf(Account);
+                const acc: AccountDTO = r2effect.payload.args[0];
+                expect(acc).toBeInstanceOf(AccountDTO);
                 expect(acc.id).toBe(startAccount.id);
                 expect(acc.head).toEqual(month01.getBrief());
                 expect(acc.months[0]).toEqual(month01.getBrief());
@@ -144,8 +144,8 @@ describe('AccountUtils', () => {
                 const r2effect = r2.value as CallEffect;
                 expect(r2.done).toBeFalsy();
                 expectCallEffect(r2effect, AccountUtils.save);
-                const acc: Account = r2effect.payload.args[0];
-                expect(acc).toBeInstanceOf(Account);
+                const acc: AccountDTO = r2effect.payload.args[0];
+                expect(acc).toBeInstanceOf(AccountDTO);
                 expect(acc.id).toBe(startAccount.id);
                 expect(acc.head).toEqual(month04.getBrief());
                 expect(acc.months[0]).toEqual(month04.getBrief());
@@ -196,8 +196,8 @@ describe('AccountUtils', () => {
                 const r2effect = r2.value as CallEffect;
                 expect(r2.done).toBeFalsy();
                 expectCallEffect(r2effect, AccountUtils.save);
-                const acc: Account = r2effect.payload.args[0];
-                expect(acc).toBeInstanceOf(Account);
+                const acc: AccountDTO = r2effect.payload.args[0];
+                expect(acc).toBeInstanceOf(AccountDTO);
                 expect(acc.id).toBe(startAccount.id);
                 expect(acc.head).toEqual(month02upd.getBrief());
                 expect(acc.months[0]).toEqual(month02upd.getBrief());
@@ -254,14 +254,14 @@ describe('AccountUtils', () => {
                 }
 
                 // save account
-                let acc: Account;
+                let acc: AccountDTO;
                 {
                     const next = gen.next();
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, AccountUtils.save);
                     acc = effect.payload.args[0];
-                    expect(acc).toBeInstanceOf(Account);
+                    expect(acc).toBeInstanceOf(AccountDTO);
                     expect(acc.id).toBe(startAccount.id);
                     expect(acc.head).toEqual(month04upd.getBrief());
                     expect(acc.months[0]).toEqual(month04upd.getBrief());
@@ -329,14 +329,14 @@ describe('AccountUtils', () => {
                 }
 
                 // save account
-                let acc: Account;
+                let acc: AccountDTO;
                 {
                     const next = gen.next();
                     const effect = next.value as CallEffect;
                     expect(next.done).toBeFalsy();
                     expectCallEffect(effect, AccountUtils.save);
                     acc = effect.payload.args[0];
-                    expect(acc).toBeInstanceOf(Account);
+                    expect(acc).toBeInstanceOf(AccountDTO);
                     expect(acc.id).toBe(startAccount.id);
                     expect(acc.head).toEqual(month04upd.getBrief());
                     expect(acc.months[0]).toEqual(month04upd.getBrief());
@@ -352,7 +352,7 @@ describe('AccountUtils', () => {
             });
         });
     });
-    describe('save account saga', () => {
+    describe('save account-dto saga', () => {
         let testBed: SagaTestBed;
 
         beforeEach(() => {
@@ -360,7 +360,7 @@ describe('AccountUtils', () => {
         });
 
         it('success', async () => {
-            const account = Account.create('test');
+            const account = AccountDTO.create('test');
 
             function* test() {
                 return yield* AccountUtils.save(account);
@@ -390,7 +390,7 @@ describe('AccountUtils', () => {
             expect(testBed.isCompleted).toBeTruthy();
         });
         it('error loading', async () => {
-            const account = Account.create('test');
+            const account = AccountDTO.create('test');
 
             function* test() {
                 return yield* AccountUtils.save(account);
