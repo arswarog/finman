@@ -1,7 +1,7 @@
 import { sagaLauncher } from '../saga-launcher';
 import { loadMonthsSuccess } from '../../atoms/months/months.actions';
 import { Action } from '@reatom/core';
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 import { put, fork } from 'redux-saga/effects';
 import { Account } from '../../models/account/account.class';
 import { AccountUtils } from '../utils/account.saga';

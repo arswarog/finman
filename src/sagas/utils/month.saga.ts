@@ -2,7 +2,7 @@ import { put, take } from 'redux-saga/effects';
 import { Action } from '@reatom/core';
 import { MonthDate } from '../../models/common/date.types';
 import { Account } from '../../models/account/account.class';
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 import { getTimestamp, SagaUtils, selectAtom } from '../helpers/helpers';
 import { SagaPacker } from '../saga-launcher';
 import {

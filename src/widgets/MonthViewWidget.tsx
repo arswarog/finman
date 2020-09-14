@@ -1,5 +1,5 @@
 import { MonthsMap } from '../atoms/months/months.types';
-import { IMonthBrief } from '../models/month/month.types';
+import { IMonthBrief } from '../models/month/month-legacy.types';
 import React from 'react';
 import { MoneyView } from '../components/MoneyView';
 import { MonthTxList } from './MonthTxList';

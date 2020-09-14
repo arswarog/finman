@@ -8,6 +8,7 @@ import { MonthUtils } from '../utils/month.saga';
 import { Transaction } from '../../models/transaction/transaction.class';
 import { put } from 'redux-saga/effects';
 import { updateAccountGrip } from '../../atoms/account-grips/account-grips.actions';
+import { updaterFactory } from '../../updaters/updater';
 
 sagaLauncher.onAction(addTransaction, addTransactionSaga);
 

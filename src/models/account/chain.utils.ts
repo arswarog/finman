@@ -1,5 +1,5 @@
-import { IMonthBrief } from '../month/month.types';
-import { Month } from '../month/month.class';
+import { IMonthBrief } from '../month/month-legacy.types';
+import { Month } from '../month/month-legacy.class';
 import { UUID } from '../common/common.types';
 
 /**

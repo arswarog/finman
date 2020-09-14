@@ -2,7 +2,7 @@ import { IInitialCategoryTree } from './category.types';
 import { TransactionType } from '../transaction/transaction.types';
 import { Category } from './category.class';
 import { CategoriesBlock } from './categoryBlock.class';
-import { IExtendSummary, SyncStatus } from '../common/common.types';
+import { IPeriodSummary, SyncStatus } from '../common/common.types';
 
 describe('CategoryBlock class', () => {
     const accountId = '0000-0001';

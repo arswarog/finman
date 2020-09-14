@@ -4,7 +4,7 @@ import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';
 import { ICategory } from '../category/category.types';
 import { Account } from '../account/account.class';
-import { Month } from '../month/month.class';
+import { Month } from '../month/month-legacy.class';
 import { AccountMonthGrip } from './month-grip.class';
 import { Money } from '../money/money.class';
 

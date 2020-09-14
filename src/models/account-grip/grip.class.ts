@@ -1,7 +1,7 @@
 import { AbstractGrip } from '../abstract-grip/grip.class';
 import { IAccount } from '../account/account.types';
 import { CategoriesBlock } from '../category/categoryBlock.class';
-import { IMonth, IMonthBrief } from '../month/month.types';
+import { IMonth, IMonthBrief } from '../month/month-legacy.types';
 import { AccountMonthGrip } from './month-grip.class';
 import { Map } from 'immutable';
 import { Money } from '../money/money.class';

@@ -3,7 +3,7 @@ import { stdChannel } from 'redux-saga';
 import { CallEffect } from 'redux-saga/effects';
 import { MonthUtils } from './month.saga';
 import { Account } from '../../models/account/account.class';
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 import { Months } from '../../atoms/months/months.atom';
 import { getTimestampFn, delay } from '../helpers/helpers';
 import { expectCallEffect } from '../helpers/helpers.spec';

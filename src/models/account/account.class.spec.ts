@@ -1,7 +1,7 @@
 import { Account } from './account.class';
 import { Money } from '../money/money.class';
-import { Month } from '../month/month.class';
-import { makeTestMonth1, makeTestMonth2 } from '../month/month.class.spec';
+import { Month } from '../month/month-legacy.class';
+import { makeTestMonth1, makeTestMonth2 } from '../month/month-legacy.class.spec';
 import { Day } from '../day/day.class';
 import { TransactionType } from '../transaction/transaction.types';
 import { SyncStatus } from '../common/common.types';

@@ -1,5 +1,5 @@
-import { Month } from './month.class';
-import { EmptyExtendSummary, IExtendSummary, SyncStatus, UUID } from '../common/common.types';
+import { Month } from './month-legacy.class';
+import { EmptyExtendSummary, IPeriodSummary, SyncStatus, UUID } from '../common/common.types';
 import { Day } from '../day/day.class';
 import { ITransaction, TransactionType } from '../transaction/transaction.types';
 import { Money } from '../money/money.class';
@@ -209,7 +209,7 @@ describe('Month class', () => {
             const month = month1.updateDay(day);
             expect(month.id).not.toEqual(month1.id);
 
-            expect(month.summary).toEqual(<IExtendSummary>{
+            expect(month.summary).toEqual(<IPeriodSummary>{
                 balance: Money.fromJSON('1 RUB'),
                 expense: Money.empty,
                 income: Money.fromJSON('1 RUB'),
@@ -394,7 +394,7 @@ describe('Month class', () => {
 
                 const month = month1.updateDay(day);
 
-                expect(month.summary).toEqual(<IExtendSummary>{
+                expect(month.summary).toEqual(<IPeriodSummary>{
                     balance: Money.fromJSON('1 RUB'),
                     expense: Money.empty,
                     income: Money.fromJSON('1 RUB'),
@@ -529,7 +529,7 @@ describe('Month class', () => {
 
             month = month1.updateDay(day);
 
-            expect(month.summary).toEqual(<IExtendSummary>{
+            expect(month.summary).toEqual(<IPeriodSummary>{
                 balance: Money.fromJSON('1 RUB'),
                 expense: Money.empty,
                 income: Money.fromJSON('1 RUB'),
@@ -540,7 +540,7 @@ describe('Month class', () => {
 
         it('add first day', () => {
             const month1 = month.recalculateWithNewStartBalance(Money.fromJSON('5 RUB'));
-            expect(month1.summary).toEqual(<IExtendSummary>{
+            expect(month1.summary).toEqual(<IPeriodSummary>{
                 balance: Money.fromJSON('1 RUB'),
                 expense: Money.empty,
                 income: Money.fromJSON('1 RUB'),

@@ -2,7 +2,7 @@ import { Store } from '@reatom/core';
 import { loadMonths, loadMonthsSuccess, saveMonths, saveMonthsSuccess } from '../atoms/months/months.actions';
 import { Months } from '../atoms/months/months.atom';
 import { UUID } from '../models/common/common.types';
-import { Month } from '../models/month/month.class';
+import { Month } from '../models/month/month-legacy.class';
 import { loadAccounts, loadAccountsSuccess, saveAccount, saveAccountSuccess } from '../atoms/accounts/accounts.actions';
 import { Account } from '../models/account/account.class';
 

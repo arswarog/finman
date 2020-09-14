@@ -8,7 +8,7 @@ import { ITag, TagName } from '../tag/tag.types';
 import { Map } from 'immutable';
 import { Money } from '../money/money.class';
 import { AbstractMonthGrip } from './month-grip.class';
-import { IMonth } from '../month/month.types';
+import { IMonth } from '../month/month-legacy.types';
 import { AccountMonthGrip } from '../account-grip/month-grip.class';
 
 

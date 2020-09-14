@@ -1,5 +1,5 @@
 import { IScheme } from '../../libs/indexed-db';
-import { IMonth } from '../../models/month/month.types';
+import { IMonth } from '../../models/month/month-legacy.types';
 
 export const MonthScheme: IScheme<IMonth> = {
     collection: 'months',

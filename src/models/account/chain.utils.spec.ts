@@ -1,4 +1,4 @@
-import { Month } from '../month/month.class';
+import { Month } from '../month/month-legacy.class';
 import { isVersionOfMonth, updateMonthChain } from './chain.utils';
 import { Transaction } from '../transaction/transaction.class';
 import { TransactionType } from '../transaction/transaction.types';

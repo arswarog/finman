@@ -3,7 +3,7 @@ import { useAction, useAtom } from '@reatom/react';
 import { useHistory, useRouteMatch } from 'react-router';
 import { MonthDate } from '../models/common/date.types';
 import { loadMonths } from '../atoms/months/months.actions';
-import { IMonthBrief } from '../models/month/month.types';
+import { IMonthBrief } from '../models/month/month-legacy.types';
 import { MonthViewHeadWidget } from '../widgets/MonthViewWidget';
 import { Header } from '../components/Header';
 import { paths } from '../routes';

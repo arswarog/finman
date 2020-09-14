@@ -1,7 +1,7 @@
 import React from 'react';
 
 import styles from './MonthTxList.module.scss';
-import { Month } from '../models/month/month.class';
+import { Month } from '../models/month/month-legacy.class';
 import { TxList } from './TxList';
 import { DayDate } from '../models/common/date.types';
 import format from 'date-fns/format';

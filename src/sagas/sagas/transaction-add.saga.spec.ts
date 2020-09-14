@@ -2,7 +2,7 @@ import { addTransactionSaga } from './transaction-add.saga';
 import { addTransaction } from '../../models/transaction/transaction.actions';
 import { TransactionType } from '../../models/transaction/transaction.types';
 import { Account } from '../../models/account/account.class';
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 import { AccountUtils } from '../utils/account.saga';
 import { expectCallEffect } from '../helpers/helpers.spec';
 import { MonthUtils } from '../utils/month.saga';

@@ -1,45 +1,26 @@
 import { ISubset } from './subset.types';
-import { UUID } from '../common/common.types';
+import { IExtendSummary, ISummary, UUID } from '../common/common.types';
 import { Money } from '../money/money.class';
-import { IMonthBrief } from '../month/month.types';
 import { v1 } from 'uuid';
-import { Month } from '../month/month.class';
+import { ISubsetDTO, ISubsetMeta } from './subset.dto';
 
-export class Subset implements ISubset {
-    public id: UUID = '';
-    public name: string = '';
-    public balance: Money = Money.empty;
-    public months: IMonthBrief[] = [];
-    public head: IMonthBrief = null;
-    public loaded = false;
+export class Subset implements ISummary, IExtendSummary {
+    balance: Money;
+    expense: Money;
+    income: Money;
 
-    private constructor(subset: Partial<Subset>) {
-        Object.assign(this, subset);
+    statsByCategories: Map<string, ISummary>;
+    statsByTags: Map<string, ISummary>;
 
-        const month = Month.createFirstBlock('123', '2020-10', 123151213235);
-    }
+    getMeta(): ISubsetMeta {
+        return null;
+    };
 
-    public static create(name: string): Subset {
-        const id = v1();
-        return new Subset({
-            id,
-            name,
-        });
-    }
+    toDTO(): ISubsetDTO {
+        return null;
+    };
 
-    public static fromJSON(data: ISubset): Subset {
-        return new Subset({
-            id: data.id,
-            name: data.name,
-            balance: Money.from(data.balance),
-        });
-    }
-
-    public toJSON() {
-        return {
-            id: this.id,
-            name: this.name,
-            balance: this.balance.toJSON(),
-        };
-    }
+    static fromDTO(data: ISubsetDTO): Subset {
+        return null;
+    };
 }

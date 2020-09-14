@@ -7,7 +7,7 @@ import {
     saveMonthsSuccess,
 } from '../../atoms/months/months.actions';
 import { MonthScheme } from '../schemes';
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 
 addActionHandler(loadMonths, (ids, store) => {
     db.transaction(MonthScheme)

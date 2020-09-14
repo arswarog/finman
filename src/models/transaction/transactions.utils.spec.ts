@@ -1,5 +1,5 @@
 import { addExtendSummary, addSummary, calculateExtendSummary, calculateSummary } from './transactions.utils';
-import { IExtendSummary, ISummary, UUID } from '../common/common.types';
+import { IPeriodSummary, ISummary, UUID } from '../common/common.types';
 import { Money } from '../money/money.class';
 import { ITransaction, TransactionType } from './transaction.types';
 
@@ -68,7 +68,7 @@ describe('transactions utils', () => {
     });
     describe('calculateExtendSummary', () => {
         it('empty array', () => {
-            expect(calculateExtendSummary([])).toEqual(<IExtendSummary>{
+            expect(calculateExtendSummary([])).toEqual(<IPeriodSummary>{
                 balance: Money.empty,
                 balanceOnStart: Money.empty,
                 balanceOnEnd: Money.empty,
@@ -86,7 +86,7 @@ describe('transactions utils', () => {
                     title: '',
                 },
             ];
-            expect(calculateExtendSummary(txs)).toEqual(<IExtendSummary>{
+            expect(calculateExtendSummary(txs)).toEqual(<IPeriodSummary>{
                 balance: Money.fromJSON('-1 RUB'),
                 balanceOnStart: Money.empty,
                 balanceOnEnd: Money.fromJSON('-1 RUB'),
@@ -125,7 +125,7 @@ describe('transactions utils', () => {
                     title: '',
                 },
             ];
-            expect(calculateExtendSummary(txs)).toEqual(<IExtendSummary>{
+            expect(calculateExtendSummary(txs)).toEqual(<IPeriodSummary>{
                 balance: Money.fromJSON('11 RUB'),
                 balanceOnStart: Money.empty,
                 balanceOnEnd: Money.fromJSON('11 RUB'),
@@ -169,21 +169,21 @@ describe('transactions utils', () => {
     });
     describe('addExtendSummary', () => {
         it('add 0 and 1 RUB', () => {
-            const start: IExtendSummary = {
+            const start: IPeriodSummary = {
                 balance: Money.fromJSON('20 RUB'),
                 balanceOnStart: Money.fromJSON('10 RUB'),
                 balanceOnEnd: Money.fromJSON('30 RUB'),
                 expense: Money.fromJSON('30 RUB'),
                 income: Money.fromJSON('50 RUB'),
             };
-            const add: IExtendSummary = {
+            const add: IPeriodSummary = {
                 balance: Money.fromJSON('-7 RUB'),
                 balanceOnStart: Money.fromJSON('-10 RUB'),
                 balanceOnEnd: Money.fromJSON('-17 RUB'),
                 expense: Money.fromJSON('30 RUB'),
                 income: Money.fromJSON('23 RUB'),
             };
-            const end: IExtendSummary = {
+            const end: IPeriodSummary = {
                 balance: Money.fromJSON('13 RUB'),
                 balanceOnStart: Money.fromJSON('10 RUB'),
                 balanceOnEnd: Money.fromJSON('23 RUB'),
@@ -193,14 +193,14 @@ describe('transactions utils', () => {
             expect(addExtendSummary(start, add)).toEqual(end);
         });
         it('exception if sum incorrect', () => {
-            const start: IExtendSummary = {
+            const start: IPeriodSummary = {
                 balance: Money.fromJSON('20 RUB'),
                 balanceOnStart: Money.fromJSON('10 RUB'),
                 balanceOnEnd: Money.fromJSON('30 RUB'),
                 expense: Money.fromJSON('30 RUB'),
                 income: Money.fromJSON('50 RUB'),
             };
-            const add: IExtendSummary = {
+            const add: IPeriodSummary = {
                 balance: Money.fromJSON('17 RUB'), // Invalid sum
                 balanceOnStart: Money.fromJSON('-10 RUB'),
                 balanceOnEnd: Money.fromJSON('-17 RUB'),

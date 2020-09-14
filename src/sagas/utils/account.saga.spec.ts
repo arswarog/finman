@@ -1,4 +1,4 @@
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 import { Account } from '../../models/account/account.class';
 import { AccountUtils } from './account.saga';
 import { CallEffect } from 'redux-saga/effects';

@@ -1,5 +1,5 @@
 import { DayDate, MonthDate } from '../common/date.types';
-import { IExtendSummary, ISummary, UUID } from '../common/common.types';
+import { IPeriodSummary, ISummary, UUID } from '../common/common.types';
 import { ITag, TagName } from '../tag/tag.types';
 import { ICategory } from '../category/category.types';
 import { Money } from '../money/money.class';
@@ -35,14 +35,14 @@ export interface ITransactionGrip {
     updatedAt?: Date;
 }
 
-export interface IDayGrip extends IExtendSummary {
+export interface IDayGrip extends IPeriodSummary {
     date: DayDate;
     transactions: ITransactionGrip[];
     categories: Map<UUID, ICategory>;
     tags: Map<TagName, ITag>;
 }
 
-export interface IMonthGripBrief extends IExtendSummary {
+export interface IMonthGripBrief extends IPeriodSummary {
     id: UUID;
     month: MonthDate;
     categories?: Map<UUID, ICategory>; // TODO Make it required

@@ -1,15 +1,15 @@
 import { ISummary, UUID } from '../common/common.types';
 import { Money } from '../money/money.class';
-import { IMonthBrief, monthBriefPacker } from '../month/month.types';
 import { IAccount } from './account.types';
 import { v1 as uuidGenerator } from 'uuid';
-import { Month } from '../month/month.class';
 import { Map } from 'immutable';
 import { findChain, RequiredMonthsError, updateMonthChain } from './chain.utils';
 import { addSummary, EMPTY_SUMMARY } from '../transaction/transactions.utils';
 import { Packable, PackableClass } from '../../libs/packable/decorator';
 import { Packer } from '../../libs/packable/packable';
 import { CategoriesBlock } from '../category/categoryBlock.class';
+import { IMonthBrief, monthBriefPacker } from '../month/month-legacy.types';
+import { Month } from '../month/month-legacy.class';
 
 /**
  * Contains information about Account

@@ -1,4 +1,4 @@
-import { extendSummaryPacker, IExtendSummary, SyncStatus, UUID } from '../common/common.types';
+import { extendSummaryPacker, IPeriodSummary, SyncStatus, UUID } from '../common/common.types';
 import { IDay } from '../day/day.class';
 import { MonthDate } from '../common/date.types';
 import { Packer } from '../../libs/packable/packable';
@@ -6,7 +6,7 @@ import { Packer } from '../../libs/packable/packable';
 export interface IMonthBrief {
     id: UUID;
     month: MonthDate;
-    summary: IExtendSummary;
+    summary: IPeriodSummary;
     prevMonths: UUID[];
     prevVersions: UUID[];
     dataHash: string;

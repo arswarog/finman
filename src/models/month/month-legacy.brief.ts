@@ -1,6 +1,6 @@
 import { Money } from '../money/money.class';
 import { Day } from '../day/day.class';
-import { IMonthBrief } from './month.types';
+import { IMonthBrief } from './month-legacy.types';
 
 export class MonthBrief {
     public static fromJSON(value: any): IMonthBrief {

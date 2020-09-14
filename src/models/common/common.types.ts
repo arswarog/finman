@@ -24,12 +24,12 @@ export const summaryPacker = Packer.forObject<ISummary>({
     expense: Money,
 });
 
-export interface IExtendSummary extends ISummary {
+export interface IPeriodSummary extends ISummary {
     balanceOnStart: Money;
     balanceOnEnd: Money;
 }
 
-export const extendSummaryPacker = Packer.forObject<IExtendSummary>({
+export const extendSummaryPacker = Packer.forObject<IPeriodSummary>({
     balance: Money,
     income: Money,
     expense: Money,
@@ -43,7 +43,7 @@ export const EmptySummary: ISummary = {
     expense: Money.empty,
 };
 
-export const EmptyExtendSummary: IExtendSummary = {
+export const EmptyExtendSummary: IPeriodSummary = {
     ...EmptySummary,
     balanceOnStart: Money.empty,
     balanceOnEnd: Money.empty,
@@ -51,3 +51,8 @@ export const EmptyExtendSummary: IExtendSummary = {
 
 Object.freeze(EmptySummary);
 Object.freeze(EmptyExtendSummary);
+
+export interface IExtendSummary extends ISummary {
+    statsByCategories: Map<UUID, ISummary>;
+    statsByTags: Map<UUID, ISummary>;
+}

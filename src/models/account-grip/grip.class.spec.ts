@@ -4,7 +4,7 @@ import { TransactionType } from '../transaction/transaction.types';
 import { Map } from 'immutable';
 import { Transaction } from '../transaction/transaction.class';
 import { Day } from '../day/day.class';
-import { Month } from '../month/month.class';
+import { Month } from '../month/month-legacy.class';
 import { AccountMonthGrip } from './month-grip.class';
 import { Money } from '../money/money.class';
 import { AccountGrip } from './grip.class';

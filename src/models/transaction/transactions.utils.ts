@@ -1,5 +1,5 @@
 import { ITransaction, TransactionType } from './transaction.types';
-import { IExtendSummary, ISummary } from '../common/common.types';
+import { IPeriodSummary, ISummary } from '../common/common.types';
 import { Money } from '../money/money.class';
 
 export const EMPTY_SUMMARY: ISummary = {
@@ -40,7 +40,7 @@ export function calculateSummary(transactions: ITransaction[]): ISummary {
     };
 }
 
-export function calculateExtendSummary(transactions: ITransaction[]): IExtendSummary {
+export function calculateExtendSummary(transactions: ITransaction[]): IPeriodSummary {
     let balanceOnStart = Money.empty;
 
     const summary = calculateSummary(transactions);
@@ -70,7 +70,7 @@ export function addSummary(base: ISummary, add: ISummary): ISummary {
     };
 }
 
-export function addExtendSummary(base: IExtendSummary, add: ISummary): IExtendSummary {
+export function addExtendSummary(base: IPeriodSummary, add: ISummary): IPeriodSummary {
     const summary = addSummary(base, add);
     const balanceOnStart = base.balanceOnStart;
     const balanceOnEnd = base.balanceOnEnd.add(add.balance);
@@ -93,7 +93,7 @@ export function checkSummary(summary: ISummary): boolean {
     return balance.equal(summary.balance);
 }
 
-export function checkExtendSummary(summary: IExtendSummary): boolean {
+export function checkExtendSummary(summary: IPeriodSummary): boolean {
     if (!checkSummary(summary))
         return false;
     const balance = summary.income.sub(summary.expense);

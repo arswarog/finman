@@ -1,6 +1,6 @@
 import { UUID } from '../../models/common/common.types';
 import { declareAction } from '@reatom/core';
-import { Month } from '../../models/month/month.class';
+import { Month } from '../../models/month/month-legacy.class';
 
 const NS = 'months';
 
