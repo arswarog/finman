@@ -1,15 +1,15 @@
 import React from 'react';
-import { ITransactionGrip } from '../models/abstract-grip/grip.types';
-import { Header } from '../components/Header';
-import { Icon, Icons } from '../ui-kit/Icon';
-import { Main } from '../ui-kit/Main';
-import { UUID } from '../models/common/common.types';
-import { DayDate } from '../models/common/date.types';
+import { ITransactionGrip } from '../../models/abstract-grip/grip.types';
+import { Header } from '../../components/Header';
+import { Icon, Icons } from '../../ui-kit/Icon';
+import { Main } from '../../ui-kit/Main';
+import { UUID } from '../../models/common/common.types';
+import { DayDate } from '../../models/common/date.types';
 import { useRouteMatch } from 'react-router';
-import { useAccount, useMonth, useTransaction } from '../hooks';
-import { TransactionType } from '../models/transaction/transaction.types';
-import { MoneyView } from '../components/MoneyView';
-import { Link, paths } from '../routes';
+import { useAccount, useMonth, useTransaction } from '../../hooks';
+import { TransactionType } from '../../models/transaction/transaction.types';
+import { MoneyView } from '../../components/MoneyView';
+import { Link, paths } from '../../routes';
 
 interface IParams {
     accountId: UUID;

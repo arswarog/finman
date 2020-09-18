@@ -1,10 +1,10 @@
 import { RouteProps } from 'react-router';
-import { TransactionAddPage } from '../pages/TransactionAddPage';
+import { TransactionAddPage } from '../pages/transaction/AddPage';
 import { TransactionsPage } from '../pages/TransactionsPage';
 import { addQueryString, baseUrl } from './config';
 import { UUID } from '../models/common/common.types';
 import { IAddTransactionForm } from '../models/transaction/transaction.types';
-import { TransactionViewPage } from '../pages/TransactionViewPage';
+import { TransactionViewPage } from '../pages/transaction/ViewPage';
 import { DayDate, MonthDate } from '../models/common/date.types';
 
 export const transactions = {

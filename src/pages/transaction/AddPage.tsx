@@ -1,17 +1,17 @@
 import React, { useState } from 'react';
-import { IAddTransactionForm, TransactionType } from '../models/transaction/transaction.types';
-import { store } from '../store/store';
-import { addTransaction } from '../models/transaction/transaction.actions';
+import { IAddTransactionForm, TransactionType } from '../../models/transaction/transaction.types';
+import { store } from '../../store/store';
+import { addTransaction } from '../../models/transaction/transaction.actions';
 import { useHistory, useLocation } from 'react-router';
-import { Header } from '../components/Header';
-import { TransactionForm } from '../widgets/TransactionForm';
-import { Section } from '../ui-kit/Section';
-import { Card } from '../ui-kit/Card';
-import { Main } from '../ui-kit/Main';
-import { useAtom } from '../store/reatom';
-import { AccountGrips } from '../atoms/account-grips/account-grips.atom';
-import { Accounts } from '../atoms/accounts/accounts.atom';
-import { getDayDate } from '../models/dates';
+import { Header } from '../../components/Header';
+import { TransactionForm } from '../../widgets/TransactionForm';
+import { Section } from '../../ui-kit/Section';
+import { Card } from '../../ui-kit/Card';
+import { Main } from '../../ui-kit/Main';
+import { useAtom } from '../../store/reatom';
+import { AccountGrips } from '../../atoms/account-grips/account-grips.atom';
+import { Accounts } from '../../atoms/accounts/accounts.atom';
+import { getDayDate } from '../../models/dates';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
