@@ -19,11 +19,13 @@ export interface ITransaction {
     updatedAt?: number;
 }
 
-export interface IAddTransactionForm {
+export interface ITransactionForm {
+    id?: UUID;
     account: UUID;
     amount: string;
     type: TransactionType;
     category: UUID | '';
     title: string | '';
     date: string;
+    lastTxData?: ITransactionForm;
 }

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import { ITransactionGrip } from '../../models/abstract-grip/grip.types';
 import { Header } from '../../components/Header';
 import { Icon, Icons } from '../../ui-kit/Icon';
@@ -10,6 +10,7 @@ import { useAccount, useMonth, useTransaction } from '../../hooks';
 import { TransactionType } from '../../models/transaction/transaction.types';
 import { MoneyView } from '../../components/MoneyView';
 import { Link, paths } from '../../routes';
+import { HeaderAction } from '../../ui-kit/HeaderAction';
 
 interface IParams {
     accountId: UUID;
@@ -31,7 +32,10 @@ export const TransactionViewPage = () => {
 
     return (
         <>
-            <Header title="Transaction details" back/>
+            <Header title="Transaction details" back>
+                <HeaderAction link={paths.transactions.update(tx.account.id, tx.date, tx.id)}
+                              icon={Icons.settingsOutline}/>
+            </Header>
             <Main>
                 <div className="section mt-2 mb-2">
                     <div className="card inner" style={{padding: 16}}>

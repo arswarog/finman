@@ -13,38 +13,43 @@ export class AccountDayGrip extends AbstractDayGrip {
                 day: IDay,
                 account: IAccount,
                 categories: Map<UUID, ICategory>) {
-        const transactions: ITransactionGrip[] = day.transactions.map(tx => {
-            const category = categories.get(tx.category || 'default');
-            if (!category)
-                throw new Error(`Category "${tx.category || 'default'}" not found`);
+        const transactions: ITransactionGrip[] = day
+            .transactions
+            .map(tx => {
+                const category = categories.get(tx.category || 'default');
+                if (!category)
+                    throw new Error(`Category "${tx.category || 'default'}" not found`);
 
-            const grip = {
-                id: tx.id,
-                account,
-                amount: tx.amount,
-                changeAmount: tx.amount,
-                title: tx.title,
-                type: tx.type,
-                category,
-                createdAt: tx.createdAt ? new Date(tx.createdAt) : null,
-                updatedAt: tx.updatedAt ? new Date(tx.updatedAt) : null,
-                date: day.date,
-                sourceTxs: [tx],
-                tags: Set(),
-            };
+                const grip = {
+                    id: tx.id,
+                    account,
+                    amount: tx.amount,
+                    changeAmount: tx.amount,
+                    title: tx.title,
+                    type: tx.type,
+                    category,
+                    createdAt: tx.createdAt ? new Date(tx.createdAt) : null,
+                    updatedAt: tx.updatedAt ? new Date(tx.updatedAt) : null,
+                    date: day.date,
+                    sourceTxs: [tx],
+                    tags: Set(),
+                };
 
-            switch (tx.type) {
-                case TransactionType.Income:
-                    return grip;
-                case TransactionType.Expense:
-                    return {
-                        ...grip,
-                        changeAmount: tx.amount.negative(),
-                    };
-                default:
-                    throw new Error(`Unsupported type "${TransactionType[tx.type]}"`);
-            }
-        });
+                switch (tx.type) {
+                    case TransactionType.Removed:
+                        return null;
+                    case TransactionType.Income:
+                        return grip;
+                    case TransactionType.Expense:
+                        return {
+                            ...grip,
+                            changeAmount: tx.amount.negative(),
+                        };
+                    default:
+                        throw new Error(`Unsupported type "${TransactionType[tx.type]}"`);
+                }
+            })
+            .filter(item => !!item);
 
         super(day.date, balanceOnStart, transactions);
     }

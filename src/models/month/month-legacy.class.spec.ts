@@ -26,8 +26,8 @@ describe('MonthLegacy class', () => {
             expect(month.syncStatus).not.toBe(SyncStatus.NoSynced);
 
             const day = Day.create('2010-02-01')
-                           .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                           .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                           .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                           .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month2 = month.updateDay(day);
 
             expect(month2.id).toBe('1e14b669-81c2-0dcb-8f2e-c9f89c073ee9');
@@ -35,7 +35,7 @@ describe('MonthLegacy class', () => {
             expect(month2.dataHash).not.toBe('0000000000000000000000000000000000000000');
             expect(month2.syncStatus).toBe(SyncStatus.NoSynced);
 
-            const day2 = day.addTransaction(Transaction.createWithID('0012', TransactionType.Expense, 25, 'RUB'));
+            const day2 = day.upsertTransaction(Transaction.createWithID('0012', TransactionType.Expense, 25, 'RUB'));
             const month3 = month2.updateDay(day2);
 
             expect(month3.id).toBe('1e14b669-81c2-0b70-7589-be5200e61ffd');
@@ -63,8 +63,8 @@ describe('MonthLegacy class', () => {
         });
         it('two different months with one copy of data', () => {
             const day = Day.create('2010-02-01')
-                           .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                           .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                           .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                           .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
 
             const month1 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265014812127)
                                       .updateDay(day);
@@ -78,14 +78,14 @@ describe('MonthLegacy class', () => {
         });
         it('two different months with same data', () => {
             const day1 = Day.create('2010-02-01')
-                            .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                            .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month1 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265014812127)
                                       .updateDay(day1);
 
             const day2 = Day.create('2010-02-01')
-                            .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                            .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month2 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265027052127)
                                       .updateDay(day2);
 
@@ -96,14 +96,14 @@ describe('MonthLegacy class', () => {
         });
         it('two different months with a bit different data', () => {
             const day1 = Day.create('2010-02-01')
-                            .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                            .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month1 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265014812127)
                                       .updateDay(day1);
 
             const day2 = Day.create('2010-02-01')
-                            .addTransaction(Transaction.createWithID('0012', TransactionType.Income, 100, 'RUB'))
-                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0012', TransactionType.Income, 100, 'RUB'))
+                            .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month2 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265027052127)
                                       .updateDay(day2);
 
@@ -114,14 +114,14 @@ describe('MonthLegacy class', () => {
         });
         it('two different months with another order of transactions', () => {
             const day1 = Day.create('2010-02-01')
-                            .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                            .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month1 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265014812127)
                                       .updateDay(day1);
 
             const day2 = Day.create('2010-02-01')
-                            .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'))
-                            .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'))
+                            .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'));
             const month2 = MonthLegacy.createFirstBlock(wallet, '2010-02', 1265027052127)
                                       .updateDay(day2);
 
@@ -132,8 +132,8 @@ describe('MonthLegacy class', () => {
         });
         it('two completely different months with with same data', () => {
             const day = Day.create('2010-02-01')
-                           .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                           .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                           .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                           .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
             const month1 = MonthLegacy.createFirstBlock('1-1-1-1', '2010-02', 1265014812127)
                                       .updateDay(day);
 
@@ -204,7 +204,7 @@ describe('MonthLegacy class', () => {
             const month1 = MonthLegacy.createFirstBlock(accountID, '2020-05', 123151213235);
 
             const day = month1.createDay(5)
-                              .addTransaction(tx);
+                              .upsertTransaction(tx);
 
             const month = month1.updateDay(day);
             expect(month.id).not.toEqual(month1.id);
@@ -230,7 +230,7 @@ describe('MonthLegacy class', () => {
             const month1 = MonthLegacy.createFirstBlock(accountID, '2020-05', 123151213235);
 
             const day = Day.create('2010-01-01')
-                           .addTransaction(tx);
+                           .upsertTransaction(tx);
 
             expect(() => month1.updateDay(day))
                 .toThrowError(`Day "2010-01-01" not of month "2020-05"`);
@@ -265,8 +265,8 @@ describe('MonthLegacy class', () => {
             }
 
             const day = Day.create('2020-05-03')
-                           .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                           .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                           .upsertTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                           .upsertTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
 
             describe('from NotSynced', () => {
                 const base = MonthLegacy.createFirstBlock(accountID, '2020-05', 123151213235)
@@ -369,7 +369,7 @@ describe('MonthLegacy class', () => {
                 const month1 = MonthLegacy.createFirstBlock(accountID, '2020-05', 123151213235);
 
                 const day = month1.createDay(5)
-                                  .addTransaction(tx);
+                                  .upsertTransaction(tx);
 
                 const month = month1.updateDay(day);
 
@@ -390,7 +390,7 @@ describe('MonthLegacy class', () => {
                 const month1 = MonthLegacy.createFirstBlock(accountID, '2020-05', 123151213235);
 
                 const day = month1.createDay(5)
-                                  .addTransaction(tx);
+                                  .upsertTransaction(tx);
 
                 const month = month1.updateDay(day);
 
@@ -408,16 +408,16 @@ describe('MonthLegacy class', () => {
     describe('createNextBlock', () => {
         const wallet = '0-1-0-0';
         const firstMonthsDay = Day.create('2020-05-10')
-                                  .addTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
-                                  .addTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
+                                  .upsertTransaction(Transaction.createWithID('0010', TransactionType.Income, 100, 'RUB'))
+                                  .upsertTransaction(Transaction.createWithID('0011', TransactionType.Expense, 50, 'RUB'));
         const firstMonth = MonthLegacy.createFirstBlock(wallet, '2020-05', 1590327753509)
                                       .updateDay(firstMonthsDay);
 
         describe('next has link to previous block and fixed', () => {
             it('base', () => {
                 const day = Day.create('2020-07-03')
-                               .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                               .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                               .upsertTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                               .upsertTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
 
                 const month = firstMonth.createNextBlock('2020-07', 1590347753509);
 
@@ -431,8 +431,8 @@ describe('MonthLegacy class', () => {
         describe('next has start balance from previous block', () => {
             it('base', () => {
                 const day = Day.create('2020-07-03')
-                               .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                               .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                               .upsertTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                               .upsertTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
 
                 const month = firstMonth.createNextBlock('2020-07', 1590347753509);
 
@@ -443,11 +443,11 @@ describe('MonthLegacy class', () => {
     describe('updatePrevMonths', () => {
         const lastPrevMonth = MonthLegacy.createFirstBlock('test', '2020-01', 1593225331366)
                                          .updateDay(Day.create('2020-01-05')
-                                                 .addTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')),
+                                                 .upsertTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')),
                                    );
         const baseMonth = lastPrevMonth.createNextBlock('2020-03', 1593225473070)
                                        .updateDay(Day.create('2020-03-01')
-                                                     .addTransaction(Transaction.create(TransactionType.Income, 100, 'RUB')),
+                                                     .upsertTransaction(Transaction.create(TransactionType.Income, 100, 'RUB')),
                                        );
 
         it('createNextBlock must create with start balance from prevMonth', () => {
@@ -469,7 +469,7 @@ describe('MonthLegacy class', () => {
         it('updatePrevMonths must update prevMonths and start balance', () => {
             // arrange
             const prevMonth = lastPrevMonth.updateDay(Day.create('2020-01-10')
-                                                         .addTransaction(Transaction.create(TransactionType.Income, 4, 'RUB')));
+                                                         .upsertTransaction(Transaction.create(TransactionType.Income, 4, 'RUB')));
 
             // act
             const month = baseMonth.updatePrevMonths([prevMonth], 1593226052164);
@@ -485,7 +485,7 @@ describe('MonthLegacy class', () => {
             // arrange
             const prevMonth = lastPrevMonth.createNextBlock('2020-02', 1593252867289)
                                            .updateDay(Day.create('2020-02-10')
-                                                         .addTransaction(Transaction.create(TransactionType.Income, 4, 'RUB')));
+                                                         .upsertTransaction(Transaction.create(TransactionType.Income, 4, 'RUB')));
 
             // act
             const month = baseMonth.updatePrevMonths([prevMonth], 1593252886478);
@@ -525,7 +525,7 @@ describe('MonthLegacy class', () => {
             const month1 = MonthLegacy.createFirstBlock(accountID, '2020-05', 123151213235);
 
             const day = month1.createDay(5)
-                              .addTransaction(tx);
+                              .upsertTransaction(tx);
 
             month = month1.updateDay(day);
 
@@ -551,11 +551,11 @@ describe('MonthLegacy class', () => {
     });
     describe('chaining (user stories)', () => {
         const dayToUnfix1 = Day.create('2020-01-03')
-                               .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                               .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                               .upsertTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                               .upsertTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
         const dayToUnfix3 = Day.create('2020-03-03')
-                               .addTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
-                               .addTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
+                               .upsertTransaction(Transaction.createWithID('0110', TransactionType.Income, 115, 'RUB'))
+                               .upsertTransaction(Transaction.createWithID('0111', TransactionType.Expense, 83, 'RUB'));
 
         it('update second month', () => {
             // arrange
@@ -574,7 +574,7 @@ describe('MonthLegacy class', () => {
                 1, 'RUB',
             );
             const day = secondMonth.createDay(5)
-                                   .addTransaction(tx);
+                                   .upsertTransaction(tx);
 
             // act 1
             const month = secondMonth.updateDay(day);
@@ -592,7 +592,7 @@ describe('MonthLegacy class', () => {
                 2, 'RUB',
             );
             const day2 = secondMonth.createDay(5)
-                                    .addTransaction(tx2);
+                                    .upsertTransaction(tx2);
 
             // act 2
             const month2 = month.updateDay(day2);
@@ -612,7 +612,7 @@ describe('MonthLegacy class', () => {
                 3, 'RUB',
             );
             const day3 = secondMonth.createDay(5)
-                                    .addTransaction(tx3);
+                                    .upsertTransaction(tx3);
 
             // act 3
             const month3 = month2.changeSyncStatus(SyncStatus.Prepared)
@@ -690,7 +690,7 @@ export function emptyMonth1(accountId: UUID): MonthLegacy {
 
 export function makeTestMonth1(accountId: UUID): MonthLegacy {
     const day1 = Day.create('2020-01-01')
-                    .addTransaction({
+                    .upsertTransaction({
                         id: '23ef9df2-e73e-4b85-8657-8635d9b8815f',
                         amount: Money.create(12, 'RUB'),
                         type: TransactionType.Income,
@@ -699,7 +699,7 @@ export function makeTestMonth1(accountId: UUID): MonthLegacy {
                     });
 
     const day2 = Day.create('2020-01-02')
-                    .addTransaction({
+                    .upsertTransaction({
                         id: '3844e7f5-8ae2-499a-b031-6286d46a55b3',
                         amount: Money.create(7, 'RUB'),
                         type: TransactionType.Expense,
@@ -717,7 +717,7 @@ export function emptyMonth2(accountId: UUID): MonthLegacy {
 
 export function makeTestMonth2(accountId: UUID): MonthLegacy {
     const day1 = Day.create('2020-02-01')
-                    .addTransaction({
+                    .upsertTransaction({
                         id: 'f38e02d8-86f1-407b-8462-a3bfb93dccd3',
                         amount: Money.create(147, 'RUB'),
                         type: TransactionType.Income,
@@ -726,7 +726,7 @@ export function makeTestMonth2(accountId: UUID): MonthLegacy {
                     });
 
     const day2 = Day.create('2020-02-02')
-                    .addTransaction({
+                    .upsertTransaction({
                         id: 'c7c16a63-5a32-41c9-844e-2f22abb765a3',
                         amount: Money.create(148, 'RUB'),
                         type: TransactionType.Expense,

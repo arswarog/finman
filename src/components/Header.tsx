@@ -1,5 +1,4 @@
 import React, { ReactNode, useCallback } from 'react';
-
 import { Icon } from '../ui-kit/Icon';
 import { useHistory } from 'react-router';
 

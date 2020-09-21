@@ -42,8 +42,8 @@ describe('AccountDayGrip class', () => {
         const tx2 = Transaction.createWithID('tx2', TransactionType.Expense, 25, 'RUB');
 
         const day = Day.create('2020-01-01')
-                       .addTransaction(tx1)
-                       .addTransaction(tx2);
+                       .upsertTransaction(tx1)
+                       .upsertTransaction(tx2);
 
         const grip = new AccountDayGrip(
             Money.create(200, 'RUB'),

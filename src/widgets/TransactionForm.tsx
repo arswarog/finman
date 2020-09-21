@@ -1,9 +1,8 @@
 import React from 'react';
-import { Field, Form } from 'react-final-form';
+import { Form } from 'react-final-form';
 import { MoneyField } from '../components/inputs/MoneyField';
-import { IAddTransactionForm, TransactionType } from '../models/transaction/transaction.types';
+import { ITransactionForm, TransactionType } from '../models/transaction/transaction.types';
 import { TxTypeField } from '../components/inputs/TxTypeField';
-import { BaseInput } from '../components/inputs/BaseInput';
 import { TextField } from '../components/inputs/TextField';
 import { DayDateField } from '../components/inputs/DayDateField';
 import { AccountField } from '../components/inputs/AccountField';
@@ -14,9 +13,9 @@ import { ICategory } from '../models/category/category.types';
 interface IProps {
     accounts: IAccount[];
     categories: ICategory[];
-    value: IAddTransactionForm;
-    onSubmit: (value: IAddTransactionForm) => void;
-    validate: (value: IAddTransactionForm) => Partial<{ [key in keyof IAddTransactionForm]: string }>;
+    value: ITransactionForm;
+    onSubmit: (value: ITransactionForm) => void;
+    validate: (value: ITransactionForm) => Partial<{ [key in keyof ITransactionForm]: string }>;
 }
 
 export const TransactionForm = ({accounts, categories, onSubmit, value, validate}: IProps) => {

@@ -20,6 +20,11 @@ export class AccountMonthGrip extends AbstractMonthGrip {
                     account,
                     categories,
                 );
+                if (!grip.transactions.length)
+                    return {
+                        days,
+                        balanceOnEnd,
+                    };
                 days.push(grip);
                 return {
                     days,

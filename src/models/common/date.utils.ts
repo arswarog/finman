@@ -37,6 +37,14 @@ export function parseDayDate(value: DayDate): Date {
     return date;
 }
 
+export function getDayFromDayDate(date: DayDate): number {
+    const match: RegExpMatchArray | null = date.match(/^(\d{4})-(\d{2})-(\d{2})$/);
+    if (!match)
+        throw new Error(`Invalid DayDate "${date}"`);
+
+    return +match[3];
+}
+
 export function dayDateToMonth(day: DayDate): MonthDate {
     return day.split('-', 2).join('-');
 }

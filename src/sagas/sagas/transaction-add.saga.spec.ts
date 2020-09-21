@@ -57,7 +57,7 @@ describe('addTransactionSaga', () => {
         const baseMonth = MonthLegacy.createFirstBlock(baseAccount.id, '2020-06', 1593035174796);
         const existsMonth = baseMonth.updateDay(
             Day.create('2020-06-10')
-               .addTransaction(
+               .upsertTransaction(
                    Transaction.create(TransactionType.Expense, 100, 'RUB'),
                ),
         );

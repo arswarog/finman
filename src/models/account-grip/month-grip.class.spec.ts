@@ -49,12 +49,12 @@ describe('AccountMonthGrip class', () => {
 
     it('base', () => {
         const day1 = Day.create('2020-01-01')
-                        .addTransaction(tx1)
-                        .addTransaction(tx2);
+                        .upsertTransaction(tx1)
+                        .upsertTransaction(tx2);
 
         const day2 = Day.create('2020-01-02')
-                        .addTransaction(tx3)
-                        .addTransaction(tx4);
+                        .upsertTransaction(tx3)
+                        .upsertTransaction(tx4);
 
         const month = MonthLegacy.createFirstBlock(account.id, '2020-01', 1596426439966)
                                  .updateDay(day2)

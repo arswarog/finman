@@ -160,7 +160,7 @@ describe('AccountUtils', () => {
             it('update last month', () => {
                 // arrange
                 const day = month02.createDay(3)
-                                   .addTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 1, 'RUB'));
+                                   .upsertTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 1, 'RUB'));
                 const month02upd = month02.updateDay(day);
 
                 // act
@@ -214,7 +214,7 @@ describe('AccountUtils', () => {
                 // arrange
                 const month03 = month02.createNextBlock('2020-03', 1593319801736)
                                        .updateDay(Day.create('2020-03-05')
-                                                     .addTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 1, 'RUB')));
+                                                     .upsertTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 1, 'RUB')));
 
                 const account = startAccount.updateHead(month04);
 
@@ -291,7 +291,7 @@ describe('AccountUtils', () => {
                 const account = startAccount.updateHead(month04);
 
                 const day = month01.createDay(3)
-                                   .addTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 10, 'RUB'));
+                                   .upsertTransaction(Transaction.createWithID('test-tx', TransactionType.Income, 10, 'RUB'));
                 const month01upd = month01.updateDay(day);
 
                 // act

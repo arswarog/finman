@@ -55,7 +55,7 @@ describe('chain utils', () => {
             const oldSecond = oldFirst.createNextBlock('2020-02', 1590916683981);
             const oldThird = oldSecond.createNextBlock('2020-03', 1590916753742)
                                       .updateDay(Day.create('2020-03-01')
-                                                    .addTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')))
+                                                    .upsertTransaction(Transaction.create(TransactionType.Income, 1, 'RUB')))
                                       .changeSyncStatus(SyncStatus.Prepared);
 
             const oldChain = [
@@ -88,7 +88,7 @@ describe('chain utils', () => {
             });
             it('only head, update last month', () => {
                 const day = oldThird.createDay(5)
-                                    .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+                                    .upsertTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
                 const head = oldThird
                     .updateDay(day);
 
@@ -110,7 +110,7 @@ describe('chain utils', () => {
             });
             it('some blocks (with one no needed block)', () => { // FIXME needs merge method
                 const day1 = oldSecond.createDay(5)
-                                      .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+                                      .upsertTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
                 const second = oldSecond.updateDay(day1);
 
                 const head = Object.assign({}, oldThird, {
@@ -140,7 +140,7 @@ describe('chain utils', () => {
             });
             it('some blocks (with one no needed block, and one exists block)', () => { // FIXME needs merge method
                 const day1 = oldSecond.createDay(5)
-                                      .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+                                      .upsertTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
                 const second = oldSecond.updateDay(day1);
 
                 const head = Object.assign({}, oldThird, {
@@ -171,7 +171,7 @@ describe('chain utils', () => {
             });
             it('without needed blocks, negative', () => {
                 const day1 = oldSecond.createDay(5)
-                                      .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+                                      .upsertTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
                 const second = oldSecond.updateDay(day1);
 
                 const head = Object.assign({}, oldThird, {prevMonths: [second.id]}); // TODO
@@ -204,11 +204,11 @@ describe('chain utils', () => {
         describe('positive (synced blocks)', () => {
             const v1 = MonthLegacy.createFirstBlock(account, '2020-01', 1590993021517);
             const v2day = v1.createDay(5)
-                            .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
             console.log(v2);
             const v3day = v1.createDay(4)
-                            .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v3 = v2.updateDay(v3day).changeSyncStatus(SyncStatus.Prepared);
 
             const another = MonthLegacy.createFirstBlock(account, '2020-02', 1590993200351);
@@ -246,11 +246,11 @@ describe('chain utils', () => {
         describe('update not synced block', () => {
             const v1 = MonthLegacy.createFirstBlock(account, '2020-01', 1590993021517);
             const v2day = v1.createDay(5)
-                            .addTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('0-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v2 = v1.updateDay(v2day).changeSyncStatus(SyncStatus.Prepared);
             console.log(v2);
             const v3day = v1.createDay(4)
-                            .addTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
+                            .upsertTransaction(Transaction.createWithID('1-1-0-0', TransactionType.Income, 5, 'RUB'));
             const v3 = v2.updateDay(v3day);
 
             const another = MonthLegacy.createFirstBlock(account, '2020-02', 1590993200351);

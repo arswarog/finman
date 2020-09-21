@@ -89,7 +89,7 @@ describe('AccountDTO class', () => {
 
             // arrange: update chain
             const day1 = Day.create('2020-01-01')
-                            .addTransaction({
+                            .upsertTransaction({
                                 id: '23ef9df2-e73e-4b85-8657-8635d9b8815f',
                                 amount: Money.create(12, 'RUB'),
                                 type: TransactionType.Income,
@@ -127,7 +127,7 @@ describe('AccountDTO class', () => {
 
             // arrange: update chain
             const day1 = Day.create('2020-01-01')
-                            .addTransaction({
+                            .upsertTransaction({
                                 id: '0725cf6e-8851-43cf-88fa-7d87771e5767',
                                 amount: Money.create(12, 'RUB'),
                                 type: TransactionType.Income,
@@ -166,7 +166,7 @@ describe('AccountDTO class', () => {
 
             // arrange: update chain
             const day1 = Day.create('2020-01-01')
-                            .addTransaction({
+                            .upsertTransaction({
                                 id: '23ef9df2-e73e-4b85-8657-8635d9b8815f',
                                 amount: Money.create(12, 'RUB'),
                                 type: TransactionType.Income,

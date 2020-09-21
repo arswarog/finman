@@ -38,11 +38,12 @@ export class Day implements IDay {
     }
 
     // FIXME remove interface or make transaction by data
-    public addTransaction(tx: ITransaction): Day {
-        const transactions: ITransaction[] = [
-            ...this.transactions,
-            tx,
-        ];
+    public upsertTransaction(tx: ITransaction): Day {
+        let found = false;
+        const transactions: ITransaction[] = this.transactions.map(item => item.id === tx.id ? (found = true, tx) : item);
+
+        if (!found)
+            transactions.push(tx);
 
         const summary: ISummary = calculateSummary(transactions);
 

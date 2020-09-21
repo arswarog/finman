@@ -1,7 +1,7 @@
 import { Action } from '@reatom/core';
 import { put, take } from 'redux-saga/effects';
 import { sagaLauncher } from '../saga-launcher';
-import { IAddTransactionForm } from '../../models/transaction/transaction.types';
+import { ITransactionForm } from '../../models/transaction/transaction.types';
 import { refresh } from '../../atoms/client/client.actions';
 import { loadAccounts, loadAccountsFailed, loadAccountsSuccess } from '../../atoms/accounts/accounts.actions';
 import { updateAccountGrips } from '../../atoms/account-grips/account-grips.actions';

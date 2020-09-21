@@ -23,7 +23,7 @@ describe('Day class', () => {
                 type: TransactionType.Income,
                 amount: Money.fromJSON('1 RUB'),
             };
-            const day = Day.create('2020-05-01').addTransaction(tx);
+            const day = Day.create('2020-05-01').upsertTransaction(tx);
             expect(day.summary).toEqual(<ISummary>{
                 income: Money.fromJSON('1 RUB'),
                 expense: Money.empty,
@@ -39,7 +39,7 @@ describe('Day class', () => {
                 type: TransactionType.Expense,
                 amount: Money.fromJSON('2 RUB'),
             };
-            const day = Day.create('2020-05-01').addTransaction(tx);
+            const day = Day.create('2020-05-01').upsertTransaction(tx);
             expect(day.summary).toEqual(<ISummary>{
                 income: Money.empty,
                 expense: Money.fromJSON('2 RUB'),
@@ -63,8 +63,8 @@ describe('Day class', () => {
                 amount: Money.fromJSON('2 RUB'),
             };
             const day = Day.create('2020-05-01')
-                           .addTransaction(tx1)
-                           .addTransaction(tx2);
+                           .upsertTransaction(tx1)
+                           .upsertTransaction(tx2);
             expect(day.summary).toEqual(<ISummary>{
                 income: Money.fromJSON('2 RUB'),
                 expense: Money.fromJSON('1 RUB'),
@@ -80,7 +80,7 @@ describe('Day class', () => {
                 TransactionType.Income,
                 Money.fromJSON('1 RUB'),
             );
-            const day = Day.create('2020-05-01').addTransaction(tx);
+            const day = Day.create('2020-05-01').upsertTransaction(tx);
 
             expect(day.transactions[0]).toBeInstanceOf(Transaction);
 
