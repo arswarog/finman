@@ -1,3 +1,13 @@
+## 0.5.0 (2020-09-23)
+
+* fix(tx-list): display changeAmount instead of amount 066c753
+* feat(transactions): update exist transactions f0759c7
+* refactor: preparing for new scheme 4d96707, closes #24
+* refactor(account-dto): rename 840d7fe, closes #24
+* refactor(transaction): moved transaction's pages bd10832, closes #16
+
+
+
 ## 0.4.0 (2020-09-06)
 
 * fix(account page): small fix money on main page c434f26
