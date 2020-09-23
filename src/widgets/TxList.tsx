@@ -37,7 +37,7 @@ export const TxList = React.memo(({list, dayDate}: IProps) => {
                                     : <span className={styles.empty}>Без заголовка</span>
                                 }</footer>
                             </div>
-                            <span><MoneyView money={tx.amount}/></span>
+                            <span><MoneyView money={tx.changeAmount} sign/></span>
                         </div>
                         {/*<CategoryIcon category={tx.category}/>*/}
                         {/*<img src="assets/img/sample/avatar/avatar1.jpg" alt="image" className="image"/>*/}
