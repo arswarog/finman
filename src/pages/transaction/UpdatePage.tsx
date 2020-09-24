@@ -22,6 +22,7 @@ import { UUID } from '../../models/common/common.types';
 import { DayDate } from '../../models/common/date.types';
 import { dispatchAndWaitResult } from '../../models/helper';
 import { paths } from '../../routes';
+import { categoriesMapToList } from '../../sagas/utils/categories';
 
 interface IParams {
     accountId: UUID;
@@ -38,7 +39,7 @@ export const TransactionUpdatePage = () => {
 
     const {current: currentAccount} = useAtom(AccountGrips);
     const {accounts} = useAtom(Accounts);
-    const categories = currentAccount ? Array.from(currentAccount.categories.values()) : [];
+    const categories = categoriesMapToList(currentAccount?.categories);
 
     if (!tx)
         return (

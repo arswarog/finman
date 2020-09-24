@@ -55,7 +55,7 @@ export const TransactionViewPage = () => {
                             </li>
                             <li>
                                 <strong>Category</strong>
-                                <span>{tx.category.name}</span>
+                                <Link to={paths.categories.view('', tx.category.id)}>{tx.category.name}</Link>
                             </li>
                             <li>
                                 <strong>Title</strong>

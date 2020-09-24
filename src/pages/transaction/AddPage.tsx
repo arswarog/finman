@@ -12,6 +12,7 @@ import { useAtom } from '../../store/reatom';
 import { AccountGrips } from '../../atoms/account-grips/account-grips.atom';
 import { Accounts } from '../../atoms/accounts/accounts.atom';
 import { getDayDate } from '../../models/dates';
+import { categoriesMapToList } from '../../sagas/utils/categories';
 
 export const TransactionAddPage = () => {
     const params = new URLSearchParams(useLocation().search);
@@ -19,7 +20,7 @@ export const TransactionAddPage = () => {
 
     const {current: currentAccount} = useAtom(AccountGrips);
     const {accounts} = useAtom(Accounts);
-    const categories = currentAccount ? Array.from(currentAccount.categories.values()) : [];
+    const categories = categoriesMapToList(currentAccount?.categories);
 
     if (!accounts || !categories)
         return (

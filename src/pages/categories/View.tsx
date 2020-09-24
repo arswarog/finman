@@ -26,8 +26,8 @@ export const CategoriesViewPage = () => {
     );
 
     const category = categoriesMap.get(categoryId);
+    const parent = categoriesMap.get(category?.parent);
 
-    console.log(account, category);
     if (!account || !category)
         return (
             <>
@@ -62,6 +62,13 @@ export const CategoriesViewPage = () => {
                             <li>
                                 <strong>Category name</strong>
                                 <span>{category.name}</span>
+                            </li>
+                            <li>
+                                <strong>Parent category</strong>
+                                {parent
+                                    ? <Link to={paths.categories.view('', parent.id)}>{parent.name}</Link>
+                                    : <span>-</span>
+                                }
                             </li>
                             <li>
                                 <strong>Deposit</strong>
