@@ -1,3 +1,9 @@
+## <small>0.5.1 (2020-09-24)</small>
+
+* fix(categories): update category sorter and name preprocessor 953d7a7
+
+
+
 ## 0.5.0 (2020-09-23)
 
 * fix(tx-list): display changeAmount instead of amount 066c753
