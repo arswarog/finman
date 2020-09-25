@@ -1,9 +1,5 @@
-import { ITransaction, TransactionType } from '../models/transaction/transaction.types';
 import { format } from 'date-fns';
-import { Money } from '../models/money/money.class';
-import { DayDate } from '../models/common/date.types';
 import { ITransactionGrip } from '../models/abstract-grip/grip.types';
-import { UUID } from '../models/common/common.types';
 
 export interface IDisplayedTransaction extends ITransactionGrip {
     first: string;
@@ -11,8 +7,8 @@ export interface IDisplayedTransaction extends ITransactionGrip {
     dateString: string;
 }
 
-export function makeTxList(list: ITransactionGrip[]): IDisplayedTransaction[] {
-    return list.map(item => {
+export function makeTxList(list: ITransactionGrip[], reverse = false): IDisplayedTransaction[] {
+    const result = list.map(item => {
         return {
             ...item,
             first: item.category.name,
@@ -22,4 +18,7 @@ export function makeTxList(list: ITransactionGrip[]): IDisplayedTransaction[] {
                 : '',
         };
     });
+    if (reverse)
+        result.reverse();
+    return result;
 }

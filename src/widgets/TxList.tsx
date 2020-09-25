@@ -12,11 +12,11 @@ import { dayDateToMonth } from '../models/common/date.utils';
 
 interface IProps {
     list: TransactionGrip[];
-    dayDate: DayDate;
+    reverse?: boolean;
 }
 
-export const TxList = React.memo(({list, dayDate}: IProps) => {
-    const txList = makeTxList(list);
+export const TxList = React.memo(({list, reverse}: IProps) => {
+    const txList = makeTxList(list, reverse);
 
     return (
         <ul className="listview image-listview inset">

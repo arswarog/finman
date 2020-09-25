@@ -10,21 +10,24 @@ import { Section } from '../ui-kit/Section';
 
 interface IProps {
     month: AbstractMonthGrip;
+    reverse?: boolean;
 }
 
-export const MonthTxList = React.memo(({month}: IProps) => {
+export const MonthTxList = React.memo(({month, reverse}: IProps) => {
     if (!month)
         return (
             <div>No data</div>
         );
 
-    const days = month.days;
+    const days = [...month.days];
+    if (reverse)
+        days.reverse();
 
     return (
         <>
             {days.map(day => (
                 <Section full title={formatDayDate(day.date)}>
-                    <TxList list={day.transactions} dayDate={day.date}/>
+                    <TxList list={day.transactions} reverse={reverse}/>
                 </Section>
             ))}
         </>

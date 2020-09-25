@@ -133,7 +133,7 @@ export const MonthViewWidget = ({months, brief, prev, next, moveToPrev, moveToNe
                     </div>
                 </div>
             </div>
-            <MonthTxList month={month}/>
+            <MonthTxList month={month} reverse/>
         </>
     );
 };

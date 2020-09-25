@@ -23,7 +23,7 @@ export const TransactionsPage = ({month, transactions}: IProps) => {
                     <button>Траты</button>
                     <button>Приход</button>
                 </div>
-                <TxList list={transactions} dayDate="2020-05-05"/>
+                <TxList list={transactions}/>
             </Main>
         </div>
     );

@@ -111,7 +111,7 @@ export const AccountMonthsPageDisplay = ({account, month}: IPropsDisplay) => {
                         </SwipeItemWidget>
                     ))}
                 </SwipeWidget>
-                <MonthTxList month={currentMonth}/>
+                <MonthTxList month={currentMonth} reverse/>
             </Main>
         </>
     );
