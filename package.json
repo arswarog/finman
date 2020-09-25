@@ -1,6 +1,6 @@
 {
   "name": "finman",
-  "version": "0.5.1",
+  "version": "0.5.2",
   "private": true,
   "dependencies": {
     "@21kb/react-online-status-hook": "^1.3.1",

@@ -1,3 +1,9 @@
+## <small>0.5.2 (2020-09-25)</small>
+
+* fix(tx list): reverse transaction list 693c5b7
+
+
+
 ## <small>0.5.1 (2020-09-24)</small>
 
 * fix(categories): update category sorter and name preprocessor 953d7a7
