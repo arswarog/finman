@@ -31,6 +31,7 @@ export const App = () => {
 
     return (
         <div className={styles.App}>
+            Hello!
             <HashRouter>
                 <Switch>
                     {routes.map((route, index) => <Route {...route} key={index}/>)}
