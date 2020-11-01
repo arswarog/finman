@@ -1,5 +1,5 @@
 {
-  "name": "finman",
+  "name": "test",
   "version": "0.5.2",
   "private": true,
   "dependencies": {
@@ -92,5 +92,7 @@
       "last 1 safari version"
     ]
   },
-  "homepage": "https://4wallet.app/"
+  "homepage": "https://4wallet.app/",
+  "keywords": [],
+  "description": ""
 }
